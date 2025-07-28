@@ -333,7 +333,7 @@
                                 <td>{{ $user->email ?? 'No email' }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('callbacks.user', $user->id) }}" 
+                                        <a href="{{ route('callbacklist', $user->id) }}" 
                                         class="btn btn-sm btn-action btn-outline-info" 
                                         title="View Callbacks">
                                             <i class="bi bi-telephone"></i>

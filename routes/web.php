@@ -40,6 +40,7 @@
       Route::get('/managers/{id}/dashboard', [ManagerController::class, 'dashboard'])->name('managers.dashboard');
   });
 
-  Route::get('/callbacks/user/{user_id}', [CallbackController::class, 'callbacksByUser'])->name('callbacks.user');
-  Route::get('/callbacklist', [CallbackController::class, 'index'])->name('callbacklist');
+  Route::get('/callbacks/{user_id?}', [CallbackController::class, 'index'])->name('callbacklist');
+  Route::post('/callbacks/save', [CallbackController::class, 'save'])->name('callbacks.save');
+  Route::post('/callbacks/delete', [CallbackController::class, 'delete'])->name('callbacks.delete');
   ?>

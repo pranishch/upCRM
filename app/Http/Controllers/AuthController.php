@@ -42,7 +42,7 @@ class AuthController extends Controller
                 } elseif ($role === 'manager') {
                     return redirect()->route('managers.dashboard', ['manager_id' => $user->id]);
                 } else {
-                    return redirect()->route('callbacks.index');
+                    return redirect()->route('callbacklist');
                 }
             } else {
                 return back()->withErrors(['error' => 'Your account is inactive. Please contact administrator.']);
