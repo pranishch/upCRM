@@ -1,21 +1,45 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+  use Illuminate\Support\Facades\Route;
+  use App\Http\Controllers\AuthController;
+  use App\Http\Controllers\UserController;
+  use App\Http\Controllers\ManagerController;
+  use App\Http\Controllers\CallbackController;
+  use App\Http\Controllers\AdminDashboardController;
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+  Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+  Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+  Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+  Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
 
-// Placeholder routes for redirection (implement later)
-Route::get('/admin/dashboard', function () {
-    return 'Admin Dashboard';
-})->name('admin.dashboard')->middleware(['auth', 'admin']);
+  Route::middleware(['auth'])->group(function () {
+      Route::get('/users', [UserController::class, 'index'])->name('users.index');
+      Route::get('/manage-users', [UserController::class, 'index'])->name('manage_users');
+      Route::post('/users', [UserController::class, 'store'])->name('users.store');
+      Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
+      Route::post('/users/change-role', [UserController::class, 'changeRole'])->name('users.change_role');
+      Route::post('/users/reset-password', [UserController::class, 'resetPassword'])->name('users.reset_password');
+      Route::get('/users/{id}/delete', [UserController::class, 'destroy'])->name('users.delete');
+      Route::post('/users/callback/update', [UserController::class, 'updateCallback'])->name('users.update_callback');
 
-Route::get('/manager/dashboard/{manager_id}', function ($manager_id) {
-    return "Manager Dashboard for ID: $manager_id";
-})->name('manager.dashboard')->middleware(['auth', 'access.manager.dashboard']);
+      Route::get('/managers', [ManagerController::class, 'index'])->name('managers.index');
+      Route::get('/manage-managers', [ManagerController::class, 'index'])->name('manage_managers');
+      Route::post('/managers', [ManagerController::class, 'store'])->name('managers.store');
+      Route::post('/managers/update', [ManagerController::class, 'update'])->name('managers.update');
+      Route::post('/managers/change-role', [ManagerController::class, 'changeRole'])->name('managers.change_role');
+      Route::post('/managers/reset-password', [ManagerController::class, 'resetPassword'])->name('managers.reset_password');
+      Route::get('/managers/{id}/delete', [ManagerController::class, 'destroy'])->name('managers.delete');
+      Route::post('/managers/callback/update', [ManagerController::class, 'updateCallback'])->name('managers.update_callback');
 
-Route::get('/callbacks', function () {
-    return 'Callback List';
-})->name('callbacks.index')->middleware('auth');
+      Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin_dashboard');
+      Route::post('/admin/dashboard', [AdminDashboardController::class, 'updateCallback'])->name('admin_dashboard.update');
+      Route::post('/save_callbacks', [AdminDashboardController::class, 'saveCallbacks'])->name('save_callbacks');
+      Route::post('/delete_callback', [AdminDashboardController::class, 'deleteCallback'])->name('delete_callback');
+      Route::post('/assign_manager', [AdminDashboardController::class, 'assignManager'])->name('assign_manager');
+
+      Route::get('/managers/{id}/dashboard', [ManagerController::class, 'dashboard'])->name('managers.dashboard');
+  });
+
+  Route::get('/callbacks/user/{user_id}', [CallbackController::class, 'callbacksByUser'])->name('callbacks.user');
+  Route::get('/callbacklist', [CallbackController::class, 'index'])->name('callbacklist');
+  ?>

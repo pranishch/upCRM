@@ -38,9 +38,9 @@ class AuthController extends Controller
                 $role = $user->userProfile ? $user->userProfile->role : ($user->is_superuser ? 'admin' : 'agent');
 
                 if ($role === 'admin' || $user->is_superuser) {
-                    return redirect()->route('admin.dashboard');
+                    return redirect()->route('admin_dashboard'); // Changed from admin.dashboard to admin_dashboard
                 } elseif ($role === 'manager') {
-                    return redirect()->route('manager.dashboard', ['manager_id' => $user->id]);
+                    return redirect()->route('managers.dashboard', ['manager_id' => $user->id]);
                 } else {
                     return redirect()->route('callbacks.index');
                 }
@@ -60,3 +60,4 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 }
+?>
