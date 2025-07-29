@@ -160,4 +160,53 @@ class AdminDashboardController extends Controller
             ], 500);
         }
     }
+    public function updateCallback(Request $request)
+    {
+        try {
+            // Validate the request
+            $request->validate([
+                'callback_id' => 'required|exists:callbacks,id',
+                'customer_name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[A-Za-z\s]+$/'],
+                'phone_number' => ['required', 'string', 'min:5', 'max:20', 'regex:/^\+?[0-9]{1,4}[\-\s]?[0-9]{1,4}[\-\s]?[0-9]{1,4}[\-\s]?[0-9]{1,4}$/'],
+                'email' => ['nullable', 'email', 'max:255'],
+                'address' => ['nullable', 'string', 'min:5', 'max:500'],
+                'website' => ['nullable', 'url', 'max:255', 'regex:/^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/'],
+                'remarks' => ['nullable', 'in:Callback,Pre-sale,Sample rejected,Sale'],
+                'notes' => ['nullable', 'string', 'max:255'],
+            ]);
+
+            // Check if user is admin
+            $user = Auth::user();
+            if (!$this->isAdminUser($user)) {
+                Log::error("User {$user->username} attempted to update callback without admin privileges");
+                return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
+            }
+
+            // Find the callback
+            $callback = Callback::findOrFail($request->callback_id);
+
+            // Update the callback
+            $callback->update([
+                'customer_name' => $request->customer_name,
+                'phone_number' => $request->phone_number,
+                'email' => $request->email,
+                'address' => $request->address,
+                'website' => $request->website,
+                'remarks' => $request->remarks,
+                'notes' => $request->notes,
+            ]);
+
+            Log::info("Callback {$request->callback_id} updated by {$user->username}");
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Callback updated successfully.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error("Validation error: " . json_encode($e->errors()));
+            return response()->json(['status' => 'error', 'message' => $e->errors()[array_key_first($e->errors())][0]], 400);
+        } catch (\Exception $e) {
+            Log::error("Error updating callback: {$e->getMessage()}");
+            return response()->json(['status' => 'error', 'message' => "Error: {$e->getMessage()}"], 500);
+        }
+    }
 }

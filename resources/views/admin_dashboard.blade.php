@@ -592,7 +592,16 @@
                                         <td>{{ $callback->email ?? 'N/A' }}</td>
                                         <td>{{ $callback->address ?? 'N/A' }}</td>
                                         <td>{{ $callback->website ?? 'N/A' }}</td>
-                                        <td>{{ $callback->remarks ?? 'N/A' }}</td>
+                                        <td>
+                                            <span class="display-text remarks-input">{{ $callback->remarks ?? 'N/A' }}</span>
+                                            <select class="editable-input remarks-input form-control" style="display: none;" name="remarks">
+                                                <option value="" {{ !$callback->remarks ? 'selected' : '' }}>Select</option>
+                                                <option value="Callback" {{ $callback->remarks == 'Callback' ? 'selected' : '' }}>Callback</option>
+                                                <option value="Pre-sale" {{ $callback->remarks == 'Pre-sale' ? 'selected' : '' }}>Pre-sale</option>
+                                                <option value="Sample rejected" {{ $callback->remarks == 'Sample rejected' ? 'selected' : '' }}>Sample rejected</option>
+                                                <option value="Sale" {{ $callback->remarks == 'Sale' ? 'selected' : '' }}>Sale</option>
+                                            </select>
+                                        </td>                                
                                         <td>{{ $callback->notes ?? 'N/A' }}</td>
                                         @if ($user_role == 'admin')
                                             <td>
@@ -614,7 +623,12 @@
                                         @endif
                                         <td>{{ $callback->createdBy->username }}</td>
                                         <td class="action-buttons">
-                                            <!-- No action buttons for save or delete -->
+                                            <button class="btn btn-info btn-action edit-callback" data-callback-id="{{ $callback->id }}" title="Edit Callback">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-action delete-callback" data-callback-id="{{ $callback->id }}" title="Delete Callback">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @empty
@@ -679,6 +693,25 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteCallbackModal" tabindex="-1" aria-labelledby="deleteCallbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCallbackModalLabel">Delete Callback</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the callback for <span id="deleteCallbackName"></span>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteCallback">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="toast-container">
         <div id="saveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -691,141 +724,326 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            function showToast(message, type) {
-                const toastEl = document.getElementById('saveToast');
-                if (!toastEl) return;
-                const toastBody = toastEl.querySelector('.toast-body');
-                toastBody.textContent = message;
-                toastEl.classList.remove('bg-success', 'bg-danger');
-                toastEl.classList.add(type === 'success' ? 'bg-success' : 'bg-danger');
-                const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
-                toast.show();
+        function showToast(message, type) {
+            const toastEl = document.getElementById('saveToast');
+            if (!toastEl) return;
+            const toastBody = toastEl.querySelector('.toast-body');
+            toastBody.textContent = message;
+            toastEl.classList.remove('bg-success', 'bg-danger');
+            toastEl.classList.add(type === 'success' ? 'bg-success' : 'bg-danger');
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        }
+
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        const searchInput = document.getElementById('searchInput');
+        const searchField = document.getElementById('searchField');
+        const tableBody = document.getElementById('callbackTableBody');
+        const pagination = document.getElementById('pagination');
+
+        window.loadPage = function(page) {
+            const query = searchInput.value.trim();
+            const field = searchField.value;
+            const url = new URL('{{ route("admin_dashboard") }}');
+            url.searchParams.set('page', page);
+            if (query) {
+                url.searchParams.set('q', query);
+                url.searchParams.set('search_field', field);
             }
 
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                tableBody.innerHTML = data.callbacks_html;
+                pagination.innerHTML = data.pagination_html;
+                document.querySelector('small.text-muted').textContent = `(${data.total_callbacks} callbacks)`;
+                const newTooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                newTooltipTriggerList.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            })
+            .catch(() => showToast('An error occurred while loading the page.', 'danger'));
+        };
 
-            const searchInput = document.getElementById('searchInput');
-            const searchField = document.getElementById('searchField');
-            const tableBody = document.getElementById('callbackTableBody');
-            const pagination = document.getElementById('pagination');
+        function performSearch() {
+            window.loadPage(1);
+        }
 
-            window.loadPage = function(page) {
-                const query = searchInput.value.trim();
-                const field = searchField.value;
-                const url = new URL('{{ route("admin_dashboard") }}');
-                url.searchParams.set('page', page);
-                if (query) {
-                    url.searchParams.set('q', query);
-                    url.searchParams.set('search_field', field);
-                }
+        let debounceTimeout;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(performSearch, 300);
+        });
+        searchField.addEventListener('change', performSearch);
 
-                fetch(url, {
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    tableBody.innerHTML = data.callbacks_html;
-                    pagination.innerHTML = data.pagination_html;
-                    document.querySelector('small.text-muted').textContent = `(${data.total_callbacks} callbacks)`;
-                    const newTooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                    newTooltipTriggerList.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-                })
-                .catch(() => showToast('An error occurred while loading the page.', 'danger'));
-            };
+        // Inline Editing
+        tableBody.addEventListener('click', function(e) {
+            const editButton = e.target.closest('.edit-callback');
+            const saveButton = e.target.closest('.save-callback');
+            const cancelButton = e.target.closest('.cancel-callback');
+            const deleteButton = e.target.closest('.delete-callback');
 
-            function performSearch() {
-                window.loadPage(1);
+            if (editButton) {
+                const row = editButton.closest('tr');
+                const callbackId = row.getAttribute('data-callback-id');
+                toggleEditMode(row, true);
             }
 
-            let debounceTimeout;
-            searchInput.addEventListener('input', () => {
-                clearTimeout(debounceTimeout);
-                debounceTimeout = setTimeout(performSearch, 300);
-            });
-            searchField.addEventListener('change', performSearch);
+            if (saveButton) {
+                const row = saveButton.closest('tr');
+                const callbackId = row.getAttribute('data-callback-id');
+                saveCallback(row, callbackId);
+            }
 
-            tableBody.addEventListener('change', function(e) {
-                const managerSelect = e.target.closest('.manager-select');
-                if (managerSelect) {
-                    const row = managerSelect.closest('tr');
-                    const callbackId = row.getAttribute('data-row-id');
-                    const callbackName = managerSelect.getAttribute('data-username');
-                    const newManagerId = managerSelect.value;
+            if (cancelButton) {
+                const row = cancelButton.closest('tr');
+                toggleEditMode(row, false);
+            }
 
-                    managerSelect.setAttribute('data-original-value', managerSelect.value);
+            if (deleteButton) {
+                const row = deleteButton.closest('tr');
+                const callbackId = row.getAttribute('data-callback-id');
+                const customerName = row.querySelector('td:nth-child(1)').textContent;
+                showDeleteModal(callbackId, customerName);
+            }
+        });
 
-                    const modal = new bootstrap.Modal(document.getElementById('assignManagerModal'));
-                    const modalCallbackName = document.getElementById('assignCallbackName');
-                    const modalCallbackNameText = document.getElementById('assignCallbackNameText');
-                    const callbackIdInput = document.getElementById('assignCallbackId');
-                    const managerIdInput = document.getElementById('assignManagerId');
-
-                    modalCallbackName.textContent = callbackName;
-                    modalCallbackNameText.textContent = callbackName;
-                    callbackIdInput.value = callbackId;
-                    managerIdInput.value = newManagerId;
-
-                    modal.show();
-                }
-            });
-
-            document.getElementById('assignManagerForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const callbackId = this.querySelector('#assignCallbackId').value;
-                const managerId = this.querySelector('#assignManagerId').value;
-                const modal = bootstrap.Modal.getInstance(document.getElementById('assignManagerModal'));
-
-                fetch('{{ route("assign_manager") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        callback_id: callbackId,
-                        manager_id: managerId
-                    })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.status === 'success') {
-                        modal.hide();
-                        showToast(result.message, 'success');
-                        const select = document.querySelector(`select[data-row-id="${callbackId}"]`);
-                        if (select) {
-                            select.setAttribute('data-original-value', managerId);
-                        }
+        function toggleEditMode(row, isEditMode) {
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-child(8))'); // Exclude Actions and Assigned Manager
+            if (isEditMode) {
+                cells.forEach((cell, index) => {
+                    if (index === 5) { // Remarks column
+                        const displayText = cell.querySelector('.display-text');
+                        const select = cell.querySelector('.editable-input');
+                        const value = displayText.textContent.trim() === 'N/A' ? '' : displayText.textContent.trim();
+                        displayText.style.display = 'none';
+                        select.style.display = 'block';
+                        select.value = value;
+                        cell.setAttribute('data-original-value', value);
                     } else {
-                        modal.hide();
-                        showToast('Error: ' + result.message, 'danger');
-                        const select = document.querySelector(`select[data-row-id="${callbackId}"]`);
-                        if (select) {
-                            select.value = select.getAttribute('data-original-value') || '';
+                        const value = cell.textContent.trim() === 'N/A' ? '' : cell.textContent.trim();
+                        cell.setAttribute('data-original-value', value);
+                        if (index === 2) { // Email
+                            cell.innerHTML = `<input type="email" class="form-control" value="${value}" />`;
+                        } else if (index === 4) { // Website
+                            cell.innerHTML = `<input type="url" class="form-control" value="${value}" />`;
+                        } else {
+                            cell.innerHTML = `<input type="text" class="form-control" value="${value}" />`;
                         }
                     }
+                });
+                row.querySelector('.action-buttons').innerHTML = `
+                    <button class="btn btn-success btn-action save-callback" title="Save Changes">
+                        <i class="bi bi-check-circle"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-action cancel-callback" title="Cancel">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                `;
+            } else {
+                cells.forEach((cell, index) => {
+                    if (index === 5) { // Remarks column
+                        const displayText = cell.querySelector('.display-text');
+                        const select = cell.querySelector('.editable-input');
+                        const originalValue = cell.getAttribute('data-original-value') || '';
+                        displayText.textContent = originalValue || 'N/A';
+                        displayText.style.display = 'block';
+                        select.style.display = 'none';
+                    } else {
+                        const originalValue = cell.getAttribute('data-original-value') || 'N/A';
+                        cell.textContent = originalValue;
+                    }
+                });
+                const callbackId = row.getAttribute('data-callback-id');
+                row.querySelector('.action-buttons').innerHTML = `
+                    <button class="btn btn-info btn-action edit-callback" data-callback-id="${callbackId}" title="Edit Callback">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-danger btn-action delete-callback" data-callback-id="${callbackId}" title="Delete Callback">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
+            }
+        }
+
+        function saveCallback(row, callbackId) {
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-child(8))');
+            const data = {
+                callback_id: callbackId,
+                customer_name: cells[0].querySelector('input').value.trim(),
+                phone_number: cells[1].querySelector('input').value.trim(),
+                email: cells[2].querySelector('input').value.trim() || null,
+                address: cells[3].querySelector('input').value.trim() || null,
+                website: cells[4].querySelector('input').value.trim() || null,
+                remarks: cells[5].querySelector('select').value || null,
+                notes: cells[6].querySelector('input').value.trim() || null
+            };
+
+            fetch('{{ route("admin_dashboard.update") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    cells.forEach((cell, index) => {
+                        if (index === 5) { // Remarks column
+                            const displayText = cell.querySelector('.display-text');
+                            const select = cell.querySelector('.editable-input');
+                            const value = select.value || 'N/A';
+                            displayText.textContent = value;
+                            displayText.style.display = 'block';
+                            select.style.display = 'none';
+                            cell.setAttribute('data-original-value', value === 'N/A' ? '' : value);
+                        } else {
+                            const input = cell.querySelector('input');
+                            const value = input.value.trim() || 'N/A';
+                            cell.textContent = value;
+                            cell.setAttribute('data-original-value', value === 'N/A' ? '' : value);
+                        }
+                    });
+                    row.querySelector('.action-buttons').innerHTML = `
+                        <button class="btn btn-info btn-action edit-callback" data-callback-id="${callbackId}" title="Edit Callback">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-action delete-callback" data-callback-id="${callbackId}" title="Delete Callback">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    `;
+                    showToast(result.message, 'success');
+                } else {
+                    toggleEditMode(row, false);
+                    showToast('Error: ' + result.message, 'danger');
+                }
+            })
+            .catch(() => {
+                toggleEditMode(row, false);
+                showToast('An error occurred while saving the callback.', 'danger');
+            });
+        }
+
+        function showDeleteModal(callbackId, customerName) {
+            const modal = new bootstrap.Modal(document.getElementById('deleteCallbackModal'));
+            document.getElementById('deleteCallbackName').textContent = customerName;
+            const confirmButton = document.getElementById('confirmDeleteCallback');
+            confirmButton.onclick = () => confirmDeleteCallback(callbackId);
+            modal.show();
+        }
+
+        function confirmDeleteCallback(callbackId) {
+            fetch('{{ route("callbacks.delete") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ callback_ids: [callbackId] })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    document.querySelector(`tr[data-callback-id="${callbackId}"]`).remove();
+                    showToast(result.message, 'success');
+                    const totalCallbacks = parseInt(document.querySelector('small.text-muted').textContent.match(/\d+/)[0]) - 1;
+                    document.querySelector('small.text-muted').textContent = `(${totalCallbacks} callbacks)`;
+                } else {
+                    showToast('Error: ' + result.message, 'danger');
+                }
+            })
+            .catch(() => showToast('An error occurred while deleting the callback.', 'danger'))
+            .finally(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteCallbackModal'));
+                modal.hide();
+            });
+        }
+
+        tableBody.addEventListener('change', function(e) {
+            const managerSelect = e.target.closest('.manager-select');
+            if (managerSelect) {
+                const row = managerSelect.closest('tr');
+                const callbackId = row.getAttribute('data-row-id');
+                const callbackName = managerSelect.getAttribute('data-username');
+                const newManagerId = managerSelect.value;
+
+                managerSelect.setAttribute('data-original-value', managerSelect.value);
+
+                const modal = new bootstrap.Modal(document.getElementById('assignManagerModal'));
+                const modalCallbackName = document.getElementById('assignCallbackName');
+                const modalCallbackNameText = document.getElementById('assignCallbackNameText');
+                const callbackIdInput = document.getElementById('assignCallbackId');
+                const managerIdInput = document.getElementById('assignManagerId');
+
+                modalCallbackName.textContent = callbackName;
+                modalCallbackNameText.textContent = callbackName;
+                callbackIdInput.value = callbackId;
+                managerIdInput.value = newManagerId;
+
+                modal.show();
+            }
+        });
+
+        document.getElementById('assignManagerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const callbackId = this.querySelector('#assignCallbackId').value;
+            const managerId = this.querySelector('#assignManagerId').value;
+            const modal = bootstrap.Modal.getInstance(document.getElementById('assignManagerModal'));
+
+            fetch('{{ route("assign_manager") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    callback_id: callbackId,
+                    manager_id: managerId
                 })
-                .catch(() => {
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
                     modal.hide();
-                    showToast('An error occurred while assigning the manager.', 'danger');
+                    showToast(result.message, 'success');
+                    const select = document.querySelector(`select[data-row-id="${callbackId}"]`);
+                    if (select) {
+                        select.setAttribute('data-original-value', managerId);
+                    }
+                } else {
+                    modal.hide();
+                    showToast('Error: ' + result.message, 'danger');
                     const select = document.querySelector(`select[data-row-id="${callbackId}"]`);
                     if (select) {
                         select.value = select.getAttribute('data-original-value') || '';
                     }
-                });
-            });
-
-            document.getElementById('assignManagerModal').addEventListener('hidden.bs.modal', function() {
-                const selects = document.querySelectorAll('.manager-select');
-                selects.forEach(select => {
+                }
+            })
+            .catch(() => {
+                modal.hide();
+                showToast('An error occurred while assigning the manager.', 'danger');
+                const select = document.querySelector(`select[data-row-id="${callbackId}"]`);
+                if (select) {
                     select.value = select.getAttribute('data-original-value') || '';
-                });
-            });
-
-            document.querySelectorAll('.manager-select').forEach(select => {
-                select.setAttribute('data-original-value', select.value);
+                }
             });
         });
+
+        document.getElementById('assignManagerModal').addEventListener('hidden.bs.modal', function() {
+            const selects = document.querySelectorAll('.manager-select');
+            selects.forEach(select => {
+                select.value = select.getAttribute('data-original-value') || '';
+            });
+        });
+
+        document.querySelectorAll('.manager-select').forEach(select => {
+            select.setAttribute('data-original-value', select.value);
+        });
+    });
     </script>
 </body>
 </html>
