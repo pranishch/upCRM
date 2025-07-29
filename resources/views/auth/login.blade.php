@@ -206,22 +206,22 @@
                 @csrf
                 <h2>Login to your account</h2>
 
-                @if (session('error'))
+                @if ($errors->has('error'))
                     <div class="error-messages">
-                        <div class="error-message">{{ session('error') }}</div>
+                        <div class="error-message">{{ $errors->first('error') }}</div>
                     </div>
                 @endif
 
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="identifier">Email or Username</label>
                     <input
-                        type="email"
-                        id="email"
+                        type="text"
+                        id="identifier"
                         name="email"
                         class="@error('email') error-field @enderror"
-                        placeholder="you@example.com"
+                        placeholder="Enter email or username"
                         required
-                        autocomplete="email"
+                        autocomplete="username"
                         value="{{ old('email') }}"
                     >
                     @error('email')
@@ -263,17 +263,17 @@
         });
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const email = document.getElementById('email').value.trim();
+            const identifier = document.getElementById('identifier').value.trim();
             const password = document.getElementById('password').value;
             let hasError = false;
 
             document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
 
-            if (!email) {
+            if (!identifier) {
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'field-error';
-                errorDiv.textContent = 'Email is required.';
-                document.getElementById('email').parentNode.appendChild(errorDiv);
+                errorDiv.textContent = 'Email or username is required.';
+                document.getElementById('identifier').parentNode.appendChild(errorDiv);
                 hasError = true;
             }
 
