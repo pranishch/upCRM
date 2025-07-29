@@ -115,6 +115,15 @@
         .new-entry-row textarea {
             background-color: #f7fafc;
         }
+        .search-bar {
+            max-width: 500px;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar select {
+            width: 160px;
+        }
         .btn-logout {
             background-color: orange;
             border: none;
