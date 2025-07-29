@@ -221,7 +221,7 @@ class CallbackController extends Controller
                 // Validation rules
                 $validator = Validator::make($callback_data, [
                     'customer_name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[A-Za-z\s]+$/'],
-                    'phone_number' => ['required', 'string', 'min:5', 'max:20', 'regex:/^[\+\-0-9\s\(\),./#]+$/'],
+                    'phone_number' => ['required', 'string', 'min:5', 'max:20', 'regex:/^\+?[0-9]{1,4}[\-\s]?[0-9]{1,4}[\-\s]?[0-9]{1,4}[\-\s]?[0-9]{1,4}$/'],
                     'email' => ['nullable', 'email', 'max:255'],
                     'address' => ['nullable', 'string', 'min:5', 'max:500'],
                     'website' => ['nullable', 'url', 'max:255', 'regex:/^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/'],

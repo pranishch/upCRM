@@ -11,6 +11,11 @@ class Callback extends Model
         'remarks', 'notes', 'created_by', 'manager_id', 'is_completed', 'added_at'
     ];
 
+    protected $casts = [
+        'added_at' => 'datetime',
+        'is_completed' => 'boolean',
+    ];
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
