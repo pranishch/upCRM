@@ -120,4 +120,44 @@ class AdminDashboardController extends Controller
             'search_field' => $search_field,
         ]);
     }
+
+    public function assignManager(Request $request)
+    {
+        try {
+            // Validate the request
+            $request->validate([
+                'callback_id' => 'required|exists:callbacks,id',
+                'manager_id' => 'nullable|exists:users,id',
+            ]);
+
+            // Find the callback
+            $callback = Callback::findOrFail($request->callback_id);
+
+            // Check if the selected manager is valid
+            if ($request->manager_id) {
+                $manager = User::findOrFail($request->manager_id);
+                if (!$manager->userProfile || $manager->userProfile->role !== 'manager') {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Selected user is not a manager.',
+                    ], 400);
+                }
+            }
+
+            // Update the callback's manager_id
+            $callback->manager_id = $request->manager_id ?: null;
+            $callback->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Manager assigned successfully.',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error assigning manager: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while assigning the manager.',
+            ], 500);
+        }
+    }
 }
