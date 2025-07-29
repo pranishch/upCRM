@@ -324,7 +324,7 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('managers.dashboard', $manager->id) }}" 
+                                        <a href="{{ route('manager_dashboard', $manager->id) }}" 
                                         class="btn btn-sm btn-action btn-outline-success" 
                                         title="View Manager Dashboard">
                                             <i class="bi bi-speedometer2"></i>

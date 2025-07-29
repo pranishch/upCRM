@@ -6,6 +6,7 @@
   use App\Http\Controllers\ManagerController;
   use App\Http\Controllers\CallbackController;
   use App\Http\Controllers\AdminDashboardController;
+  use App\Http\Controllers\ManagerDashboardController;
 
   Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
   Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -33,12 +34,10 @@
 
       Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin_dashboard');
       Route::post('/admin/dashboard', [AdminDashboardController::class, 'updateCallback'])->name('admin_dashboard.update');
-      Route::post('/save_callbacks', [AdminDashboardController::class, 'saveCallbacks'])->name('save_callbacks');
-      Route::post('/delete_callback', [AdminDashboardController::class, 'deleteCallback'])->name('delete_callback');
       Route::post('/assign_manager', [AdminDashboardController::class, 'assignManager'])->name('assign_manager');
 
-      Route::get('/managers/{id}/dashboard', [ManagerController::class, 'dashboard'])->name('managers.dashboard');
-  });
+      Route::get('/manager/{manager_id}', [ManagerDashboardController::class, 'show'])->name('manager_dashboard'); 
+     });
 
   Route::get('/callbacks/{user_id?}', [CallbackController::class, 'index'])->name('callbacklist');
   Route::post('/callbacks/save', [CallbackController::class, 'save'])->name('callbacks.save');

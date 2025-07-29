@@ -94,7 +94,9 @@
         }
         .table td {
             vertical-align: middle;
-            padding: 0.75rem;
+            padding: 0.75remმო�
+
+            rem;
             border-bottom: 1px solid #e9ecef;
         }
         #allCallbacksTable .table {
@@ -456,10 +458,6 @@
             border-radius: 6px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
-        .is-invalid {
-            border-color: red;
-            background-color: #fff5f5;
-        }
     </style>
 </head>
 <body>
@@ -589,13 +587,13 @@
                             <tbody id="callbackTableBody">
                                 @forelse ($all_callbacks as $callback)
                                     <tr data-callback-id="{{ $callback->id }}" data-row-id="{{ $callback->id }}">
-                                        <td class="editable" data-field="customer_name">{{ $callback->customer_name ?? 'N/A' }}</td>
-                                        <td class="editable" data-field="phone_number">{{ $callback->phone_number ?? 'N/A' }}</td>
-                                        <td class="editable" data-field="email">{{ $callback->email ?? 'N/A' }}</td>
-                                        <td class="editable" data-field="address">{{ $callback->address ?? 'N/A' }}</td>
-                                        <td class="editable" data-field="website">{{ $callback->website ?? 'N/A' }}</td>
-                                        <td class="editable" data-field="remarks">{{ $callback->remarks ?? 'N/A' }}</td>
-                                        <td class="editable" data-field="notes">{{ $callback->notes ?? 'N/A' }}</td>
+                                        <td>{{ $callback->customer_name ?? 'N/A' }}</td>
+                                        <td>{{ $callback->phone_number ?? 'N/A' }}</td>
+                                        <td>{{ $callback->email ?? 'N/A' }}</td>
+                                        <td>{{ $callback->address ?? 'N/A' }}</td>
+                                        <td>{{ $callback->website ?? 'N/A' }}</td>
+                                        <td>{{ $callback->remarks ?? 'N/A' }}</td>
+                                        <td>{{ $callback->notes ?? 'N/A' }}</td>
                                         @if ($user_role == 'admin')
                                             <td>
                                                 <!-- Debug output to inspect role -->
@@ -616,17 +614,7 @@
                                         @endif
                                         <td>{{ $callback->createdBy->username }}</td>
                                         <td class="action-buttons">
-                                            <button class="btn btn-sm btn-action btn-outline-info" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-action btn-outline-success" style="display: none;" title="Save">
-                                                <i class="bi bi-check-circle"></i>
-                                            </button>
-                                            @if ($user_role == 'admin')
-                                                <button class="btn btn-sm btn-action btn-outline-danger" title="Delete">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            @endif
+                                            <!-- No action buttons for save or delete -->
                                         </td>
                                     </tr>
                                 @empty
@@ -703,8 +691,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const remarksOptions = ['', 'Callback', 'Pre-sale', 'Sample rejected', 'Sale'];
-
             function showToast(message, type) {
                 const toastEl = document.getElementById('saveToast');
                 if (!toastEl) return;
@@ -758,152 +744,6 @@
                 debounceTimeout = setTimeout(performSearch, 300);
             });
             searchField.addEventListener('change', performSearch);
-
-            tableBody.addEventListener('click', function(e) {
-                const editButton = e.target.closest('.btn-outline-info');
-                if (editButton) {
-                    const row = editButton.closest('tr');
-                    const callbackId = row.getAttribute('data-callback-id');
-                    const editableCells = row.querySelectorAll('.editable');
-
-                    if (!row.classList.contains('editing')) {
-                        editableCells.forEach(cell => {
-                            const field = cell.getAttribute('data-field');
-                            const value = cell.textContent.trim() === 'N/A' ? '' : cell.textContent.trim();
-                            if (field === 'remarks') {
-                                let select = `<select class="form-control form-control-sm">`;
-                                remarksOptions.forEach(option => {
-                                    select += `<option value="${option}" ${value === option ? 'selected' : ''}>${option || 'Select Remark'}</option>`;
-                                });
-                                select += `</select>`;
-                                cell.innerHTML = select;
-                            } else if (field === 'email') {
-                                cell.innerHTML = `<input type="email" class="form-control form-control-sm" value="${value}" maxlength="100" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Enter a valid email address" />`;
-                            } else if (field === 'website') {
-                                cell.innerHTML = `<input type="url" class="form-control form-control-sm" value="${value}" maxlength="255" pattern="https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$" title="Enter a valid URL" />`;
-                            } else if (field === 'customer_name') {
-                                cell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${value}" maxlength="100" pattern="[A-Za-z\s]+" title="Only alphabetical characters allowed" />`;
-                            } else if (field === 'phone_number') {
-                                cell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${value}" maxlength="20" pattern="[\+\-\(\),./#0-9\s]+" title="Only numbers, +, -, (), comma, period, /, #, and spaces allowed" />`;
-                            } else {
-                                cell.innerHTML = `<input type="text" class="form-control form-control-sm" value="${value}" maxlength="255" />`;
-                            }
-                        });
-                        row.classList.add('editing');
-                        editButton.style.display = 'none';
-                        row.querySelector('.btn-outline-success').style.display = 'inline-block';
-                    }
-                }
-            });
-
-            tableBody.addEventListener('click', function(e) {
-                const saveButton = e.target.closest('.btn-outline-success');
-                if (saveButton) {
-                    const row = saveButton.closest('tr');
-                    const callbackId = row.getAttribute('data-callback-id');
-                    const editableCells = row.querySelectorAll('.editable');
-                    const data = [{
-                        callback_id: callbackId,
-                        target_user_id: null,
-                        customer_name: row.querySelector('[data-field="customer_name"] input')?.value.trim() || '',
-                        phone_number: row.querySelector('[data-field="phone_number"] input')?.value.trim() || '',
-                        email: row.querySelector('[data-field="email"] input')?.value.trim() || '',
-                        address: row.querySelector('[data-field="address"] input')?.value.trim() || '',
-                        website: row.querySelector('[data-field="website"] input')?.value.trim() || '',
-                        remarks: row.querySelector('[data-field="remarks"] select')?.value.trim() || '',
-                        notes: row.querySelector('[data-field="notes"] input')?.value.trim() || '',
-                        added_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-                    }];
-
-                    let isValid = true;
-                    if (!data[0].customer_name || !/^[A-Za-z\s]+$/.test(data[0].customer_name)) {
-                        rowژن
-
-.querySelector('[data-field="customer_name"] input').classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        row.querySelector('[data-field="customer_name"] input').classList.remove('is-invalid');
-                    }
-                    if (!data[0].phone_number || !/^[\+\-\(\),./#0-9\s]+$/.test(data[0].phone_number)) {
-                        row.querySelector('[data-field="phone_number"] input').classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        row.querySelector('[data-field="phone_number"] input').classList.remove('is-invalid');
-                    }
-                    if (data[0].email && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data[0].email)) {
-                        row.querySelector('[data-field="email"] input').classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        row.querySelector('[data-field="email"] input').classList.remove('is-invalid');
-                    }
-                    if (data[0].website && !/^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(data[0].website)) {
-                        row.querySelector('[data-field="website"] input').classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        row.querySelector('[data-field="website"] input').classList.remove('is-invalid');
-                    }
-
-                    if (!isValid) {
-                        showToast('Please correct the invalid fields.', 'danger');
-                        return;
-                    }
-
-                    fetch('{{ route("save_callbacks") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        if (result.status === 'success') {
-                            editableCells.forEach(cell => {
-                                const field = cell.getAttribute('data-field');
-                                let value = field === 'remarks' ? cell.querySelector('select').value.trim() : cell.querySelector('input').value.trim();
-                                cell.textContent = value || 'N/A';
-                            });
-                            row.classList.remove('editing');
-                            saveButton.style.display = 'none';
-                            row.querySelector('.btn-outline-info').style.display = 'inline-block';
-                            showToast('Callback updated successfully.', 'success');
-                            performSearch();
-                        } else {
-                            showToast('Error: ' + result.message, 'danger');
-                        }
-                    })
-                    .catch(() => showToast('An error occurred while saving.', 'danger'));
-                }
-            });
-
-            tableBody.addEventListener('click', function(e) {
-                const deleteButton = e.target.closest('.btn-outline-danger');
-                if (deleteButton) {
-                    const row = deleteButton.closest('tr');
-                    const callbackId = row.getAttribute('data-callback-id');
-                    if (confirm('Are you sure you want to delete this callback?')) {
-                        fetch('{{ route("delete_callback") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-                            },
-                            body: JSON.stringify({ callback_ids: [callbackId] })
-                        })
-                        .then(response => response.json())
-                        .then(result => {
-                            if (result.status === 'success') {
-                                showToast('Callback deleted successfully.', 'success');
-                                performSearch();
-                            } else {
-                                showToast('Error: ' + result.message, 'danger');
-                            }
-                        })
-                        .catch(() => showToast('An error occurred while deleting.', 'danger'));
-                    }
-                }
-            });
 
             tableBody.addEventListener('change', function(e) {
                 const managerSelect = e.target.closest('.manager-select');
