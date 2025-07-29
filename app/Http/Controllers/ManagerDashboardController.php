@@ -63,9 +63,9 @@ class ManagerDashboardController extends Controller
 
         $callbacks = Callback::where('manager_id', $manager->id)
             ->orderBy('added_at', 'desc')
-            ->with(['created_by.userProfile']);
+            ->with(['createdBy.userProfile']); 
 
-        if ($search_query) {
+        if ($search_query) {    
             $callbacks = $callbacks->when($search_field == 'all', function ($query) use ($search_query) {
                 return $query->where(function ($q) use ($search_query) {
                     $q->where('customer_name', 'like', "%{$search_query}%")
@@ -75,7 +75,7 @@ class ManagerDashboardController extends Controller
                       ->orWhere('website', 'like', "%{$search_query}%")
                       ->orWhere('remarks', 'like', "%{$search_query}%")
                       ->orWhere('notes', 'like', "%{$search_query}%")
-                      ->orWhereHas('created_by', function ($q) use ($search_query) {
+                      ->orWhereHas('createdBy', function ($q) use ($search_query) {
                           $q->where('username', 'like', "%{$search_query}%");
                       });
                 });
