@@ -41,13 +41,22 @@
         .navbar-brand:hover {
             transform: scale(1.05);
         }
+        .container {
+            width: 100vw; /* Full viewport width */
+            max-width: 100%; /* Remove max-width constraints */
+            padding: 0; /* Remove default padding */
+            margin: 0; /* Remove margins */
+        }
+        .mt-4 {
+            margin-top: 0; /* Remove top margin */
+        }
         .main-container {
             background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             padding: 2rem;
             margin: 2rem auto;
-            max-width: 1400px;
+            max-width: 100%;
             animation: fadeIn 0.5s ease-in-out;
         }
         @keyframes fadeIn {
