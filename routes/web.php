@@ -7,7 +7,10 @@
   use App\Http\Controllers\CallbackController;
   use App\Http\Controllers\AdminDashboardController;
   use App\Http\Controllers\ManagerDashboardController;
-
+  use App\Http\Controllers\PhpInfoController;
+  
+  Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+  Route::get('/phpinfo', [PhpInfoController::class, 'show'])->name('phpinfo')->middleware('auth'); 
   Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
   Route::post('/login', [AuthController::class, 'login'])->name('login.post');
   Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
