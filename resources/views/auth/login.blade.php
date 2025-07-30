@@ -49,7 +49,7 @@
         .login-branding {
             text-align: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
         }
 
         .login-image {
