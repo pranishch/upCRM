@@ -244,9 +244,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto d-flex flex-row align-items-center">
-                    <a class="nav-link" href="javascript:history.back()">
+                    <!-- <a class="nav-link" href="javascript:history.back()">
                         <i class="bi bi-arrow-left me-1"></i> Back
-                    </a>
+                    </a> -->
                     <div class="nav-item dropdown me-3">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-grid-3x3-gap-fill me-1"></i>
