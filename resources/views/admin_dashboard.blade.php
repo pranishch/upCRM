@@ -723,8 +723,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {      
-        // Push current state to history to track navigation
+        document.addEventListener('DOMContentLoaded', function() {
         window.history.pushState({ page: 'admin_dashboard' }, null, window.location.href);
 
         // Listen for popstate event to detect back/forward navigation
@@ -734,7 +733,7 @@
                 // Reload the page to ensure fresh data
                 window.location.reload();
             }
-        });    
+        });  
         function showToast(message, type) {
             const toastEl = document.getElementById('saveToast');
             if (!toastEl) return;
