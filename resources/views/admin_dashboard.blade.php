@@ -45,7 +45,7 @@
             width: 100vw; /* Full viewport width */
             max-width: 100%; /* Remove max-width constraints */
             padding: 0; /* Remove default padding */
-            margin: 0; /* Remove margins */
+            margin-left:10px;; /* Remove margins */
         }
         .mt-4 {
             margin-top: 0; /* Remove top margin */
