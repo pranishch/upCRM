@@ -49,7 +49,10 @@ class UserController extends Controller
             ->orderBy('added_at', 'desc')
             ->get();
 
-        return view('manage_users', compact('users', 'total_users', 'roles', 'callbacks'));
+        return response()->view('manage_users', compact('users', 'total_users', 'roles', 'callbacks'))
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
     }
 
     public function store(Request $request)

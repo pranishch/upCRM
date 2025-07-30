@@ -37,7 +37,10 @@ class ManagerController extends Controller
             ->orderBy('added_at', 'desc')
             ->get();
 
-        return view('manage_managers', compact('managers', 'roles', 'callbacks'));
+        return response()->view('manage_managers', compact('managers', 'roles', 'callbacks'))
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function store(Request $request)

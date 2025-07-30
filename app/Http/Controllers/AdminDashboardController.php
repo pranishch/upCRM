@@ -107,7 +107,7 @@ class AdminDashboardController extends Controller
             ]);
         }
 
-        return view('admin_dashboard', [
+        return response()->view('admin_dashboard', [
             'users' => $users,
             'total_callbacks' => $total_callbacks,
             'total_users' => $total_users,
@@ -118,7 +118,9 @@ class AdminDashboardController extends Controller
             'page_obj' => $all_callbacks,
             'search_query' => $search_query,
             'search_field' => $search_field,
-        ]);
+        ])->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+          ->header('Pragma', 'no-cache')
+          ->header('Expires', '0');
     }
 
     public function assignManager(Request $request)

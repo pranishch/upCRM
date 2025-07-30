@@ -723,7 +723,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {      
+        // Push current state to history to track navigation
+        window.history.pushState({ page: 'admin_dashboard' }, null, window.location.href);
+
+        // Listen for popstate event to detect back/forward navigation
+        window.addEventListener('popstate', function(event) {
+            // Check if navigating back (event.state is null or doesn't match current state)
+            if (!event.state || event.state.page !== 'admin_dashboard') {
+                // Reload the page to ensure fresh data
+                window.location.reload();
+            }
+        });    
         function showToast(message, type) {
             const toastEl = document.getElementById('saveToast');
             if (!toastEl) return;
