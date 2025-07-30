@@ -467,6 +467,50 @@
             border-radius: 6px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+        .profile-link {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-anchor {
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .profile-anchor:hover {
+            color: var(--primary-color);
+        }
+
+        .profile-anchor .username {
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .role-badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .role-admin {
+            background-color: var(--admin-color);
+            color: white;
+        }
+
+        .role-badge:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -495,10 +539,12 @@
                             </a></li>
                         </ul>
                     </div>
-                    <div class="text-light me-3">
-                        <i class="bi bi-person-circle me-1"></i>
-                        <span>{{ Auth::user()->username }}</span>
-                        <span class="role-badge role-admin">Admin</span>
+                   <div class="profile-link me-3 d-flex align-items-center">
+                        <a href="#" class="profile-anchor d-flex align-items-center text-decoration-none" data-bs-toggle="modal" data-bs-target="#profileModal">
+                            <i class="bi bi-person-circle me-2" style="font-size: 1.5rem; color: #fff;"></i>
+                            <span class="username text-white fw-semibold">{{ Auth::user()->username }}</span>
+                            <span class="role-badge role-admin ms-2">Admin</span>
+                        </a>
                     </div>
                     <a class="nav-link" href="{{ route('logout') }}">
                         <i class="bi bi-box-arrow-right"></i> Logout
@@ -716,6 +762,58 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger" id="confirmDeleteCallback">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="password" class="form-label">New Password (leave blank to keep current)</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                            <button type="button" class="toggle-password position-absolute end-0 top-50 translate-middle-y me-2" data-target="password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                            <button type="button" class="toggle-password position-absolute end-0 top-50 translate-middle-y me-2" data-target="password_confirmation">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div id="errorMessages" class="text-danger" style="display: none;"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveProfile">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -1063,6 +1161,78 @@
             select.setAttribute('data-original-value', select.value);
         });
     });
+    // Profile Modal: Fetch profile data
+        document.getElementById('profileModal').addEventListener('show.bs.modal', function() {
+            fetch('{{ route("profile") }}', {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('username').value = data.username || '';
+                    document.getElementById('email').value = data.email || '';
+                    document.getElementById('first_name').value = data.first_name || '';
+                    document.getElementById('last_name').value = data.last_name || '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('password_confirmation').value = '';
+                    document.getElementById('errorMessages').style.display = 'none';
+                } else {
+                    showToast(data.message || 'Failed to load profile data.', 'danger');
+                }
+            })
+            .catch(() => showToast('Failed to load profile data.', 'danger'));
+        });
+
+        // Profile Modal: Save profile changes
+        document.getElementById('saveProfile').addEventListener('click', function() {
+            const form = document.getElementById('profileForm');
+            const formData = new FormData(form);
+            // Ensure CSRF token is included
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+
+            fetch('{{ route("profile.update") }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    bootstrap.Modal.getInstance(document.getElementById('profileModal')).hide();
+                    showToast(result.message, 'success');
+                    // Update username in the navbar
+                    document.querySelector('.text-light span').textContent = formData.get('username');
+                } else {
+                    let errorHtml = '';
+                    for (let field in result.errors) {
+                        errorHtml += `<p>${result.errors[field][0]}</p>`;
+                    }
+                    document.getElementById('errorMessages').innerHTML = errorHtml;
+                    document.getElementById('errorMessages').style.display = 'block';
+                }
+            })
+            .catch(() => showToast('An error occurred while saving the profile.', 'danger'));
+        });
+
+        // Password Visibility Toggle
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('bi-eye');
+                    icon.classList.add('bi-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('bi-eye-slash');
+                    icon.classList.add('bi-eye');
+                }
+            });
+        });
     </script>
 </body>
 </html>

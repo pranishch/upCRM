@@ -38,7 +38,8 @@
       Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin_dashboard');
       Route::post('/admin/dashboard', [AdminDashboardController::class, 'updateCallback'])->name('admin_dashboard.update');
       Route::post('/assign_manager', [AdminDashboardController::class, 'assignManager'])->name('assign_manager');
-
+      Route::get('/profile', [AdminDashboardController::class, 'getProfile'])->name('profile');
+      Route::post('/profile', [AdminDashboardController::class, 'updateProfile'])->name('profile.update');
       Route::get('/manager/{manager_id}', [ManagerDashboardController::class, 'show'])->name('manager_dashboard'); 
      });
 

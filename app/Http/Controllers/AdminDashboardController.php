@@ -211,4 +211,59 @@ class AdminDashboardController extends Controller
             return response()->json(['status' => 'error', 'message' => "Error: {$e->getMessage()}"], 500);
         }
     }
+    public function getProfile()
+    {
+        try {
+            $user = Auth::user();
+            if (!$this->isAdminUser($user)) {
+                return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
+            }
+            return response()->json([
+                'status' => 'success',
+                'username' => $user->username,
+                'email' => $user->email,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching profile: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'An error occurred while fetching the profile.'], 500);
+        }
+    }
+
+    public function updateProfile(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            if (!$this->isAdminUser($user)) {
+                return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
+            }
+
+            $request->validate([
+                'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $user->id],
+                'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+                'first_name' => ['required', 'string', 'max:255'],
+                'last_name' => ['required', 'string', 'max:255'],
+                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            ]);
+
+            $user->username = $request->username;
+             $user->email = $request->email;
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            if ($request->filled('password')) {
+                $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+            }
+            $user->save();
+
+            \Log::info("Profile updated by {$user->username}");
+            return response()->json(['status' => 'success', 'message' => 'Profile updated successfully.']);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error("Validation error updating profile: " . json_encode($e->errors()));
+            return response()->json(['status' => 'error', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            \Log::error("Error updating profile: {$e->getMessage()}");
+            return response()->json(['status' => 'error', 'message' => 'An error occurred while updating the profile.'], 500);
+        }
+    }
 }
