@@ -246,6 +246,15 @@
             .navbar-brand {
                 font-size: 0.9rem; /* Reduced from 1rem for smaller screens */
             }
+            .btn-primary {
+                padding: 0.3rem 0.6rem; /* Adjust padding */
+                font-size: 0.8rem; /* Smaller text */
+                line-height: 1.2; /* Tighter line height */
+            }
+            .bi-person-plus {
+                font-size: 0.8rem; /* Smaller icon */
+                margin-right: 0.3rem; /* Adjust icon spacing */
+            }
 
             /* Reduce main-container padding to maximize content area */
             .main-container {

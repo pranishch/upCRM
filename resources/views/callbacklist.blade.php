@@ -317,7 +317,11 @@
             table th:nth-child(6), table td:nth-child(6) { min-width: 60px; max-width: 80px; } /* Website */
             table th:nth-child(7), table td:nth-child(7) { min-width: 60px; max-width: 80px; } /* Remarks */
             table th:nth-child(8), table td:nth-child(8) { min-width: 60px; max-width: 80px; } /* Notes */
-            table th:nth-child(9), table td:nth-child(9) { min-width: 50px; max-width: 70px; }
+            table th:nth-child(9), table td:nth-child(9) { min-width: 80px; /* Increased from 50px to accommodate Save button */
+                max-width: 100px; /* Increased from 70px for better fit */
+                white-space: nowrap; /* Prevent wrapping */
+                overflow: visible;
+            }
             .callbacks-table-wrapper {
                 overflow-x: auto; /* Enable horizontal scrolling */
                 -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
@@ -330,8 +334,14 @@
             }
             .top-controls button,
             .action-save-btn {
-                padding: 0.4rem 0.8rem; /* Reduced from 0.6rem 1.2rem for smaller buttons */
-                font-size: 0.85rem; /* Reduced from 0.9rem for compact appearance */
+                padding: 0.3rem 0.6rem; /* Slightly reduced for compactness */
+                font-size: 0.8rem; /* Slightly reduced for mobile */
+                line-height: 1.2; /* Ensure text is centered vertically */
+                display: inline-block; /* Force inline-block to respect visibility */
+                min-width: 50px; /* Ensure button has enough width */
+            }
+            .action-save-btn {
+                margin-left: 5px; /* Space between icons and button */
             }
             .toast {
                 font-size: 0.75rem; /* Reduced from 0.8rem for readability */

@@ -356,9 +356,10 @@
             table th:nth-child(8), table td:nth-child(8) { /* Created By */
                 width: 8%; /* Adjusted from 10% */
             }
-            table th:nth-child(9), table td:nth-child(9) { /* Actions */
-                width: 8%; /* Adjusted from 10% */
-                min-width: 50px; /* Reduced from 60px */
+            table th:nth-child(9), table td:nth-child(9) { min-width: 80px; /* Increased from 50px to accommodate Save button */
+                max-width: 100px; /* Increased from 70px for better fit */
+                white-space: nowrap; /* Prevent wrapping */
+                overflow: visible;
             }
             .callbacks-table-wrapper {
                 overflow-x: auto; /* Enable horizontal scrolling */
@@ -372,8 +373,14 @@
             }
             .top-controls button,
             .action-save-btn {
-                padding: 0.4rem 0.8rem; /* Reduced from 0.5rem 1rem */
-                font-size: 0.85rem; /* Reduced from 0.9rem */
+                padding: 0.3rem 0.6rem; /* Slightly reduced for compactness */
+                font-size: 0.8rem; /* Slightly reduced for mobile */
+                line-height: 1.2; /* Ensure text is centered vertically */
+                display: inline-block; /* Force inline-block to respect visibility */
+                min-width: 50px; /* Ensure button has enough width */
+            }
+            .action-save-btn {
+                margin-left: 5px; /* Space between icons and button */
             }
             .toast {
                 font-size: 0.75rem; /* Reduced from 0.8rem */
