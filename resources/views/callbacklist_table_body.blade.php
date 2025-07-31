@@ -1,5 +1,7 @@
-@foreach ($callbacks as $callback)
+<!-- resources/views/callbacklist_table_body.blade.php -->
+@foreach ($callbacks as $index => $callback)
     <tr data-callback-id="{{ $callback->id }}" class="callback-row">
+        <td>{{ ($callbacks->currentPage() - 1) * $callbacks->perPage() + $index + 1 }}</td>
         <td>
             <input type="hidden" name="added_at" class="added-at-input" value="{{ $callback->added_at->format('Y-m-d H:i:s') }}">
             <span class="display-text name-input">{{ $callback->customer_name ?? '' }}</span>

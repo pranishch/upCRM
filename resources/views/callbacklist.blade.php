@@ -227,14 +227,15 @@
             white-space: nowrap;
             color: #000;
         }
-        table th:nth-child(1), table td:nth-child(1) { width: 14%; }
-        table th:nth-child(2), table td:nth-child(2) { width: 13%; }
-        table th:nth-child(3), table td:nth-child(3) { width: 15%; }
-        table th:nth-child(4), table td:nth-child(4) { width: 12%; }
-        table th:nth-child(5), table td:nth-child(5) { width: 16%; }
-        table th:nth-child(6), table td:nth-child(6) { width: 13%; }
-        table th:nth-child(7), table td:nth-child(7) { width: 17%; }
-        table th:nth-child(8), table td:nth-child(8) { width: 10%; min-width: 60px; }
+        table th:nth-child(1), table td:nth-child(1) { min-width: 50px; max-width: 60px; } /* S.No column */
+        table th:nth-child(2), table td:nth-child(2) { min-width: 70px; max-width: 90px; } /* Customer Name */
+        table th:nth-child(3), table td:nth-child(3) { min-width: 70px; max-width: 90px; } /* Phone Number */
+        table th:nth-child(4), table td:nth-child(4) { min-width: 70px; max-width: 90px; } /* Email */
+        table th:nth-child(5), table td:nth-child(5) { min-width: 70px; max-width: 90px; } /* Address */
+        table th:nth-child(6), table td:nth-child(6) { min-width: 70px; max-width:90px; } /* Website */
+        table th:nth-child(7), table td:nth-child(7) { min-width: 70px; max-width: 90px; } /* Remarks */
+        table th:nth-child(8), table td:nth-child(8) { min-width: 70px; max-width: 90px; } /* Notes */
+        table th:nth-child(9), table td:nth-child(9) { min-width: 60px; max-width: 80px; } /* Actions */
         table tbody tr:nth-child(even) {
             background-color: whitesmoke;
         }
@@ -306,15 +307,17 @@
         }
         @media (max-width: 576px) {
             table {
-                min-width: 900px; /* Ensure table is wide enough to show all columns */
+            min-width: 950px; /* Increased from 900px to accommodate new column */
             }
-            table th,
-            table td {
-                font-size: 0.7rem; /* Reduced from 0.75rem for smaller text */
-                padding: 0.25rem 0.4rem; /* Reduced from 0.4rem 0.6rem for compact cells */
-                min-width: 50px; /* Reduced from 60px to fit more columns */
-                max-width: 80px; /* Reduced from 100px to prevent overflow */
-            }
+            table th:nth-child(1), table td:nth-child(1) { min-width: 40px; max-width: 50px; } /* S.No column */
+            table th:nth-child(2), table td:nth-child(2) { min-width: 60px; max-width: 80px; } /* Customer Name */
+            table th:nth-child(3), table td:nth-child(3) { min-width: 60px; max-width: 80px; } /* Phone Number */
+            table th:nth-child(4), table td:nth-child(4) { min-width: 60px; max-width: 80px; } /* Email */
+            table th:nth-child(5), table td:nth-child(5) { min-width: 60px; max-width: 80px; } /* Address */
+            table th:nth-child(6), table td:nth-child(6) { min-width: 60px; max-width: 80px; } /* Website */
+            table th:nth-child(7), table td:nth-child(7) { min-width: 60px; max-width: 80px; } /* Remarks */
+            table th:nth-child(8), table td:nth-child(8) { min-width: 60px; max-width: 80px; } /* Notes */
+            table th:nth-child(9), table td:nth-child(9) { min-width: 50px; max-width: 70px; }
             .callbacks-table-wrapper {
                 overflow-x: auto; /* Enable horizontal scrolling */
                 -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
@@ -341,12 +344,9 @@
         <main class="main-content">
             <header class="header">
                 <div class="user-info" style="display: flex; justify-content: space-between; align-items: center;">
-                    <!-- Left Side -->
                     <h2 style="margin: 0; color: white; font-size: 1.5rem; font-weight: 600;">
                         Callbacks Table of {{ $is_viewing_other ? $target_user->username : Auth::user()->username }}
                     </h2>
-
-                    <!-- Right Side -->
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <span style="color: white;">{{ auth()->user()->userprofile->role ?? 'agent' }}</span>
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
@@ -369,7 +369,6 @@
                 </div>
             @endif
             <section id="callbacks" class="content-section">
-                <!-- <h2>Callbacks Table of {{ $is_viewing_other ? $target_user->username : Auth::user()->username }}</h2> -->
                 <div class="top-controls">
                     <div class="search-bar">
                         <select id="searchField" class="form-control">
@@ -395,19 +394,21 @@
                         <table id="callbacksTable">
                             <thead>
                                 <tr>
-                                    <th>Customer Name</th>
-                                    <th>Phone Number</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th>Website</th>
-                                    <th>Remarks</th>
-                                    <th>Notes</th>
-                                    <th>Actions</th>
+                                    <th style="width: 8%;">S.No</th>
+                                    <th style="width: 13%;">Customer Name</th>
+                                    <th style="width: 12%;">Phone Number</th>
+                                    <th style="width: 14%;">Email</th>
+                                    <th style="width: 11%;">Address</th>
+                                    <th style="width: 15%;">Website</th>
+                                    <th style="width: 12%;">Remarks</th>
+                                    <th style="width: 15%;">Notes</th>
+                                    <th style="width: 10%; min-width: 60px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
-                                @foreach ($callbacks as $callback)
+                                @foreach ($callbacks as $index => $callback)
                                     <tr data-callback-id="{{ $callback->id }}" class="callback-row">
+                                        <td>{{ ($callbacks->currentPage() - 1) * $callbacks->perPage() + $index + 1 }}</td>
                                         <td>
                                             <input type="hidden" name="added_at" class="added-at-input" value="{{ $callback->added_at->format('Y-m-d H:i:s') }}">
                                             <span class="display-text name-input">{{ $callback->customer_name ?? '' }}</span>
@@ -521,6 +522,7 @@
                 template.className = 'new-entry-row';
                 template.setAttribute('data-new-row', 'true');
                 template.innerHTML = `
+                    <td></td> <!-- Empty cell for S.No -->
                     <td>
                         <input type="hidden" name="added_at" class="added-at-input" value="">
                         <input type="text" name="customer_name" class="form-control editable name-input" 
@@ -568,14 +570,13 @@
                 return template;
             }
 
-            // Sanitize input to prevent XSS
+            // [Rest of the JavaScript remains unchanged]
             function sanitizeInput(value) {
                 const div = document.createElement('div');
                 div.textContent = value || '';
                 return div.innerHTML;
             }
 
-            // Set timestamp for new rows
             function setAddedAtTimestamp(row) {
                 const addedAtInput = row.querySelector('.added-at-input');
                 if (addedAtInput && !addedAtInput.value) {
@@ -584,11 +585,10 @@
                 }
             }
 
-            // Add new row functionality
             function addNewRow() {
                 const tableBody = document.querySelector('#tableBody');
                 const existingNewRow = document.querySelector('[data-new-row="true"]');
-                if (existingNewRow) return; // Prevent adding multiple new rows
+                if (existingNewRow) return;
                 const newRow = createNewRowTemplate();
                 tableBody.appendChild(newRow);
                 setAddedAtTimestamp(newRow);
@@ -597,7 +597,6 @@
                 updateAddRowButtonState();
             }
 
-            // Live search functionality
             const searchInput = document.getElementById('searchInput');
             const searchField = document.getElementById('searchField');
             const tableBody = document.getElementById('tableBody');
@@ -626,7 +625,6 @@
                 .catch(e => console.log(e));
             }
 
-            // Debounce to prevent excessive calls
             let debounceTimeout;
             searchInput.addEventListener('input', () => {
                 clearTimeout(debounceTimeout);
@@ -634,7 +632,6 @@
             });
             searchField.addEventListener('change', performSearch);
 
-            // Toggle edit mode
             document.querySelector('#tableBody').addEventListener('click', function(e) {
                 if (e.target.classList.contains('edit-callback')) {
                     const row = e.target.closest('tr');
@@ -651,7 +648,7 @@
                             callbackIdInput = document.createElement('input');
                             callbackIdInput.type = 'hidden';
                             callbackIdInput.name = 'callback_id';
-                            row.querySelector('td:first-child').appendChild(callbackIdInput);
+                            row.querySelector('td:nth-child(2)').appendChild(callbackIdInput); // Changed to nth-child(2) to avoid S.No column
                         }
                         callbackIdInput.value = callbackId;
                     }
@@ -660,7 +657,6 @@
                 }
             });
 
-            // Cancel edit
             document.querySelector('#tableBody').addEventListener('click', function(e) {
                 if (e.target.classList.contains('cancel-edit')) {
                     const row = e.target.closest('tr');
@@ -681,7 +677,6 @@
                 }
             });
 
-            // Save row (new or edited)
             document.querySelector('#tableBody').addEventListener('click', function(e) {
                 if (e.target.classList.contains('action-save-btn')) {
                     const row = e.target.closest('tr');
@@ -782,14 +777,12 @@
                 }
             });
 
-            // Add new row button
             const addRowButton = document.getElementById('addNewRow');
             if (addRowButton) {
                 addRowButton.addEventListener('click', addNewRow);
                 updateAddRowButtonState();
             }
 
-            // Set timestamp when editing new row
             document.querySelector('#tableBody').addEventListener('input', function(e) {
                 if (e.target.classList.contains('editable') && e.target.closest('[data-new-row="true"]')) {
                     const row = e.target.closest('[data-new-row="true"]');
@@ -797,7 +790,6 @@
                 }
             });
 
-            // Delete callback functionality
             document.querySelector('#tableBody').addEventListener('click', function(e) {
                 if (e.target.classList.contains('delete-callback')) {
                     if (!confirm('Are you sure you want to delete this callback?')) {
@@ -827,7 +819,6 @@
                 }
             });
 
-            // Disable copy, cut, paste for agents
             @if ($user_role === 'agent')
                 document.addEventListener('copy', e => e.preventDefault());
                 document.addEventListener('cut', e => e.preventDefault());
