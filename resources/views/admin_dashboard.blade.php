@@ -20,6 +20,17 @@
             --shadow: 0 4px 12px rgba(0,0,0,0.15);
             --border-radius: 10px;
         }
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll on body */
+        }
+        
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, var(--secondary-color) 0%, #e8ecef 100%);
@@ -537,6 +548,24 @@
             right: 20px;
             z-index: 1055;
         }
+        .btn-logout {
+            background: orange;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            color: white;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-logout:hover {
+            background: orange;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
         .toast {
             border-radius: 6px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -619,9 +648,10 @@
                             <span class="username text-white fw-semibold">{{ Auth::user()->username }}</span>
                         </a>
                     </div>
-                    <a class="nav-link" href="{{ route('logout') }}">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn-logout" id="logoutBtn" aria-label="Logout">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>

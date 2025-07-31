@@ -20,6 +20,16 @@
             --shadow: 0 4px 12px rgba(0,0,0,0.15);
             --border-radius: 10px;
         }
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll on body */
+        }
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--secondary-color) 0%, #e8ecef 100%);
@@ -40,6 +50,12 @@
         }
         .navbar-brand:hover {
             transform: scale(1.05);
+        }
+        .container {
+            width: 100vw; /* Full viewport width */
+            max-width: 100%; /* Remove max-width constraints */
+            padding: 0; /* Remove default padding */
+            margin-left:10px;; /* Remove margins */
         }
         .main-container {
             background: white;
@@ -89,6 +105,24 @@
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
+        }
+        .btn-logout {
+            background: orange;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            color: white;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-logout:hover {
+            background: orange;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
         .btn-action {
             padding: 0.4rem 0.8rem;
@@ -310,9 +344,10 @@
                         <i class="bi bi-person-circle me-1"></i>
                         <span>{{ Auth::user()->username }}</span>
                     </div>
-                    <a class="nav-link" href="{{ route('logout') }}">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn-logout" id="logoutBtn" aria-label="Logout">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>

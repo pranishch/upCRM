@@ -8,6 +8,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll on body */
+        }
         .body{
             font-family:'Arial', sans-serif;
         }
@@ -128,41 +138,63 @@
             width: 160px;
         }
         .btn-logout {
-            background-color: orange;
+            background: orange;
             border: none;
-            padding: 0.5rem 1.1rem;
+            padding: 0.5rem 1.2rem;
             color: white;
             font-weight: 700;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             font-size: 1rem;
-            user-select: none;
-            box-shadow: 0 4px 10px rgba(107, 114, 128, 0.6);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+
         .btn-logout:hover {
-            background-color: #4b5563;
-            box-shadow: 0 6px 15px rgba(75, 85, 99, 0.7);
+            background: orange;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
         .main-content {
+            margin-top: 53px;
             padding: 20px;
             width: 100%;
             background-color: #eff4f9;
         }
         .header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            width: 100%;
-            padding-right: 1rem;
+            width: 100vw; /* Full viewport width */
+            position: fixed; /* Fix the header to the top */
+            top: 0; /* Align to the very top of the viewport */
+            left: 0; /* Align to the left edge */
+            margin: 0; /* Remove any default margins */
+            padding: 0.5rem; /* Keep existing padding */
+            background: linear-gradient(135deg, orange, #34495e); /* Keep existing gradient */
+            border-radius: 0; /* Remove border-radius to ensure full-width appearance */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Keep existing shadow */
+            z-index: 1000; /* Ensure header stays above other content */
+            box-sizing: border-box; /* Ensure padding is included in width */
         }
         .user-info {
             display: flex;
-            align-items: center;
-            gap: 1rem;
             justify-content: flex-end;
-            margin-left: auto;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+        }
+        .user-info h2 {
+            flex: 0 0 auto;
+            margin:0;
+        }
+        .user-info span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            flex: 0 0 auto;
+        }
+        .user-info form {
+            flex: 0 0 auto; /* Keep logout button compact */
         }
         section {
             background: #f8f7f5;
@@ -308,12 +340,20 @@
     <div class="dashboard">
         <main class="main-content">
             <header class="header">
-                <div class="user-info">
-                        <span>{{ \Illuminate\Support\Str::title($user_role) }}</span>                    
+                <div class="user-info" style="display: flex; justify-content: space-between; align-items: center;">
+                    <!-- Left Side -->
+                    <h2 style="margin: 0; color: white; font-size: 1.5rem; font-weight: 600;">
+                        Callbacks Table of {{ $is_viewing_other ? $target_user->username : Auth::user()->username }}
+                    </h2>
+
+                    <!-- Right Side -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="color: white;">{{ auth()->user()->userprofile->role ?? 'agent' }}</span>
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn-logout" id="logoutBtn" aria-label="Logout">Logout</button>
-                    </form>
+                            @csrf
+                            <button type="submit" class="btn-logout" id="logoutBtn" aria-label="Logout">Logout</button>
+                        </form>
+                    </div>
                 </div>
             </header>
             @if (session('success'))
@@ -329,7 +369,7 @@
                 </div>
             @endif
             <section id="callbacks" class="content-section">
-                <h2>Callbacks Table of {{ $is_viewing_other ? $target_user->username : Auth::user()->username }}</h2>
+                <!-- <h2>Callbacks Table of {{ $is_viewing_other ? $target_user->username : Auth::user()->username }}</h2> -->
                 <div class="top-controls">
                     <div class="search-bar">
                         <select id="searchField" class="form-control">
