@@ -284,6 +284,9 @@
             }
         }
         @media (max-width: 576px) {
+            .main-controller {
+                padding: 1rem;
+            }
             .table th, .table td {
                 font-size: 0.8rem;
                 padding: 0.4rem;
@@ -301,11 +304,79 @@
             h1, h4 {
                 font-size: 1.25rem;
             }
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
             .navbar-brand {
-                font-size: 1rem;
+                font-size: 0.9rem;
+            }
+            .table {
+            min-width: 1000px; /* Ensure table is wide enough to show all columns */
+            }
+            #allCallbacksTable .table th,
+            #allCallbacksTable .table td {
+                font-size: 0.7rem; /* Reduced from 0.75rem for smaller text */
+                padding: 0.25rem 0.4rem; /* Reduced from 0.3rem for compact cells */
+            }
+            #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* Customer Name */
+                width: 10%; /* Adjusted from 12% to fit more columns */
+                min-width: 80px; /* Reduced from 120px */
+            }
+            #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Phone Number */
+                width: 9%; /* Adjusted from 10% */
+                min-width: 70px; /* Reduced from 100px */
+            }
+            #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Email */
+                width: 8%; /* Adjusted from 12% */
+                min-width: 60px; /* Reduced from 120px */
+            }
+            #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Address */
+                width: 10%; /* Adjusted from 12% */
+                min-width: 80px; /* Reduced from 120px */
+            }
+            #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Website */
+                width: 9%; /* Adjusted from 10% */
+                min-width: 70px; /* Reduced from 100px */
+            }
+            #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Remarks */
+                width: 9%; /* Adjusted from 10% */
+                min-width: 70px; /* Reduced from 100px */
+            }
+            #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Notes */
+                width: 9%; /* Adjusted from 10% */
+                min-width: 70px; /* Reduced from 100px */
+            }
+            #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Assigned Manager */
+                width: 11%; /* Adjusted from 13.5% */
+                min-width: 80px; /* Reduced from 120px */
+            }
+            #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Created By */
+                width: 7%; /* Adjusted from 8% */
+                min-width: 70px; /* Reduced from 100px */
+            }
+            #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Actions */
+                width: 10%; /* Adjusted from 12% */
+                min-width: 80px; /* Reduced from 120px */
             }
             #allCallbacksTable .table-responsive {
-                max-height: 300px;
+                overflow-x: auto; /* Enable horizontal scrolling */
+                -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+                max-height: 250px; /* Reduced from 300px for compact view */
+            }
+            .search-bar input,
+            .search-bar select {
+                font-size: 0.75rem; /* Reduced from 0.8rem */
+                padding: 0.3rem; /* Reduced from 0.4rem */
+            }
+            .action-buttons .btn-action {
+                padding: 0.1rem 0.2rem; /* Reduced from 0.15rem 0.3rem */
+                font-size: 0.6rem; /* Reduced from 0.65rem */
+            }
+            .modal-dialog {
+                margin: 0.2rem; /* Reduced from 0.3rem */
+            }
+            .toast {
+                font-size: 0.75rem; /* Reduced from 0.8rem */
             }
         }
         .table-responsive {

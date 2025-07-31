@@ -272,6 +272,36 @@
                 margin-left: auto;
             }
         }
+        @media (max-width: 576px) {
+            table {
+                min-width: 900px; /* Ensure table is wide enough to show all columns */
+            }
+            table th,
+            table td {
+                font-size: 0.7rem; /* Reduced from 0.75rem for smaller text */
+                padding: 0.25rem 0.4rem; /* Reduced from 0.4rem 0.6rem for compact cells */
+                min-width: 50px; /* Reduced from 60px to fit more columns */
+                max-width: 80px; /* Reduced from 100px to prevent overflow */
+            }
+            .callbacks-table-wrapper {
+                overflow-x: auto; /* Enable horizontal scrolling */
+                -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+            }
+            .top-controls input {
+                max-width: 160px; /* Reduced from 200px to fit better */
+            }
+            .top-controls select {
+                max-width: 100px; /* Reduced from 140px to fit better */
+            }
+            .top-controls button,
+            .action-save-btn {
+                padding: 0.4rem 0.8rem; /* Reduced from 0.6rem 1.2rem for smaller buttons */
+                font-size: 0.85rem; /* Reduced from 0.9rem for compact appearance */
+            }
+            .toast {
+                font-size: 0.75rem; /* Reduced from 0.8rem for readability */
+            }
+        }
     </style>
 </head>
 <body>

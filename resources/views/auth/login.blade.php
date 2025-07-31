@@ -176,22 +176,43 @@
             }
 
             .login-left {
-                padding: 20px;
+                padding: 10px;
                 width: 100%;
+                min-height:30vh;
             }
 
             .login-right {
-                padding: 20px;
+                padding: 15px;
             }
 
             .login-branding {
-                max-width: 500px;
+                max-width: 250px;
                 width: 100%;
             }
 
             .login-image {
-                max-width: 300px;
+                max-width: 500px;
                 width: 100%;
+            }
+            .login-form {
+                max-width: 320px;
+            }
+            .login-form h2 {
+                font-size:20px;
+            }
+            .form-group input {
+                padding: 10px 12px; 
+                font-size: 14px; 
+            }
+
+            .btn {
+                padding: 10px; 
+                font-size: 14px; 
+            }
+
+            .password-toggle {
+                right: 12px; 
+                font-size: 14px; 
             }
         }
     </style>

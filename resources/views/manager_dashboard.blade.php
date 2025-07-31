@@ -269,6 +269,70 @@
                 margin-left: auto;
             }
         }
+        @media (max-width:576px) {
+            .main-content {
+                padding: 0.6rem; 
+            }
+            .header {
+                padding-right: 0.2rem; 
+            }
+            table {
+                min-width: 900px; /* Ensure table is wide enough to show all columns */
+            }
+            table th,
+            table td {
+                font-size: 0.7rem; /* Reduced from 0.75rem */
+                padding: 0.25rem 0.4rem; /* Reduced from 0.3rem 0.5rem */
+                min-width: 45px; /* Reduced from 50px */
+                max-width: 80px; /* Reduced from 90px */
+            }
+            table th:nth-child(1), table td:nth-child(1) { /* Customer Name */
+                width: 12%; /* Adjusted from 14% */
+            }
+            table th:nth-child(2), table td:nth-child(2) { /* Phone Number */
+                width: 11%; /* Adjusted from 13% */
+            }
+            table th:nth-child(3), table td:nth-child(3) { /* Email */
+                width: 13%; /* Adjusted from 15% */
+            }
+            table th:nth-child(4), table td:nth-child(4) { /* Address */
+                width: 10%; /* Adjusted from 12% */
+            }
+            table th:nth-child(5), table td:nth-child(5) { /* Website */
+                width: 14%; /* Adjusted from 16% */
+            }
+            table th:nth-child(6), table td:nth-child(6) { /* Remarks */
+                width: 11%; /* Adjusted from 13% */
+            }
+            table th:nth-child(7), table td:nth-child(7) { /* Notes */
+                width: 15%; /* Adjusted from 17% */
+            }
+            table th:nth-child(8), table td:nth-child(8) { /* Created By */
+                width: 8%; /* Adjusted from 10% */
+            }
+            table th:nth-child(9), table td:nth-child(9) { /* Actions */
+                width: 8%; /* Adjusted from 10% */
+                min-width: 50px; /* Reduced from 60px */
+            }
+            .callbacks-table-wrapper {
+                overflow-x: auto; /* Enable horizontal scrolling */
+                -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+            }
+            .top-controls input {
+                max-width: 160px; /* Reduced from 180px */
+            }
+            .top-controls select {
+                max-width: 100px; /* Reduced from 120px */
+            }
+            .top-controls button,
+            .action-save-btn {
+                padding: 0.4rem 0.8rem; /* Reduced from 0.5rem 1rem */
+                font-size: 0.85rem; /* Reduced from 0.9rem */
+            }
+            .toast {
+                font-size: 0.75rem; /* Reduced from 0.8rem */
+            }
+        }
     </style>
 </head>
 <body>

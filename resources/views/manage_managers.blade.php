@@ -201,19 +201,45 @@
             }
         }
         @media (max-width: 576px) {
-            .table th, .table td {
-                font-size: 0.8rem;
-                padding: 0.4rem;
-            }
-            .action-buttons .btn-action {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.7rem;
-            }
             h4 {
                 font-size: 1.25rem;
             }
+            /* Reduce navbar padding to save vertical space */
+            .navbar {
+                padding: 0.5rem 1rem; /* Change from default to reduce vertical space */
+            }
+            /* Adjust navbar-brand font size for better fit */
             .navbar-brand {
-                font-size: 1rem;
+                font-size: 0.9rem; /* Reduced from 1rem for smaller screens */
+            }
+
+            /* Reduce main-container padding to maximize content area */
+            .main-container {
+                padding: 1rem; /* Reduced from 1.5rem to fit more content */
+            }
+
+            /* Decrease table font size and padding for compact display */
+            .table th,
+            .table td {
+                font-size: 0.75rem; /* Reduced from 0.8rem for better readability */
+                padding: 0.3rem; /* Reduced from 0.4rem to fit more rows */
+            }
+
+            /* Reduce action button sizes for better touch interaction */
+            .action-buttons .btn-action {
+                padding: 0.15rem 0.3rem; /* Reduced from 0.2rem 0.4rem for smaller buttons */
+                font-size: 0.65rem; /* Reduced from 0.7rem for compact buttons */
+            }
+
+            /* Decrease modal dialog padding for more content space */
+            .modal-dialog {
+                margin: 0.3rem; /* Reduced from 0.5rem to maximize modal content area */
+            }
+
+            /* Adjust form input and select font size for better readability */
+            .form-control,
+            .form-select {
+                font-size: 0.8rem; /* Reduced from 0.9rem for compact appearance */
             }
         }
         .table-responsive {
