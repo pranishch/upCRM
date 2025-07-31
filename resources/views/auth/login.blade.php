@@ -185,11 +185,13 @@
             }
 
             .login-branding {
-                max-width: 150px;
+                max-width: 500px;
+                width: 100%;
             }
 
             .login-image {
-                max-width: 100px;
+                max-width: 300px;
+                width: 100%;
             }
         }
     </style>

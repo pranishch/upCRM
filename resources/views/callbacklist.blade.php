@@ -8,6 +8,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .body{
+            font-family:'Arial', sans-serif;
+        }
         .callbacks-table-wrapper {
             overflow-x: hidden;
             width: 100%;
@@ -173,6 +176,7 @@
             border-collapse: collapse;
             font-size: 0.9rem;
             table-layout: fixed;
+            font-family:'Arial', sans-serif;
         }
         table thead tr {
             background-color: #ffa500;

@@ -21,11 +21,14 @@
             --border-radius: 10px;
         }
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, var(--secondary-color) 0%, #e8ecef 100%);
             color: var(--text-dark);
             min-height: 100vh;
             padding-bottom: 2rem;
+        }
+        table, th, td, .table input, .table select, .table textarea {
+            font-family: 'Arial', sans-serif;
         }
         .navbar {
             box-shadow: var(--shadow);
@@ -543,7 +546,6 @@
                         <a href="#" class="profile-anchor d-flex align-items-center text-decoration-none" data-bs-toggle="modal" data-bs-target="#profileModal">
                             <i class="bi bi-person-circle me-2" style="font-size: 1.5rem; color: #fff;"></i>
                             <span class="username text-white fw-semibold">{{ Auth::user()->username }}</span>
-                            <span class="role-badge role-admin ms-2">Admin</span>
                         </a>
                     </div>
                     <a class="nav-link" href="{{ route('logout') }}">

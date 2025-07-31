@@ -7,6 +7,15 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
+        .body{
+            font-family:'Arial', sans-serif;
+        }
+        .content-section{
+            font-family:'Arial', sans-serif;
+        }
+        .user-info{
+            font-family:'Arial', sans-serif;
+        }
         .callbacks-table-wrapper {
             overflow-x: hidden;
             width: 100%;
@@ -163,6 +172,7 @@
             border-collapse: collapse;
             font-size: 0.9rem;
             table-layout: fixed;
+            font-family:'Arial', sans-serif;
         }
         table thead tr {
             background-color: #ffa500;
