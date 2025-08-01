@@ -177,47 +177,43 @@
         #allCallbacksTable .table-responsive::-webkit-scrollbar-thumb:hover {
             background: #e67e22;
         }
-        #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* S.N. */
-            width: 3%;
-            min-width: 50px;
-        }
-        #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Customer Name */
+        #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* Customer Name */
             width: 11%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Phone Number */
+        #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Phone Number */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Email */
+        #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Email */
             width: 11%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Address */
+        #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Address */
             width: 11%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Website */
+        #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Website */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Remarks */
+        #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Remarks */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Notes */
+        #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Notes */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Assigned Manager */
+        #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Assigned Manager */
             width: 10%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Created By */
+        #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Created By */
             width: 7%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(11), #allCallbacksTable .table td:nth-child(11) { /* Actions */
+        #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Actions */
             width: 11%;
             min-width: 150px;
         }
@@ -331,47 +327,43 @@
                 font-size: 0.7rem; /* Reduced from 0.75rem for smaller text */
                 padding: 0.25rem 0.4rem; /* Reduced from 0.3rem for compact cells */
             }
-            #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* S.N. */
-                width: 5%;
-                min-width: 40px;
-            }
-            #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Customer Name */
+            #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* Customer Name */
                 width: 9%;
                 min-width: 80px;
             }
-            #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Phone Number */
+            #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Phone Number */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Email */
+            #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Email */
                 width: 7%;
                 min-width: 60px;
             }
-            #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Address */
+            #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Address */
                 width: 9%;
                 min-width: 80px;
             }
-            #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Website */
+            #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Website */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Remarks */
+            #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Remarks */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Notes */
+            #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Notes */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Assigned Manager */
+            #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Assigned Manager */
                 width: 2%;
                 min-width: 20px;
             }
-            #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Created By */
+            #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Created By */
                 width: 6%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(11), #allCallbacksTable .table td:nth-child(11) { /* Actions */
+            #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Actions */
                 width: 9%;
                 min-width: 80px;
             }
@@ -734,7 +726,6 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>S.N.</th>
                                     <th>Customer Name</th>
                                     <th>Phone Number</th>
                                     <th>Email</th>
@@ -752,7 +743,6 @@
                             <tbody id="callbackTableBody">
                                 @forelse ($all_callbacks as $index => $callback)
                                     <tr data-callback-id="{{ $callback->id }}" data-row-id="{{ $callback->id }}">
-                                        <td>{{ ($page_obj->currentPage() - 1) * $page_obj->perPage() + $index + 1 }}</td>
                                         <td>{{ $callback->customer_name ?? 'N/A' }}</td>
                                         <td>{{ $callback->phone_number ?? 'N/A' }}</td>
                                         <td>{{ $callback->email ?? 'N/A' }}</td>
@@ -799,7 +789,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ $user_role == 'admin' ? 11 : 10 }}" class="text-center">No callbacks found.</td>
+                                        <td colspan="{{ $user_role == 'admin' ? 10 : 9 }}" class="text-center">No callbacks found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -1033,13 +1023,13 @@
             if (deleteButton) {
                 const row = deleteButton.closest('tr');
                 const callbackId = row.getAttribute('data-callback-id');
-                const customerName = row.querySelector('td:nth-child(2)').textContent;
+                const customerName = row.querySelector('td:nth-child(1)').textContent;
                 showDeleteModal(callbackId, customerName);
             }
         });
 
         function toggleEditMode(row, isEditMode) {
-            const cells = row.querySelectorAll('td:not(:first-child):not(:last-child):not(:nth-child(9))'); // Exclude S.N., Actions, and Assigned Manager
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-child(8))'); // Exclude Actions and Assigned Manager
             if (isEditMode) {
                 cells.forEach((cell, index) => {
                     if (index === 5) { // Remarks column
@@ -1097,7 +1087,7 @@
         }
 
         function saveCallback(row, callbackId) {
-            const cells = row.querySelectorAll('td:not(:first-child):not(:last-child):not(:nth-child(9))');
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-child(8))');
             const data = {
                 callback_id: callbackId,
                 customer_name: cells[0].querySelector('input').value.trim(),
