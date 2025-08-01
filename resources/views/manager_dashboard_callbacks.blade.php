@@ -1,5 +1,6 @@
 @forelse ($callbacks as $callback)
     <tr data-callback-id="{{ $callback->id }}" class="callback-row">
+        <td>{{ ($page_obj->currentPage() - 1) * $page_obj->perPage() + $loop->index + 1 }}</td>
         <td>
             <input type="hidden" name="added_at" class="added-at-input" value="{{ $callback->added_at->format('Y-m-d H:i:s') }}">
             <span class="display-text name-input">{{ $callback->customer_name ?? '' }}</span>
@@ -51,6 +52,6 @@
     </tr>
 @empty
     <tr>
-        <td colspan="9" class="text-center">No callbacks assigned to you.</td>
+        <td colspan="10" class="text-center">No callbacks assigned to you.</td>
     </tr>
 @endforelse

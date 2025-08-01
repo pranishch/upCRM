@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            overflow-x: hidden; /* Prevent horizontal scroll on body */
+            overflow-x: hidden;
         }
         
         .body{
@@ -159,17 +159,17 @@
             background-color: #eff4f9;
         }
         .header {
-            width: 100vw; /* Full viewport width */
-            position: fixed; /* Fix the header to the top */
-            top: 0; /* Align to the very top of the viewport */
-            left: 0; /* Align to the left edge */
-            margin: 0; /* Remove any default margins */
-            padding: 0.5rem; /* Keep existing padding */
-            background: linear-gradient(135deg, orange, #34495e); /* Keep existing gradient */
-            border-radius: 0; /* Remove border-radius to ensure full-width appearance */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Keep existing shadow */
-            z-index: 1000; /* Ensure header stays above other content */
-            box-sizing: border-box; /* Ensure padding is included in width */
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0.5rem;
+            background: linear-gradient(135deg, orange, #34495e);
+            border-radius: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            box-sizing: border-box;
         }
         .user-info {
             display: flex;
@@ -191,7 +191,7 @@
             flex: 0 0 auto;
         }
         .user-info form {
-            flex: 0 0 auto; /* Keep logout button compact */
+            flex: 0 0 auto;
         }
         section {
             background: #f8f7f5;
@@ -224,15 +224,16 @@
             white-space: nowrap;
             color: #000;
         }
-        table th:nth-child(1), table td:nth-child(1) { width: 14%; }
-        table th:nth-child(2), table td:nth-child(2) { width: 13%; }
-        table th:nth-child(3), table td:nth-child(3) { width: 15%; }
-        table th:nth-child(4), table td:nth-child(4) { width: 12%; }
-        table th:nth-child(5), table td:nth-child(5) { width: 16%; }
-        table th:nth-child(6), table td:nth-child(6) { width: 13%; }
-        table th:nth-child(7), table td:nth-child(7) { width: 17%; }
-        table th:nth-child(8), table td:nth-child(8) { width: 10%; }
-        table th:nth-child(9), table td:nth-child(9) { width: 10%; min-width: 60px; }
+        table th:nth-child(1), table td:nth-child(1) { width: 5%; } /* S.N */
+        table th:nth-child(2), table td:nth-child(2) { width: 13%; } /* Customer Name */
+        table th:nth-child(3), table td:nth-child(3) { width: 12%; } /* Phone Number */
+        table th:nth-child(4), table td:nth-child(4) { width: 14%; } /* Email */
+        table th:nth-child(5), table td:nth-child(5) { width: 11%; } /* Address */
+        table th:nth-child(6), table td:nth-child(6) { width: 15%; } /* Website */
+        table th:nth-child(7), table td:nth-child(7) { width: 12%; } /* Remarks */
+        table th:nth-child(8), table td:nth-child(8) { width: 16%; } /* Notes */
+        table th:nth-child(9), table td:nth-child(9) { width: 9%; } /* Created By */
+        table th:nth-child(10), table td:nth-child(10) { width: 8%; } /* Actions */
         table tbody tr:nth-child(even) {
             background-color: whitesmoke;
         }
@@ -323,67 +324,48 @@
                 font-size: 0.9rem;
             }
             table {
-                min-width: 900px; /* Ensure table is wide enough to show all columns */
+                min-width: 900px;
             }
             table th,
             table td {
-                font-size: 0.7rem; /* Reduced from 0.75rem */
-                padding: 0.25rem 0.4rem; /* Reduced from 0.3rem 0.5rem */
-                min-width: 45px; /* Reduced from 50px */
-                max-width: 80px; /* Reduced from 90px */
+                font-size: 0.7rem;
+                padding: 0.25rem 0.4rem;
+                min-width: 45px;
+                max-width: 80px;
             }
-            table th:nth-child(1), table td:nth-child(1) { /* Customer Name */
-                width: 12%; /* Adjusted from 14% */
-            }
-            table th:nth-child(2), table td:nth-child(2) { /* Phone Number */
-                width: 11%; /* Adjusted from 13% */
-            }
-            table th:nth-child(3), table td:nth-child(3) { /* Email */
-                width: 13%; /* Adjusted from 15% */
-            }
-            table th:nth-child(4), table td:nth-child(4) { /* Address */
-                width: 10%; /* Adjusted from 12% */
-            }
-            table th:nth-child(5), table td:nth-child(5) { /* Website */
-                width: 14%; /* Adjusted from 16% */
-            }
-            table th:nth-child(6), table td:nth-child(6) { /* Remarks */
-                width: 11%; /* Adjusted from 13% */
-            }
-            table th:nth-child(7), table td:nth-child(7) { /* Notes */
-                width: 15%; /* Adjusted from 17% */
-            }
-            table th:nth-child(8), table td:nth-child(8) { /* Created By */
-                width: 8%; /* Adjusted from 10% */
-            }
-            table th:nth-child(9), table td:nth-child(9) { min-width: 80px; /* Increased from 50px to accommodate Save button */
-                max-width: 100px; /* Increased from 70px for better fit */
-                white-space: nowrap; /* Prevent wrapping */
-                overflow: visible;
-            }
+            table th:nth-child(1), table td:nth-child(1) { width: 5%; } /* S.N */
+            table th:nth-child(2), table td:nth-child(2) { width: 11%; } /* Customer Name */
+            table th:nth-child(3), table td:nth-child(3) { width: 10%; } /* Phone Number */
+            table th:nth-child(4), table td:nth-child(4) { width: 12%; } /* Email */
+            table th:nth-child(5), table td:nth-child(5) { width: 9%; } /* Address */
+            table th:nth-child(6), table td:nth-child(6) { width: 13%; } /* Website */
+            table th:nth-child(7), table td:nth-child(7) { width: 10%; } /* Remarks */
+            table th:nth-child(8), table td:nth-child(8) { width: 14%; } /* Notes */
+            table th:nth-child(9), table td:nth-child(9) { width: 7%; } /* Created By */
+            table th:nth-child(10), table td:nth-child(10) { min-width: 80px; max-width: 100px; white-space: nowrap; overflow: visible; } /* Actions */
             .callbacks-table-wrapper {
-                overflow-x: auto; /* Enable horizontal scrolling */
-                -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
             .top-controls input {
-                max-width: 160px; /* Reduced from 180px */
+                max-width: 160px;
             }
             .top-controls select {
-                max-width: 100px; /* Reduced from 120px */
+                max-width: 100px;
             }
             .top-controls button,
             .action-save-btn {
-                padding: 0.3rem 0.6rem; /* Slightly reduced for compactness */
-                font-size: 0.8rem; /* Slightly reduced for mobile */
-                line-height: 1.2; /* Ensure text is centered vertically */
-                display: inline-block; /* Force inline-block to respect visibility */
-                min-width: 50px; /* Ensure button has enough width */
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+                line-height: 1.2;
+                display: inline-block;
+                min-width: 50px;
             }
             .action-save-btn {
-                margin-left: 5px; /* Space between icons and button */
+                margin-left: 5px;
             }
             .toast {
-                font-size: 0.75rem; /* Reduced from 0.8rem */
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -393,12 +375,9 @@
         <main class="main-content">
             <header class="header">
                 <div class="user-info" style="display: flex; justify-content: space-between; align-items: center;">
-                    <!-- Left Side -->
                     <h2 style="margin: 0; color: white; font-size: 1.5rem; font-weight: 600;">
                         Callbacks of {{ $manager->username }}
                     </h2>
-
-                    <!-- Right Side -->
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <span style="color: white;">{{ auth()->user()->userprofile->role ?? 'agent' }}</span>
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
@@ -407,7 +386,6 @@
                         </form>
                     </div>
                 </div>
-
             </header>
             @if (session('success') || session('error'))
                 <div class="alert alert-{{ session('success') ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
@@ -437,6 +415,7 @@
                         <table id="callbacksTable">
                             <thead>
                                 <tr>
+                                    <th>S.N</th>
                                     <th>Customer Name</th>
                                     <th>Phone Number</th>
                                     <th>Email</th>
@@ -495,6 +474,7 @@
                 template.className = 'new-entry-row';
                 template.setAttribute('data-new-row', 'true');
                 template.innerHTML = `
+                    <td>New</td>
                     <td>
                         <input type="hidden" name="added_at" class="added-at-input" value="">
                         <input type="text" name="customer_name" class="form-control editable name-input" 
@@ -561,7 +541,7 @@
             if (addNewRowButton) {
                 addNewRowButton.addEventListener('click', function() {
                     const tableBody = document.getElementById('tableBody');
-                    const emptyRow = tableBody.querySelector('tr td[colspan="9"]');
+                    const emptyRow = tableBody.querySelector('tr td[colspan="10"]');
                     if (emptyRow) emptyRow.parentElement.remove();
                     const newRow = createNewRowTemplate();
                     tableBody.prepend(newRow);
@@ -615,7 +595,7 @@
                 if (e.target.classList.contains('edit-callback')) {
                     const row = e.target.closest('tr');
                     row.classList.add('edit-mode');
-                    const isCreatedByManager = row.querySelector('td:nth-child(8)').textContent.trim() === '{{ $manager->username }}';
+                    const isCreatedByManager = row.querySelector('td:nth-child(9)').textContent.trim() === '{{ $manager->username }}';
                     const isAdmin = '{{ $user_role }}' === 'admin';
                     row.querySelectorAll('.display-text').forEach(span => {
                         span.style.display = 'none';
@@ -635,7 +615,7 @@
                             callbackIdInput = document.createElement('input');
                             callbackIdInput.type = 'hidden';
                             callbackIdInput.name = 'callback_id';
-                            row.querySelector('td:first-child').appendChild(callbackIdInput);
+                            row.querySelector('td:nth-child(2)').appendChild(callbackIdInput);
                         }
                         callbackIdInput.value = callbackId;
                     }
@@ -671,7 +651,7 @@
                     const formData = new FormData();
                     const isNewRow = row.classList.contains('new-entry-row');
                     const callbackId = row.getAttribute('data-callback-id');
-                    const isCreatedByManager = row.querySelector('td:nth-child(8)').textContent.trim() === '{{ $manager->username }}';
+                    const isCreatedByManager = row.querySelector('td:nth-child(9)').textContent.trim() === '{{ $manager->username }}';
 
                     formData.append('_token', form.querySelector('[name="_token"]').value);
                     formData.append('target_user_id', form.querySelector('[name="target_user_id"]').value);
