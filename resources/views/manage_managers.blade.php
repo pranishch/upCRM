@@ -28,7 +28,7 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            overflow-x: hidden; /* Prevent horizontal scroll on body */
+            overflow-x: hidden;
         }
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -52,10 +52,10 @@
             transform: scale(1.05);
         }
         .container {
-            width: 100vw; /* Full viewport width */
-            max-width: 100%; /* Remove max-width constraints */
-            padding: 0; /* Remove default padding */
-            margin-left:10px;; /* Remove margins */
+            width: 100vw;
+            max-width: 100%;
+            padding: 0;
+            margin-left:10px;
         }
         .main-container {
             background: white;
@@ -118,7 +118,6 @@
             font-size: 1rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-
         .btn-logout:hover {
             background: orange;
             transform: translateY(-2px);
@@ -238,51 +237,37 @@
             h4 {
                 font-size: 1.25rem;
             }
-            /* Reduce navbar padding to save vertical space */
             .navbar {
-                padding: 0.5rem 1rem; /* Change from default to reduce vertical space */
+                padding: 0.5rem 1rem;
             }
-            /* Adjust navbar-brand font size for better fit */
             .navbar-brand {
-                font-size: 0.9rem; /* Reduced from 1rem for smaller screens */
+                font-size: 0.9rem;
             }
             .btn-primary {
-                padding: 0.3rem 0.6rem; /* Adjust padding */
-                font-size: 0.8rem; /* Smaller text */
-                line-height: 1.2; /* Tighter line height */
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+                line-height: 1.2;
             }
             .bi-person-plus {
-                font-size: 0.8rem; /* Smaller icon */
-                margin-right: 0.3rem; /* Adjust icon spacing */
+                font-size: 0.8rem;
+                margin-right: 0.3rem;
             }
-
-            /* Reduce main-container padding to maximize content area */
             .main-container {
-                padding: 1rem; /* Reduced from 1.5rem to fit more content */
+                padding: 1rem;
             }
-
-            /* Decrease table font size and padding for compact display */
-            .table th,
-            .table td {
-                font-size: 0.75rem; /* Reduced from 0.8rem for better readability */
-                padding: 0.3rem; /* Reduced from 0.4rem to fit more rows */
+            .table th, .table td {
+                font-size: 0.75rem;
+                padding: 0.3rem;
             }
-
-            /* Reduce action button sizes for better touch interaction */
             .action-buttons .btn-action {
-                padding: 0.15rem 0.3rem; /* Reduced from 0.2rem 0.4rem for smaller buttons */
-                font-size: 0.65rem; /* Reduced from 0.7rem for compact buttons */
+                padding: 0.15rem 0.3rem;
+                font-size: 0.65rem;
             }
-
-            /* Decrease modal dialog padding for more content space */
             .modal-dialog {
-                margin: 0.3rem; /* Reduced from 0.5rem to maximize modal content area */
+                margin: 0.3rem;
             }
-
-            /* Adjust form input and select font size for better readability */
-            .form-control,
-            .form-select {
-                font-size: 0.8rem; /* Reduced from 0.9rem for compact appearance */
+            .form-control, .form-select {
+                font-size: 0.8rem;
             }
         }
         .table-responsive {
@@ -299,8 +284,7 @@
             background: var(--primary-color);
             border-radius: 4px;
         }
-           @media (max-width: 360px) {
-            /* Navbar */
+        @media (max-width: 360px) {
             .navbar {
                 padding: 0.3rem 0.5rem;
             }
@@ -321,8 +305,6 @@
                 padding: 0.3rem 0.6rem;
                 font-size: 0.75rem;
             }
-
-            /* Container */
             .container {
                 margin-left: 5px;
                 padding: 0 0.5rem;
@@ -332,8 +314,6 @@
                 padding: 0.75rem;
                 max-width: 100%;
             }
-
-            /* Header section */
             .d-flex.justify-content-between {
                 flex-direction: column;
                 gap: 0.5rem;
@@ -343,8 +323,6 @@
                 font-size: 1rem;
                 margin-bottom: 0.5rem;
             }
-
-            /* Create button */
             .btn-primary {
                 padding: 0.4rem 0.6rem;
                 font-size: 0.75rem;
@@ -354,8 +332,6 @@
                 font-size: 0.7rem;
                 margin-right: 0.2rem;
             }
-
-            /* Ultra-compact Table */
             .table-responsive {
                 margin: 0 -0.75rem;
                 padding: 0 0.25rem;
@@ -363,45 +339,36 @@
                 -webkit-overflow-scrolling: touch;
             }
             .table {
-                min-width: 280px; /* Significantly reduced from 600px */
-                font-size: 0.55rem; /* Much smaller text */
+                min-width: 280px;
+                font-size: 0.55rem;
                 line-height: 1.1;
             }
-            .table th, 
-            .table td {
-                padding: 0.15rem 0.1rem; /* Much tighter padding */
-                font-size: 0.55rem; /* Smaller text */
+            .table th, .table td {
+                padding: 0.15rem 0.1rem;
+                font-size: 0.55rem;
                 vertical-align: middle;
-                white-space: nowrap; /* Prevent text wrapping */
+                white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 60px; /* Constrain column width */
+                max-width: 60px;
             }
             .table th {
-                font-size: 0.5rem; /* Even smaller headers */
+                font-size: 0.5rem;
                 font-weight: 600;
                 padding: 0.1rem 0.05rem;
             }
-            
-            /* Specific column widths for extreme compactness */
-            .table th:first-child,
-            .table td:first-child {
-                max-width: 40px; /* ID column */
+            .table th:first-child, .table td:first-child {
+                max-width: 40px;
             }
-            .table th:nth-child(2),
-            .table td:nth-child(2) {
-                max-width: 80px; /* Name column */
+            .table th:nth-child(2), .table td:nth-child(2) {
+                max-width: 80px;
             }
-            .table th:nth-child(3),
-            .table td:nth-child(3) {
-                max-width: 70px; /* Email column */
+            .table th:nth-child(3), .table td:nth-child(3) {
+                max-width: 70px;
             }
-            .table th:last-child,
-            .table td:last-child {
-                max-width: 50px; /* Actions column */
+            .table th:last-child, .table td:last-child {
+                max-width: 50px;
             }
-
-            /* Ultra-compact Action buttons */
             .action-buttons {
                 gap: 0.1rem;
                 justify-content: flex-start;
@@ -420,8 +387,6 @@
             .action-buttons .btn-action i {
                 font-size: 0.5rem;
             }
-
-            /* Modals */
             .modal-dialog {
                 margin: 0.2rem;
                 max-width: calc(100vw - 0.4rem);
@@ -442,8 +407,7 @@
                 padding: 0.5rem 0.75rem;
                 gap: 0.3rem;
             }
-            .form-control, 
-            .form-select {
+            .form-control, .form-select {
                 font-size: 0.75rem;
                 padding: 0.4rem;
             }
@@ -455,15 +419,11 @@
                 font-size: 0.8rem;
                 right: 8px;
             }
-
-            /* Modal buttons */
             .modal-footer .btn {
                 padding: 0.4rem 0.6rem;
                 font-size: 0.75rem;
                 flex: 1;
             }
-
-            /* Alert messages */
             .alert {
                 font-size: 0.8rem;
                 padding: 0.5rem;
@@ -484,9 +444,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto d-flex flex-row align-items-center">
-                    <!-- <a class="nav-link" href="javascript:history.back()">
-                        <i class="bi bi-arrow-left me-1"></i> Back
-                    </a> -->
                     <div class="nav-item dropdown me-3">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-grid-3x3-gap-fill me-1"></i>
@@ -506,8 +463,8 @@
                         <span>{{ Auth::user()->username }}</span>
                     </div>
                     <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn-logout" id="logoutBtn" aria-label="Logout">Logout</button>
+                        @csrf
+                        <button type="submit" class="btn-logout" id="logoutBtn" aria-label="Logout">Logout</button>
                     </form>
                 </div>
             </div>
@@ -554,7 +511,7 @@
                     <tbody>
                         @forelse ($managers as $manager)
                             @if ($manager->userprofile && $manager->userprofile->role === 'manager')
-                            <tr>
+                            <tr onclick="window.location='{{ route('manager_dashboard', $manager->id) }}';">
                                 <td>{{ $manager->username }}</td>
                                 <td>{{ $manager->email ?? 'No email' }}</td>
                                 <td>
@@ -566,40 +523,29 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('manager_dashboard', $manager->id) }}" 
-                                        class="btn btn-sm btn-action btn-outline-success" 
-                                        title="View Manager Dashboard">
-                                            <i class="bi bi-speedometer2"></i>
-                                        </a>
                                         <button class="btn btn-sm btn-action btn-outline-primary" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#editManagerModal" 
                                                 data-user-id="{{ $manager->id }}"
                                                 data-username="{{ $manager->username }}"
                                                 data-email="{{ $manager->email ?? '' }}"
-                                                title="Edit Manager">
-                                            <i class="bi bi-pencil"></i>
+                                                title="Edit Manager"
+                                                onclick="event.stopPropagation();">
+                                            Edit
                                         </button>
-                                        <button class="btn btn-sm btn-action btn-outline-primary" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#changeRoleModal" 
-                                                data-user-id="{{ $manager->id }}"
-                                                data-username="{{ $manager->username }}"
-                                                title="Change Role">
-                                            <i class="bi bi-person-gear"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-action btn-outline-secondary" 
+                                        <button class="btn btn-sm btn-action btn-secondary" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#resetPasswordModal" 
                                                 data-user-id="{{ $manager->id }}"
                                                 data-username="{{ $manager->username }}"
-                                                title="Reset Password">
-                                            <i class="bi bi-key"></i>
+                                                title="Reset Password"
+                                                onclick="event.stopPropagation();">
+                                            Reset Password
                                         </button>
                                         <a href="{{ route('managers.delete', $manager->id) }}" 
-                                        class="btn btn-sm btn-action btn-outline-danger" 
-                                        title="Delete Manager"
-                                        onclick="return confirm('Are you sure you want to delete the manager {{ $manager->username }}?')">
+                                           class="btn btn-sm btn-action btn-outline-danger" 
+                                           title="Delete Manager"
+                                           onclick="event.stopPropagation(); return confirm('Are you sure you want to delete the manager {{ $manager->username }}?')">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </div>
@@ -617,7 +563,6 @@
         </div>
     </div>
 
-    <!-- Create Manager Modal -->
     <div class="modal fade" id="createManagerModal" tabindex="-1" aria-labelledby="createManagerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -670,7 +615,6 @@
         </div>
     </div>
 
-    <!-- Edit Manager Modal -->
     <div class="modal fade" id="editManagerModal" tabindex="-1" aria-labelledby="editManagerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -708,7 +652,7 @@
     </div>
 
     <!-- Change Role Modal -->
-    <div class="modal fade" id="changeRoleModal" tabindex="-1" aria-labelledby="changeRoleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="changeRoleModal" tabindex="-1" aria-labelledby="changeRoleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -736,9 +680,8 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <!-- Reset Password Modal -->
     <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -772,44 +715,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Push current state to history to track navigation
-            window.history.pushState({ page: 'manage_users' }, null, window.location.href);
+            window.history.pushState({ page: 'manage_managers' }, null, window.location.href);
 
-            // Listen for popstate event to detect back/forward navigation
             window.addEventListener('popstate', function(event) {
-                // Check if navigating back (event.state is null or doesn't match current state)
-                if (!event.state || event.state.page !== 'manage_users') {
-                    // Reload the page to ensure fresh data
+                if (!event.state || event.state.page !== 'manage_managers') {
                     window.location.reload();
                 }
             });
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-
-            var changeRoleModal = document.getElementById('changeRoleModal');
-            changeRoleModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var userId = button.getAttribute('data-user-id');
-                var username = button.getAttribute('data-username');
-                var modal = this;
-                modal.querySelector('#changeRoleUserId').value = userId;
-                modal.querySelector('#roleUsername').textContent = username;
-            });
-
-            var resetPasswordModal = document.getElementById('resetPasswordModal');
-            resetPasswordModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var userId = button.getAttribute('data-user-id');
-                var username = button.getAttribute('data-username');
-                var modal = this;
-                modal.querySelector('#resetPasswordUserId').value = userId;
-                modal.querySelector('#passwordUsername').textContent = username;
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
             var editManagerModal = document.getElementById('editManagerModal');
             editManagerModal.addEventListener('show.bs.modal', function(event) {
+                event.stopPropagation();
                 var button = event.relatedTarget;
                 var userId = button.getAttribute('data-user-id');
                 var username = button.getAttribute('data-username');
@@ -820,6 +741,30 @@
                 modal.querySelector('#editManagerUsernameInput').value = username;
                 modal.querySelector('#editManagerEmailInput').value = email || '';
             });
+
+            var resetPasswordModal = document.getElementById('resetPasswordModal');
+            resetPasswordModal.addEventListener('show.bs.modal', function(event) {
+                event.stopPropagation();
+                var button = event.relatedTarget;
+                var userId = button.getAttribute('data-user-id');
+                var username = button.getAttribute('data-username');
+                var modal = this;
+                modal.querySelector('#resetPasswordUserId').value = userId;
+                modal.querySelector('#passwordUsername').textContent = username;
+            });
+
+            var changeRoleModal = document.getElementById('changeRoleModal');
+            if (changeRoleModal) {
+                changeRoleModal.addEventListener('show.bs.modal', function(event) {
+                    event.stopPropagation();
+                    var button = event.relatedTarget;
+                    var userId = button.getAttribute('data-user-id');
+                    var username = button.getAttribute('data-username');
+                    var modal = this;
+                    modal.querySelector('#changeRoleUserId').value = userId;
+                    modal.querySelector('#roleUsername').textContent = username;
+                });
+            }
 
             const createPassword1Toggle = document.getElementById('createPassword1Toggle');
             const createPassword1Input = document.getElementById('password');

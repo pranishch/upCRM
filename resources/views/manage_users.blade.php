@@ -89,6 +89,13 @@
             vertical-align: middle;
             padding: 0.75rem;
         }
+        .table-hover tr {
+            cursor: pointer; /* Indicate row is clickable */
+        }
+        .table-hover tr:hover {
+            background-color: rgba(78, 115, 223, 0.1); /* Subtle hover effect */
+            outline: 1px solid var(--primary-color); /* Outline on hover */
+        }
         .role-badge {
             font-size: 0.75rem;
             padding: 0.3rem 0.75rem;
@@ -118,7 +125,6 @@
             font-size: 1rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-
         .btn-logout:hover {
             background: orange;
             transform: translateY(-2px);
@@ -562,45 +568,43 @@
                     <tbody>
                         @forelse ($users as $user)
                             @if ($user->userprofile && $user->userprofile->role === 'agent')
-                            <tr>
+                            <tr onclick="window.location='{{ route('callbacklist', $user->id) }}';">
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->email ?? 'No email' }}</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="{{ route('callbacklist', $user->id) }}" 
-                                        class="btn btn-sm btn-action btn-outline-info" 
-                                        title="View Callbacks">
-                                            <i class="bi bi-telephone"></i>
-                                        </a>
-                                        <button class="btn btn-sm btn-action btn-outline-warning" 
+                                        <button class="btn btn-sm btn-action btn-primary" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#editUserModal" 
                                                 data-user-id="{{ $user->id }}"
                                                 data-username="{{ $user->username }}"
                                                 data-email="{{ $user->email }}"
-                                                title="Edit User">
-                                            <i class="bi bi-pencil"></i>
+                                                title="Edit User"
+                                                onclick="event.stopPropagation();">
+                                            Edit
                                         </button>
-                                        <button class="btn btn-sm btn-action btn-outline-primary" 
+                                        <!-- <button class="btn btn-sm btn-action btn-outline-primary" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#changeRoleModal" 
                                                 data-user-id="{{ $user->id }}"
                                                 data-username="{{ $user->username }}"
-                                                title="Change Role">
+                                                title="Change Role"
+                                                onclick="event.stopPropagation();">
                                             <i class="bi bi-person-gear"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-action btn-outline-secondary" 
+                                        </button> -->
+                                        <button class="btn btn-sm btn-action btn-secondary" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#resetPasswordModal" 
                                                 data-user-id="{{ $user->id }}"
                                                 data-username="{{ $user->username }}"
-                                                title="Reset Password">
-                                            <i class="bi bi-key"></i>
+                                                title="Reset Password"
+                                                onclick="event.stopPropagation();">
+                                            Reset Password
                                         </button>
                                         <a href="{{ route('users.delete', $user->id) }}" 
                                         class="btn btn-sm btn-action btn-outline-danger" 
                                         title="Delete User"
-                                        onclick="return confirm('Are you sure you want to delete the user {{ $user->username }}?')">
+                                        onclick="event.stopPropagation(); return confirm('Are you sure you want to delete the user {{ $user->username }}?')">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </div>
@@ -709,7 +713,7 @@
     </div>
 
     <!-- Change Role Modal -->
-    <div class="modal fade" id="changeRoleModal" tabindex="-1" aria-labelledby="changeRoleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="changeRoleModal" tabindex="-1" aria-labelledby="changeRoleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -737,7 +741,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Reset Password Modal -->
     <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
@@ -791,6 +795,7 @@
 
             var editUserModal = document.getElementById('editUserModal');
             editUserModal.addEventListener('show.bs.modal', function(event) {
+                event.stopPropagation(); // Prevent row click
                 var button = event.relatedTarget;
                 var userId = button.getAttribute('data-user-id');
                 var username = button.getAttribute('data-username');
@@ -804,6 +809,7 @@
 
             var changeRoleModal = document.getElementById('changeRoleModal');
             changeRoleModal.addEventListener('show.bs.modal', function(event) {
+                event.stopPropagation(); // Prevent row click
                 var button = event.relatedTarget;
                 var userId = button.getAttribute('data-user-id');
                 var username = button.getAttribute('data-username');
@@ -814,6 +820,7 @@
 
             var resetPasswordModal = document.getElementById('resetPasswordModal');
             resetPasswordModal.addEventListener('show.bs.modal', function(event) {
+                event.stopPropagation(); // Prevent row click
                 var button = event.relatedTarget;
                 var userId = button.getAttribute('data-user-id');
                 var username = button.getAttribute('data-username');
