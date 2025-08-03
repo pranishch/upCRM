@@ -177,47 +177,43 @@
         #allCallbacksTable .table-responsive::-webkit-scrollbar-thumb:hover {
             background: #e67e22;
         }
-        #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* S.N. */
-            width: 3%;
-            min-width: 50px;
+        #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* Customer Name */
+            width: 14%; /* Increased from 11% to 14% */
+            min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Customer Name */
+        #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Phone Number */
+            width: 9%;
+            min-width: 90px;
+        }
+        #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Email */
             width: 11%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Phone Number */
-            width: 9%;
-            min-width: 90px;
-        }
-        #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Email */
+        #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Address */
             width: 11%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Address */
-            width: 11%;
-            min-width: 110px;
-        }
-        #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Website */
+        #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Website */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Remarks */
+        #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Remarks */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Notes */
+        #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Notes */
             width: 9%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Assigned Manager */
+        #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Assigned Manager */
             width: 10%;
             min-width: 110px;
         }
-        #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Created By */
+        #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Created By */
             width: 7%;
             min-width: 90px;
         }
-        #allCallbacksTable .table th:nth-child(11), #allCallbacksTable .table td:nth-child(11) { /* Actions */
+        #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Actions */
             width: 11%;
             min-width: 150px;
         }
@@ -331,47 +327,43 @@
                 font-size: 0.7rem; /* Reduced from 0.75rem for smaller text */
                 padding: 0.25rem 0.4rem; /* Reduced from 0.3rem for compact cells */
             }
-            #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* S.N. */
-                width: 5%;
-                min-width: 40px;
-            }
-            #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Customer Name */
-                width: 9%;
+            #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* Customer Name */
+                width: 14%; /* Increased from 9% to 14% */
                 min-width: 80px;
             }
-            #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Phone Number */
+            #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Phone Number */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Email */
+            #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Email */
                 width: 7%;
                 min-width: 60px;
             }
-            #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Address */
+            #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Address */
                 width: 9%;
                 min-width: 80px;
             }
-            #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Website */
+            #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Website */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Remarks */
+            #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Remarks */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Notes */
+            #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Notes */
                 width: 8%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Assigned Manager */
+            #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Assigned Manager */
                 width: 2%;
                 min-width: 20px;
             }
-            #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Created By */
+            #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Created By */
                 width: 6%;
                 min-width: 70px;
             }
-            #allCallbacksTable .table th:nth-child(11), #allCallbacksTable .table td:nth-child(11) { /* Actions */
+            #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Actions */
                 width: 9%;
                 min-width: 80px;
             }
@@ -397,208 +389,204 @@
             }
         }
         @media (max-width: 360px) {
-    .main-container {
-        padding: 0.5rem; /* Reduced padding for main container */
-        margin: 0.5rem; /* Smaller margin */
-        border-radius: 6px; /* Smaller border radius */
-    }
-    .navbar {
-        padding: 0.3rem 0.6rem; /* Reduced navbar padding */
-        flex-wrap: nowrap; /* Prevent navbar items from wrapping */
-        overflow-x: auto; /* Allow horizontal scrolling if needed */
-        white-space: nowrap; /* Keep items in a single line */
-    }
-    .navbar-brand {
-        font-size: 0.75rem; /* Smaller navbar brand font */
-    }
-    .navbar-toggler {
-        padding: 0.2rem 0.4rem; /* Smaller toggler padding */
-        font-size: 0.7rem; /* Smaller toggler icon */
-    }
-    .navbar-nav {
-        gap: 0.2rem; /* Further reduced gap between nav items */
-        flex-direction: row; /* Keep nav items in a row */
-        align-items: center; /* Align items vertically */
-    }
-    .nav-item.dropdown .nav-link {
-        font-size: 0.65rem; /* Smaller font size for Quick Actions */
-        padding: 0.2rem 0.4rem; /* Smaller padding for dropdown toggle */
-    }
-    .dropdown-menu {
-        font-size: 0.6rem; /* Smaller font size for dropdown items */
-        min-width: 120px; /* Smaller dropdown width */
-    }
-    .dropdown-item {
-        padding: 0.15rem 0.5rem; /* Smaller padding for Manage Users/Manage Managers */
-    }
-    .profile-link {
-        padding: 0.15rem 0.3rem; /* Much smaller padding for profile link */
-        font-size: 0.6rem; /* Much smaller font size */
-    }
-    .profile-anchor .username {
-        font-size: 0.6rem; /* Much smaller username font */
-    }
-    .profile-anchor .bi-person-circle {
-        font-size: 0.8rem; /* Much smaller icon size for profile link */
-    }
-    .btn-logout {
-        padding: 0.08rem 0.3rem; /* Much smaller logout button padding */
-        font-size: 0.5rem; /* Much smaller logout button font */
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Lighter shadow for smaller size */
-        display: inline-block; /* Ensure visibility */
-        margin-left: 0.15rem; /* Much smaller margin for spacing */
-    }
-    h1, h4 {
-        font-size: 0.95rem; /* Smaller heading sizes */
-    }
-    .system-overview {
-        gap: 0.5rem; /* Smaller gap between cards */
-    }
-    .system-overview .card {
-        padding: 0.4rem; /* Reduced card padding */
-        margin-bottom: 0.5rem; /* Smaller margin */
-        border-radius: 6px; /* Smaller border radius */
-    }
-    .system-overview .card-header {
-        padding: 0.1rem 0.2rem; /* Smaller header padding */
-        font-size: 0.6rem; /* Smaller header font */
-    }
-    .system-overview .card-body {
-        padding: 0.3rem; /* Smaller body padding */
-    }
-    .system-overview .card-title {
-        font-size: 0.7rem; /* Smaller title font for Total Managers */
-        margin-bottom: 0.3rem; /* Smaller margin */
-    }
-    .system-overview .btn-primary {
-        padding: 0.15rem 0.3rem; /* Smaller button padding */
-        font-size: 0.6rem; /* Smaller button font */
-    }
-    .table {
-        min-width: 800px; /* Slightly reduced min-width for table */
-    }
-    .table th {
-        font-size: 0.55rem; /* Reduced font size for table headings */
-        padding: 0.2rem 0.3rem; /* Reduced padding */
-    }
-    .table td {
-        font-size: 0.5rem; /* Reduced font size for table data */
-        padding: 0.2rem 0.3rem; /* Reduced padding */
-    }
-    #allCallbacksTable .table-responsive {
-        max-height: 180px; /* Smaller table height */
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* S.N. */
-        width: 5%;
-        min-width: 30px;
-    }
-    #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Customer Name */
-        width: 9%;
-        min-width: 60px;
-    }
-    #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Phone Number */
-        width: 8%;
-        min-width: 55px;
-    }
-    #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Email */
-        width: 7%;
-        min-width: 45px;
-    }
-    #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Address */
-        width: 9%;
-        min-width: 60px;
-    }
-    #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Website */
-        width: 8%;
-        min-width: 55px;
-    }
-    #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Remarks */
-        width: 8%;
-        min-width: 55px;
-    }
-    #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Notes */
-        width: 8%;
-        min-width: 55px;
-    }
-    #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Assigned Manager */
-        width: 2%;
-        min-width: 12px;
-    }
-    #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Created By */
-        width: 6%;
-        min-width: 50px;
-    }
-    #allCallbacksTable .table th:nth-child(11), #allCallbacksTable .table td:nth-child(11) { /* Actions */
-        width: 9%;
-        min-width: 60px;
-    }
-    .action-buttons .btn-action {
-        padding: 0.1rem 0.2rem; /* Smaller action button padding */
-        font-size: 0.5rem; /* Smaller font size */
-    }
-    .search-bar {
-        flex-direction: column; /* Stack search bar elements vertically */
-        gap: 0.3rem; /* Smaller gap */
-    }
-    .search-bar input,
-    .search-bar select {
-        font-size: 0.65rem; /* Smaller font size */
-        padding: 0.2rem; /* Smaller padding */
-    }
-    .search-bar select {
-        width: 100%; /* Full width for select */
-    }
-    #pagination {
-        gap: 0.3rem; /* Smaller gap between pagination items */
-    }
-    #pagination button,
-    #pagination span.page-num {
-        padding: 0.15rem 0.4rem; /* Smaller pagination padding */
-        font-size: 0.6rem; /* Smaller font size */
-        min-width: 20px; /* Smaller minimum width */
-    }
-    .modal-dialog {
-        margin: 0.1rem; /* Smaller modal margin */
-        max-width: 95%; /* Slightly smaller modal width */
-    }
-    .modal-content {
-        border-radius: 6px; /* Smaller border radius */
-    }
-    .modal-header {
-        padding: 0.3rem 0.5rem; /* Smaller header padding */
-    }
-    .modal-title {
-        font-size: 0.85rem; /* Smaller modal title */
-    }
-    .modal-body {
-        padding: 0.5rem; /* Smaller body padding */
-    }
-    .modal-footer {
-        padding: 0.3rem; /* Smaller footer padding */
-    }
-    .modal-footer .btn {
-        padding: 0.2rem 0.4rem; /* Smaller button padding */
-        font-size: 0.65rem; /* Smaller font size */
-    }
-    .form-control, .form-select {
-        font-size: 0.65rem; /* Smaller input/select font */
-        padding: 0.2rem; /* Smaller padding */
-    }
-    .toast {
-        font-size: 0.65rem; /* Smaller toast font */
-        min-width: 200px; /* Smaller toast width */
-    }
-    .toast-container {
-        bottom: 10px; /* Closer to bottom */
-        right: 10px; /* Closer to right */
-    }
-    .role-badge {
-        font-size: 0.5rem; /* Smaller font size for role badge (e.g., admin) */
-        padding: 0.15rem 0.4rem; /* Smaller padding for role badge */
-    }
-}
+            .main-container {
+                padding: 0.5rem; /* Reduced padding for main container */
+                margin: 0.5rem; /* Smaller margin */
+                border-radius: 6px; /* Smaller border radius */
+            }
+            .navbar {
+                padding: 0.3rem 0.6rem; /* Reduced navbar padding */
+                flex-wrap: nowrap; /* Prevent navbar items from wrapping */
+                overflow-x: auto; /* Allow horizontal scrolling if needed */
+                white-space: nowrap; /* Keep items in a single line */
+            }
+            .navbar-brand {
+                font-size: 0.75rem; /* Smaller navbar brand font */
+            }
+            .navbar-toggler {
+                padding: 0.2rem 0.4rem; /* Smaller toggler padding */
+                font-size: 0.7rem; /* Smaller toggler icon */
+            }
+            .navbar-nav {
+                gap: 0.2rem; /* Further reduced gap between nav items */
+                flex-direction: row; /* Keep nav items in a row */
+                align-items: center; /* Align items vertically */
+            }
+            .nav-item.dropdown .nav-link {
+                font-size: 0.65rem; /* Smaller font size for Quick Actions */
+                padding: 0.2rem 0.4rem; /* Smaller padding for dropdown toggle */
+            }
+            .dropdown-menu {
+                font-size: 0.6rem; /* Smaller font size for dropdown items */
+                min-width: 120px; /* Smaller dropdown width */
+            }
+            .dropdown-item {
+                padding: 0.15rem 0.5rem; /* Smaller padding for Manage Users/Manage Managers */
+            }
+            .profile-link {
+                padding: 0.15rem 0.3rem; /* Much smaller padding for profile link */
+                font-size: 0.6rem; /* Much smaller font size */
+            }
+            .profile-anchor .username {
+                font-size: 0.6rem; /* Much smaller username font */
+            }
+            .profile-anchor .bi-person-circle {
+                font-size: 0.8rem; /* Much smaller icon size for profile link */
+            }
+            .btn-logout {
+                padding: 0.08rem 0.3rem; /* Much smaller logout button padding */
+                font-size: 0.5rem; /* Much smaller logout button font */
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Lighter shadow for smaller size */
+                display: inline-block; /* Ensure visibility */
+                margin-left: 0.15rem; /* Much smaller margin for spacing */
+            }
+            h1, h4 {
+                font-size: 0.95rem; /* Smaller heading sizes */
+            }
+            .system-overview {
+                gap: 0.5rem; /* Smaller gap between cards */
+            }
+            .system-overview .card {
+                padding: 0.4rem; /* Reduced card padding */
+                margin-bottom: 0.5rem; /* Smaller margin */
+                border-radius: 6px; /* Smaller border radius */
+            }
+            .system-overview .card-header {
+                padding: 0.1rem 0.2rem; /* Smaller header padding */
+                font-size: 0.6rem; /* Smaller header font */
+            }
+            .system-overview .card-body {
+                padding: 0.3rem; /* Smaller body padding */
+            }
+            .system-overview .card-title {
+                font-size: 0.7rem; /* Smaller title font for Total Managers */
+                margin-bottom: 0.3rem; /* Smaller margin */
+            }
+            .system-overview .btn-primary {
+                padding: 0.15rem 0.3rem; /* Smaller button padding */
+                font-size: 0.6rem; /* Smaller button font */
+            }
+            .table {
+                min-width: 800px; /* Slightly reduced min-width for table */
+            }
+            .table th {
+                font-size: 0.55rem; /* Reduced font size for table headings */
+                padding: 0.2rem 0.3rem; /* Reduced padding */
+            }
+            .table td {
+                font-size: 0.5rem; /* Reduced font size for table data */
+                padding: 0.2rem 0.3rem; /* Reduced padding */
+            }
+            #allCallbacksTable .table-responsive {
+                max-height: 180px; /* Smaller table height */
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            #allCallbacksTable .table th:nth-child(1), #allCallbacksTable .table td:nth-child(1) { /* Customer Name */
+                width: 14%; /* Increased from 9% to 14% */
+                min-width: 60px;
+            }
+            #allCallbacksTable .table th:nth-child(2), #allCallbacksTable .table td:nth-child(2) { /* Phone Number */
+                width: 8%;
+                min-width: 55px;
+            }
+            #allCallbacksTable .table th:nth-child(3), #allCallbacksTable .table td:nth-child(3) { /* Email */
+                width: 7%;
+                min-width: 45px;
+            }
+            #allCallbacksTable .table th:nth-child(4), #allCallbacksTable .table td:nth-child(4) { /* Address */
+                width: 9%;
+                min-width: 60px;
+            }
+            #allCallbacksTable .table th:nth-child(5), #allCallbacksTable .table td:nth-child(5) { /* Website */
+                width: 8%;
+                min-width: 55px;
+            }
+            #allCallbacksTable .table th:nth-child(6), #allCallbacksTable .table td:nth-child(6) { /* Remarks */
+                width: 8%;
+                min-width: 55px;
+            }
+            #allCallbacksTable .table th:nth-child(7), #allCallbacksTable .table td:nth-child(7) { /* Notes */
+                width: 8%;
+                min-width: 55px;
+            }
+            #allCallbacksTable .table th:nth-child(8), #allCallbacksTable .table td:nth-child(8) { /* Assigned Manager */
+                width: 2%;
+                min-width: 12px;
+            }
+            #allCallbacksTable .table th:nth-child(9), #allCallbacksTable .table td:nth-child(9) { /* Created By */
+                width: 6%;
+                min-width: 50px;
+            }
+            #allCallbacksTable .table th:nth-child(10), #allCallbacksTable .table td:nth-child(10) { /* Actions */
+                width: 9%;
+                min-width: 60px;
+            }
+            .action-buttons .btn-action {
+                padding: 0.1rem 0.2rem; /* Smaller action button padding */
+                font-size: 0.5rem; /* Smaller font size */
+            }
+            .search-bar {
+                flex-direction: column; /* Stack search bar elements vertically */
+                gap: 0.3rem; /* Smaller gap */
+            }
+            .search-bar input,
+            .search-bar select {
+                font-size: 0.65rem; /* Smaller font size */
+                padding: 0.2rem; /* Smaller padding */
+            }
+            .search-bar select {
+                width: 100%; /* Full width for select */
+            }
+            #pagination {
+                gap: 0.3rem; /* Smaller gap between pagination items */
+            }
+            #pagination button,
+            #pagination span.page-num {
+                padding: 0.15rem 0.4rem; /* Smaller pagination padding */
+                font-size: 0.6rem; /* Smaller font size */
+                min-width: 20px; /* Smaller minimum width */
+            }
+            .modal-dialog {
+                margin: 0.1rem; /* Smaller modal margin */
+                max-width: 95%; /* Slightly smaller modal width */
+            }
+            .modal-content {
+                border-radius: 6px; /* Smaller border radius */
+            }
+            .modal-header {
+                padding: 0.3rem 0.5rem; /* Smaller header padding */
+            }
+            .modal-title {
+                font-size: 0.85rem; /* Smaller modal title */
+            }
+            .modal-body {
+                padding: 0.5rem; /* Smaller body padding */
+            }
+            .modal-footer {
+                padding: 0.3rem; /* Smaller footer padding */
+            }
+            .modal-footer .btn {
+                padding: 0.2rem 0.4rem; /* Smaller button padding */
+                font-size: 0.65rem; /* Smaller font size */
+            }
+            .form-control, .form-select {
+                font-size: 0.65rem; /* Smaller input/select font */
+                padding: 0.2rem; /* Smaller padding */
+            }
+            .toast {
+                font-size: 0.65rem; /* Smaller toast font */
+                min-width: 200px; /* Smaller toast width */
+            }
+            .toast-container {
+                bottom: 10px; /* Closer to bottom */
+                right: 10px; /* Closer to right */
+            }
+            .role-badge {
+                font-size: 0.5rem; /* Smaller font size for role badge (e.g., admin) */
+                padding: 0.15rem 0.4rem; /* Smaller padding for role badge */
+            }
+        }
         .table-responsive {
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) transparent;
@@ -937,7 +925,7 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>S.N.</th>
+                                   
                                     <th>Customer Name</th>
                                     <th>Phone Number</th>
                                     <th>Email</th>
@@ -955,7 +943,6 @@
                             <tbody id="callbackTableBody">
                                 @forelse ($all_callbacks as $index => $callback)
                                     <tr data-callback-id="{{ $callback->id }}" data-row-id="{{ $callback->id }}">
-                                        <td>{{ ($page_obj->currentPage() - 1) * $page_obj->perPage() + $index + 1 }}</td>
                                         <td>{{ $callback->customer_name ?? 'N/A' }}</td>
                                         <td>{{ $callback->phone_number ?? 'N/A' }}</td>
                                         <td>{{ $callback->email ?? 'N/A' }}</td>
@@ -1002,7 +989,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ $user_role == 'admin' ? 11 : 10 }}" class="text-center">No callbacks found.</td>
+                                        <td colspan="{{ $user_role == 'admin' ? 10 : 9 }}" class="text-center">No callbacks found.</td>                                    
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -1242,7 +1229,7 @@
         });
 
         function toggleEditMode(row, isEditMode) {
-            const cells = row.querySelectorAll('td:not(:first-child):not(:last-child):not(:nth-child(9))'); // Exclude S.N., Actions, and Assigned Manager
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-child(8))'); // Exclude Actions and Assigned Manager
             if (isEditMode) {
                 cells.forEach((cell, index) => {
                     if (index === 5) { // Remarks column
