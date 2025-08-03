@@ -168,53 +168,56 @@
             75% { transform: translateX(5px); }
         }
 
-        @media (max-width: 768px) {
-            .login-container {
-                flex-direction: column;
-                width: 100vw;
-                height: 100vh;
-            }
-
-            .login-left {
-                padding: 10px;
-                width: 100%;
-                min-height:30vh;
-            }
-
-            .login-right {
-                padding: 15px;
-            }
-
-            .login-branding {
-                max-width: 250px;
-                width: 100%;
-            }
-
-            .login-image {
-                max-width: 500px;
-                width: 100%;
-            }
-            .login-form {
-                max-width: 320px;
-            }
-            .login-form h2 {
-                font-size:20px;
-            }
-            .form-group input {
-                padding: 10px 12px; 
-                font-size: 14px; 
-            }
-
-            .btn {
-                padding: 10px; 
-                font-size: 14px; 
-            }
-
-            .password-toggle {
-                right: 12px; 
-                font-size: 14px; 
-            }
+        @media (max-width: 360px) {
+        .login-container {
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
         }
+
+        .login-left {
+            padding: 8px;
+            width: 100%;
+            min-height: 25vh;
+        }
+
+        .login-right {
+            padding: 12px;
+        }
+
+        .login-branding {
+            max-width: 200px;
+            width: 100%;
+        }
+
+        .login-image {
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .login-form {
+            max-width: 280px;
+        }
+
+        .login-form h2 {
+            font-size: 18px;
+        }
+
+        .form-group input {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .btn {
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .password-toggle {
+            right: 10px;
+            font-size: 12px;
+        }
+    }
     </style>
 </head>
 <body>

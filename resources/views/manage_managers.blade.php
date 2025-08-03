@@ -299,6 +299,177 @@
             background: var(--primary-color);
             border-radius: 4px;
         }
+           @media (max-width: 360px) {
+            /* Navbar */
+            .navbar {
+                padding: 0.3rem 0.5rem;
+            }
+            .navbar-brand {
+                font-size: 0.8rem;
+            }
+            .navbar-toggler {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.8rem;
+            }
+            .dropdown-menu {
+                font-size: 0.8rem;
+            }
+            .text-light {
+                font-size: 0.75rem;
+            }
+            .btn-logout {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            /* Container */
+            .container {
+                margin-left: 5px;
+                padding: 0 0.5rem;
+            }
+            .main-container {
+                margin: 0.5rem auto;
+                padding: 0.75rem;
+                max-width: 100%;
+            }
+
+            /* Header section */
+            .d-flex.justify-content-between {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+            h4 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Create button */
+            .btn-primary {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                width: 100%;
+            }
+            .bi-person-plus {
+                font-size: 0.7rem;
+                margin-right: 0.2rem;
+            }
+
+            /* Ultra-compact Table */
+            .table-responsive {
+                margin: 0 -0.75rem;
+                padding: 0 0.25rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .table {
+                min-width: 280px; /* Significantly reduced from 600px */
+                font-size: 0.55rem; /* Much smaller text */
+                line-height: 1.1;
+            }
+            .table th, 
+            .table td {
+                padding: 0.15rem 0.1rem; /* Much tighter padding */
+                font-size: 0.55rem; /* Smaller text */
+                vertical-align: middle;
+                white-space: nowrap; /* Prevent text wrapping */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 60px; /* Constrain column width */
+            }
+            .table th {
+                font-size: 0.5rem; /* Even smaller headers */
+                font-weight: 600;
+                padding: 0.1rem 0.05rem;
+            }
+            
+            /* Specific column widths for extreme compactness */
+            .table th:first-child,
+            .table td:first-child {
+                max-width: 40px; /* ID column */
+            }
+            .table th:nth-child(2),
+            .table td:nth-child(2) {
+                max-width: 80px; /* Name column */
+            }
+            .table th:nth-child(3),
+            .table td:nth-child(3) {
+                max-width: 70px; /* Email column */
+            }
+            .table th:last-child,
+            .table td:last-child {
+                max-width: 50px; /* Actions column */
+            }
+
+            /* Ultra-compact Action buttons */
+            .action-buttons {
+                gap: 0.1rem;
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+            }
+            .action-buttons .btn-action {
+                padding: 0.1rem 0.15rem;
+                font-size: 0.5rem;
+                min-width: 18px;
+                height: 18px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 2px;
+            }
+            .action-buttons .btn-action i {
+                font-size: 0.5rem;
+            }
+
+            /* Modals */
+            .modal-dialog {
+                margin: 0.2rem;
+                max-width: calc(100vw - 0.4rem);
+            }
+            .modal-content {
+                border-radius: 6px;
+            }
+            .modal-header {
+                padding: 0.75rem;
+            }
+            .modal-title {
+                font-size: 0.9rem;
+            }
+            .modal-body {
+                padding: 0.75rem;
+            }
+            .modal-footer {
+                padding: 0.5rem 0.75rem;
+                gap: 0.3rem;
+            }
+            .form-control, 
+            .form-select {
+                font-size: 0.75rem;
+                padding: 0.4rem;
+            }
+            .form-label {
+                font-size: 0.8rem;
+                margin-bottom: 0.3rem;
+            }
+            .password-toggle {
+                font-size: 0.8rem;
+                right: 8px;
+            }
+
+            /* Modal buttons */
+            .modal-footer .btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                flex: 1;
+            }
+
+            /* Alert messages */
+            .alert {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>

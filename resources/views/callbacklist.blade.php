@@ -347,6 +347,147 @@
                 font-size: 0.75rem; /* Reduced from 0.8rem for readability */
             }
         }
+        @media (max-width: 360px) {
+    /* Header adjustments */
+    .header {
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .user-info {
+        gap: 0.5rem;
+        justify-content: space-between;
+    }
+    
+    .user-info h2 {
+        font-size: 0.9rem;
+        line-height: 1.2;
+        max-width: 60%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .user-info span {
+        font-size: 0.75rem;
+    }
+    
+    .btn-logout {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+        min-width: auto;
+    }
+    
+    /* Main content */
+    .main-content {
+        margin-top: 45px;
+        padding: 0.5rem;
+    }
+    
+    section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Search and controls */
+    .top-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .search-bar {
+        flex-direction: column;
+        gap: 0.3rem;
+        max-width: 100%;
+    }
+    
+    .search-bar select,
+    .search-bar input {
+        width: 100%;
+        max-width: 100%;
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+    
+    .top-controls button {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Table wrapper */
+    .callbacks-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -0.5rem;
+        padding: 0 0.5rem;
+    }
+    
+    /* Table styles */
+    table {
+        min-width: 800px;
+        font-size: 0.65rem;
+    }
+    
+    table th,
+    table td {
+        padding: 0.2rem 0.3rem;
+        min-width: 35px;
+        max-width: 70px;
+        font-size: 0.65rem;
+    }
+    
+    /* Specific column widths for 360px */
+    table th:nth-child(1), table td:nth-child(1) { min-width: 30px; max-width: 40px; } /* S.No */
+    table th:nth-child(2), table td:nth-child(2) { min-width: 50px; max-width: 70px; } /* Customer Name */
+    table th:nth-child(3), table td:nth-child(3) { min-width: 50px; max-width: 70px; } /* Phone */
+    table th:nth-child(4), table td:nth-child(4) { min-width: 50px; max-width: 70px; } /* Email */
+    table th:nth-child(5), table td:nth-child(5) { min-width: 50px; max-width: 70px; } /* Address */
+    table th:nth-child(6), table td:nth-child(6) { min-width: 50px; max-width: 70px; } /* Website */
+    table th:nth-child(7), table td:nth-child(7) { min-width: 50px; max-width: 70px; } /* Remarks */
+    table th:nth-child(8), table td:nth-child(8) { min-width: 50px; max-width: 70px; } /* Notes */
+    table th:nth-child(9), table td:nth-child(9) { min-width: 60px; max-width: 80px; } /* Actions */
+    
+    /* Action buttons */
+    .action-icon {
+        font-size: 0.7rem;
+        margin: 0 2px;
+    }
+    
+    .action-save-btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
+        min-width: 40px;
+    }
+    
+    /* Pagination */
+    #pagination {
+        margin-top: 1rem;
+        gap: 0.3rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    #pagination button,
+    #pagination span.page-num {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.7rem;
+        min-width: 25px;
+    }
+    
+    /* Toast notifications */
+    .toast-container {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+    }
+    
+    .toast {
+        font-size: 0.7rem;
+        width: 100%;
+    }
+}
     </style>
 </head>
 <body>
