@@ -440,6 +440,46 @@
                 display: inline-block; /* Ensure visibility */
                 margin-left: 0.15rem; /* Much smaller margin for spacing */
             }
+            .username {
+                font-size: 0.75rem; /* Small text (around 12px) */
+                max-width: 80px;           /* Limit the width of the box */
+                overflow: hidden;          /* Hide overflow text */
+                text-overflow: ellipsis;   /* Add ... if text too long */
+                white-space: nowrap;       /* Prevent wrapping */
+                display: inline-block;
+            }
+
+            /* Make logout button smaller */
+            #logoutBtn {
+                font-size: 0.75rem;
+                padding: 4px 8px;
+            }
+            /* Shrink the container of the username */
+            .profile-link {
+                padding: 0.2px 0.3px;
+            }
+
+            /* Shrink the full profile button (icon + username) */
+            .profile-anchor {
+                padding: 0.2px 0.3px;
+                border-radius: 0.2px;
+            
+            }
+            /* Adjust profile icon if needed */
+            .profile-anchor i {
+                font-size: 0.01rem !important;
+            }
+
+            /* Manager username or select input inside table */
+            .manager-select,
+            td span {
+                font-size: 0.7rem !important;
+            }
+
+            /* Optional: Adjust spacing if too tight */
+            .navbar-nav .me-3 {
+                margin-right: 0.5rem !important;
+            }
             h1, h4 {
                 font-size: 0.95rem; /* Smaller heading sizes */
             }
@@ -966,7 +1006,7 @@
                                                 @if ($callback->createdBy->userProfile && $callback->createdBy->userProfile->role == 'manager')
                                                     <span>{{ $callback->createdBy->username ?? 'No Manager' }}</span>
                                                 @else
-                                                    <select class="manager-select form-select"
+                                                    <select class="manager-select"
                                                             data-row-id="{{ $callback->id }}"
                                                             data-username="{{ $callback->customer_name ?? 'N/A' }}">
                                                         <option value="" {{ !$callback->manager ? 'selected' : '' }}>No Manager</option>
