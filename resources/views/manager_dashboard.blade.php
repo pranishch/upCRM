@@ -183,6 +183,7 @@
         .user-info h2 {
             flex: 0 0 auto;
             margin:0;
+            font-size: 0.95rem !important;
         }
         .user-info span {
             font-size: 1.1rem;
@@ -368,6 +369,253 @@
                 font-size: 0.75rem;
             }
         }
+        /* SIMPLE & SWEET 360PX MOBILE STYLES */
+        @media (max-width: 360px) {
+            /* Header - Clean & Compact */
+            .header {
+                padding: 0.8rem 0.6rem;
+                min-height: 45px;
+            }
+            
+            .user-info h2 {
+                font-size: 0.7rem;
+                max-width: 170px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .user-info span {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.5rem;
+                background: rgba(255,255,255,0.2);
+                border-radius: 10px;
+            }
+            
+            .btn-logout {
+                padding: 0rem;
+                font-size: 0.75rem;
+                min-width: 50px;
+                height: 20px;
+                border-radius: 6px;
+            }
+
+            /* Main Content - More Space */
+            .main-content {
+                margin-top: 50px;
+                padding: 0.5rem;
+            }
+
+            /* Section - Cleaner Look */
+            section {
+                padding: 1rem 0.7rem;
+                border-radius: 12px;
+                margin-bottom: 1.2rem;
+            }
+
+            /* Controls - Stack Vertically */
+           .top-controls {
+                flex-direction: column;
+                gap: 0.1rem !important;
+                align-items: stretch;
+            }
+            
+            .search-bar {
+                flex-direction:column;
+                gap: 0.2rem; /* Reduced from 0.3rem */
+                max-width: 100%;
+                margin-bottom: 0.01rem;
+            }
+            
+            .top-controls select,
+            .top-controls input {
+                width: 100%;
+                padding: 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 8px;
+                border: 2px solid #e5e7eb;
+            }
+            
+            .top-controls select:focus,
+            .top-controls input:focus {
+                border-color: #ffa500;
+                box-shadow: 0 0 0 3px rgba(255,165,0,0.1);
+                outline: none;
+            }
+            
+            .top-controls button {
+                width: 100%;
+                padding: 0.6rem;
+                font-size: 0.8rem;
+                border-radius: 8px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            /* Table - Compact & Scrollable */
+            .callbacks-table-wrapper {
+                border-radius: 12px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            table {
+                min-width: 340px;
+                font-size: 0.65rem;
+            }
+            
+            table th,
+            table td {
+                padding: 0.4rem 0.3rem;
+                font-size: 0.65rem;
+                min-width: 30px;
+            }
+            
+            /* Column Widths - Optimized */
+            table th:nth-child(1), table td:nth-child(1) { width: 8%; min-width: 25px; }
+            table th:nth-child(2), table td:nth-child(2) { width: 15%; min-width: 50px; }
+            table th:nth-child(3), table td:nth-child(3) { width: 13%; min-width: 45px; }
+            table th:nth-child(4), table td:nth-child(4) { width: 15%; min-width: 50px; }
+            table th:nth-child(5), table td:nth-child(5) { width: 12%; min-width: 40px; }
+            table th:nth-child(6), table td:nth-child(6) { width: 12%; min-width: 40px; }
+            table th:nth-child(7), table td:nth-child(7) { width: 10%; min-width: 35px; }
+            table th:nth-child(8), table td:nth-child(8) { width: 12%; min-width: 40px; }
+            table th:nth-child(9), table td:nth-child(9) { width: 8%; min-width: 25px; }
+            table th:nth-child(10), table td:nth-child(10) { width: 10%; min-width: 65px; }
+            
+            /* Header - Clean Orange */
+            table th {
+                font-size: 0.6rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+                color: white;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            }
+            
+            /* Rows - Simple Hover */
+            table tbody tr:hover {
+                background: #f0f8ff;
+                transform: translateX(2px);
+                box-shadow: 2px 0 0 #ffa500;
+            }
+
+            /* Form Inputs - Bigger Touch Targets */
+            table input,
+            table textarea,
+            table select {
+                font-size: 0.65rem;
+                padding: 0.35rem;
+                border-radius: 4px;
+                border: 1px solid #d1d5db;
+            }
+            
+            table input:focus,
+            table textarea:focus,
+            table select:focus {
+                border-color: #ffa500;
+                box-shadow: 0 0 0 2px rgba(255,165,0,0.2);
+                outline: none;
+            }
+
+            /* Action Buttons - Better Touch */
+            .action-icon {
+                font-size: 0.85rem;
+                padding: 0.3rem;
+                border-radius: 4px;
+                min-width: 26px;
+                height: 26px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255,165,0,0.1);
+                margin: 0 2px;
+            }
+            
+            .action-icon:hover {
+                background: rgba(255,165,0,0.2);
+                transform: scale(1.1);
+            }
+            
+            .action-save-btn {
+                font-size: 0.5rem;
+                padding: 0rem;
+                border-radius: 6px;
+                min-width: 20px;
+                height: 20px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+            #addNewRow {
+                padding: 0.5rem 0.3rem;     /* Smaller padding */
+                font-size: 0.65rem;         /* Smaller text */
+                line-height: 1;             /* Tighten line height */
+                max-width: 110px;           /* Optional: limit width */
+            }
+
+            /* Pagination - Compact */
+            #pagination {
+                gap: 0.3rem;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            #pagination button,
+            #pagination span.page-num {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                border-radius: 6px;
+                min-width: 30px;
+                height: 30px;
+                font-weight: 600;
+            }
+
+            /* Toast - Full Width */
+            .toast-container {
+                bottom: 15px;
+                left: 10px;
+                right: 10px;
+            }
+            
+            .toast {
+                font-size: 0.8rem;
+                border-radius: 8px;
+                max-width: 100%;
+                backdrop-filter: blur(10px);
+            }
+
+            /* Validation - Simple Shake */
+            .is-invalid {
+                border-color: #ef4444 !important;
+                background: #fef2f2 !important;
+                animation: simpleShake 0.3s ease;
+            }
+            
+            @keyframes simpleShake {
+                0%, 100% { transform: translateX(0); }
+                25%, 75% { transform: translateX(-3px); }
+                50% { transform: translateX(3px); }
+            }
+
+            /* New Row - Light Green */
+            .new-entry-row {
+                background: #f0fdf4 !important;
+                border: 2px solid #bbf7d0 !important;
+            }
+            
+            .new-entry-row .form-control,
+            .new-entry-row textarea {
+                background: white !important;
+                border-color: #22c55e !important;
+            }
+
+            /* Edit Mode - Light Yellow */
+            .edit-mode {
+                background: #fefce8 !important;
+                border: 2px solid #fde047 !important;
+            }
+        }
+        
     </style>
 </head>
 <body>
