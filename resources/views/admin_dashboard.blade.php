@@ -390,9 +390,14 @@
         }
         @media (max-width: 360px) {
             .main-container {
-                padding: 0.5rem; /* Reduced padding for main container */
-                margin: 0.5rem; /* Smaller margin */
-                border-radius: 6px; /* Smaller border radius */
+                width: 100vw;             /* Full viewport width */
+                margin-left: -0.52rem;           /* Remove left margin */
+                margin-right: 0;          /* Remove right margin */
+                margin-top: 0.5rem;       /* Keep top margin */
+                margin-bottom: 0.5rem;    /* Keep bottom margin */
+                padding: 0.5rem;          /* Inner spacing */
+                box-sizing: border-box;   /* Prevent overflow */
+                border-radius: 2px;
             }
             .navbar {
                 padding: 0.3rem 0.6rem; /* Reduced navbar padding */
@@ -567,13 +572,18 @@
                 font-size: 0.5rem; /* Smaller font size */
             }
             .search-bar {
-                flex-direction: column; /* Stack search bar elements vertically */
-                gap: 0.3rem; /* Smaller gap */
+                flex-direction:row;
+                gap: 0.1rem; /* Reduced from 0.3rem */
+                max-width: 160px !important;
+                margin-bottom: 0.01rem;
+                align-items: stretch;
             }
             .search-bar input,
             .search-bar select {
-                font-size: 0.65rem; /* Smaller font size */
-                padding: 0.2rem; /* Smaller padding */
+                font-size: 0.55rem; /* Smaller font size */
+                padding: 0.15rem 0.1rem; /* Smaller padding */
+                height: 1.6rem;
+                line-height: 1;
             }
             .search-bar select {
                 width: 100%; /* Full width for select */
