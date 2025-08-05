@@ -454,34 +454,36 @@
 
             /* Table - Compact & Scrollable */
             .callbacks-table-wrapper {
-                border-radius: 12px;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+                margin: 0rem;
+                padding: 0rem;
             }
             
             table {
-                min-width: 340px;
+                min-width: 800px;
                 font-size: 0.65rem;
             }
             
             table th,
             table td {
-                padding: 0.4rem 0.3rem;
+                padding: 0.2rem 0.3rem;
+                min-width: 35px;
+                max-width: 70px;
                 font-size: 0.65rem;
-                min-width: 30px;
             }
             
             /* Column Widths - Optimized */
-            table th:nth-child(1), table td:nth-child(1) { width: 8%; min-width: 25px; }
-            table th:nth-child(2), table td:nth-child(2) { width: 15%; min-width: 50px; }
-            table th:nth-child(3), table td:nth-child(3) { width: 13%; min-width: 45px; }
-            table th:nth-child(4), table td:nth-child(4) { width: 15%; min-width: 50px; }
-            table th:nth-child(5), table td:nth-child(5) { width: 12%; min-width: 40px; }
-            table th:nth-child(6), table td:nth-child(6) { width: 12%; min-width: 40px; }
-            table th:nth-child(7), table td:nth-child(7) { width: 10%; min-width: 35px; }
-            table th:nth-child(8), table td:nth-child(8) { width: 12%; min-width: 40px; }
-            table th:nth-child(9), table td:nth-child(9) { width: 8%; min-width: 25px; }
-            table th:nth-child(10), table td:nth-child(10) { width: 10%; min-width: 65px; }
+            table th:nth-child(1), table td:nth-child(1) { min-width: 30px; max-width: 40px; } /* S.No */
+            table th:nth-child(2), table td:nth-child(2) { min-width: 50px; max-width: 70px; } /* Customer Name */
+            table th:nth-child(3), table td:nth-child(3) { min-width: 50px; max-width: 70px; } /* Phone */
+            table th:nth-child(4), table td:nth-child(4) { min-width: 50px; max-width: 70px; } /* Email */
+            table th:nth-child(5), table td:nth-child(5) { min-width: 50px; max-width: 70px; } /* Address */
+            table th:nth-child(6), table td:nth-child(6) { min-width: 50px; max-width: 70px; } /* Website */
+            table th:nth-child(7), table td:nth-child(7) { min-width: 50px; max-width: 70px; } /* Remarks */
+            table th:nth-child(8), table td:nth-child(8) { min-width: 50px; max-width: 70px; } /* Notes */
+            table th:nth-child(9), table td:nth-child(9) { min-width: 50px; max-width: 70px}
+            table th:nth-child(10), table td:nth-child(10) { min-width: 60px; max-width: 80px; } /* Actions */
             
             /* Header - Clean Orange */
             table th {

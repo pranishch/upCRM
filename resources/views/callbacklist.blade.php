@@ -384,38 +384,52 @@
                 padding: 0.5rem;
             }
             
-            section {
-                padding: 1rem;
-                margin-bottom: 1rem;
+             section {
+                padding: 1rem 0.7rem;
+                border-radius: 12px;
+                margin-bottom: 1.2rem;
             }
-            
-            /* Search and controls */
-            .top-controls {
+
+            /* Controls - Stack Vertically */
+           .top-controls {
                 flex-direction: column;
                 gap: 0.1rem !important;
                 align-items: stretch;
             }
             
             .search-bar {
-                flex-direction:column;
+                flex-direction:row;
                 gap: 0.2rem; /* Reduced from 0.3rem */
                 max-width: 100%;
                 margin-bottom: 0.01rem;
             }
             
-            .search-bar select,
-            .search-bar input {
+            .top-controls select,
+            .top-controls input {
                 width: 100%;
-                max-width: 100%;
-                font-size: 0.75rem !important; /* Reduced from 0.8rem */
-                padding: 0.2rem; /* Reduced from 0.4rem */
+                padding: 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 8px;
+                border: 2px solid #e5e7eb;
+            }
+            
+            .top-controls select:focus,
+            .top-controls input:focus {
+                border-color: #ffa500;
+                box-shadow: 0 0 0 3px rgba(255,165,0,0.1);
+                outline: none;
             }
             
             .top-controls button {
                 width: 100%;
-                padding: 0.5rem;
+                padding: 0.6rem;
                 font-size: 0.8rem;
+                border-radius: 8px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
+
             
             /* Table wrapper */
             .callbacks-table-wrapper {
