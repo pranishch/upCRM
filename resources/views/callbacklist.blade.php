@@ -357,6 +357,7 @@
                 gap: 0.5rem;
                 justify-content: space-between;
                 flex-wrap: wrap;
+                padding: 5px;
             }
             
             .user-info h2 {
