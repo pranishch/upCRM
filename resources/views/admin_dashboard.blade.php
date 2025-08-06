@@ -515,12 +515,18 @@
                 min-width: 800px; /* Slightly reduced min-width for table */
             }
             .table th {
-                font-size: 0.55rem; /* Reduced font size for table headings */
-                padding: 0.2rem 0.3rem; /* Reduced padding */
+                font-size: 0.55rem;
+                padding: 0.2rem 0.3rem;
+                height: 30px; /* Fixed height for headings */
+                line-height: 1.2; /* Consistent text alignment */
+                vertical-align: middle; /* Center content vertically */
             }
             .table td {
-                font-size: 0.5rem; /* Reduced font size for table data */
-                padding: 0.2rem 0.3rem; /* Reduced padding */
+                font-size: 0.5rem;
+                padding: 0.2rem 0.3rem;
+                height: 35px; /* Fixed height for data cells */
+                line-height: 1.2; /* Consistent text alignment */
+                vertical-align: middle; /* Center content vertically */
             }
             #allCallbacksTable .table-responsive {
                 max-height: 180px; /* Smaller table height */
@@ -1014,12 +1020,12 @@
                                                 <!-- Debug output to inspect role -->
                                                 <span style="display: none;">DEBUG: Role={{ $callback->createdBy->userProfile->role ?? 'No Profile' }}</span>
                                                 @if ($callback->createdBy->userProfile && $callback->createdBy->userProfile->role == 'manager')
-                                                    <span>{{ $callback->createdBy->username ?? 'No Manager' }}</span>
+                                                    <span>{{ $callback->createdBy->username ?? 'no manager' }}</span>
                                                 @else
                                                     <select class="manager-select"
                                                             data-row-id="{{ $callback->id }}"
                                                             data-username="{{ $callback->customer_name ?? 'N/A' }}">
-                                                        <option value="" {{ !$callback->manager ? 'selected' : '' }}>No Manager</option>
+                                                        <option value="" {{ !$callback->manager ? 'selected' : '' }}>no manager</option>
                                                         @foreach ($managers as $manager)
                                                             <option value="{{ $manager->id }}" {{ $callback->manager && $callback->manager->id == $manager->id ? 'selected' : '' }}>{{ $manager->username }}</option>
                                                         @endforeach
