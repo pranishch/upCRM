@@ -214,45 +214,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
 
-    public function resetPassword(Request $request)
-    {
-        if ($request->input('action') === 'reset_password') {
-            $user = User::findOrFail($request->user_id);
-
-            // Prevent self password reset unless superuser
-            if ($user->id === Auth::id() && !Auth::user()->is_superuser) {
-                return redirect()->route('users.index')
-                    ->with('error', 'You cannot reset your own password.');
-            }
-
-            $validator = Validator::make($request->all(), [
-                'new_password' => 'required|min:8|max:255',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('users.index')
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            try {
-                $user->update([
-                    'password' => Hash::make($request->new_password)
-                ]);
-
-                return redirect()->route('users.index')
-                    ->with('success', "Password reset for {$user->username}!");
-
-            } catch (\Exception $e) {
-                \Log::error('Error resetting user password: ' . $e->getMessage());
-                
-                return redirect()->route('users.index')
-                    ->with('error', 'Failed to reset password. Please try again.');
-            }
-        }
-
-        return redirect()->route('users.index')->with('error', 'Invalid action.');
-    }
 
     public function destroy($id)
     {

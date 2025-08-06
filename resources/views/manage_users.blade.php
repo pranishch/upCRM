@@ -94,7 +94,6 @@
         }
         .table-hover tr:hover {
             background-color: rgba(78, 115, 223, 0.1); /* Subtle hover effect */
-            outline: 1px solid var(--primary-color); /* Outline on hover */
         }
         .role-badge {
             font-size: 0.75rem;
@@ -583,24 +582,6 @@
                                                 onclick="event.stopPropagation();">
                                             Edit
                                         </button>
-                                        <!-- <button class="btn btn-sm btn-action btn-outline-primary" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#changeRoleModal" 
-                                                data-user-id="{{ $user->id }}"
-                                                data-username="{{ $user->username }}"
-                                                title="Change Role"
-                                                onclick="event.stopPropagation();">
-                                            <i class="bi bi-person-gear"></i>
-                                        </button> -->
-                                        <button class="btn btn-sm btn-action btn-secondary" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#resetPasswordModal" 
-                                                data-user-id="{{ $user->id }}"
-                                                data-username="{{ $user->username }}"
-                                                title="Reset Password"
-                                                onclick="event.stopPropagation();">
-                                            Reset Password
-                                        </button>
                                         <a href="{{ route('users.delete', $user->id) }}" 
                                         class="btn btn-sm btn-action btn-outline-danger" 
                                         title="Delete User"
@@ -712,67 +693,6 @@
         </div>
     </div>
 
-    <!-- Change Role Modal -->
-    <!-- <div class="modal fade" id="changeRoleModal" tabindex="-1" aria-labelledby="changeRoleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="changeRoleModalLabel">Change Role for <span id="roleUsername"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="POST" action="{{ route('users.change_role') }}">
-                    @csrf
-                    <input type="hidden" name="action" value="change_role">
-                    <input type="hidden" name="user_id" id="changeRoleUserId">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="new_role" class="form-label">New Role</label>
-                            <select name="new_role" id="new_role" class="form-select">
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role }}">{{ ucfirst($role) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Change Role</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Reset Password Modal -->
-    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password for <span id="passwordUsername"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="POST" action="{{ route('users.reset_password') }}">
-                    @csrf
-                    <input type="hidden" name="action" value="reset_password">
-                    <input type="hidden" name="user_id" id="resetPasswordUserId">
-                    <div class="modal-body">
-                        <div class="mb-3 password-container">
-                            <label for="new_password" class="form-label">New Password</label>
-                            <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
-                            <i class="fas fa-eye password-toggle" id="resetPasswordToggle"></i>
-                            @error('new_password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Reset Password</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -807,27 +727,6 @@
                 modal.querySelector('#edit_email').value = email || '';
             });
 
-            var changeRoleModal = document.getElementById('changeRoleModal');
-            changeRoleModal.addEventListener('show.bs.modal', function(event) {
-                event.stopPropagation(); // Prevent row click
-                var button = event.relatedTarget;
-                var userId = button.getAttribute('data-user-id');
-                var username = button.getAttribute('data-username');
-                var modal = this;
-                modal.querySelector('#changeRoleUserId').value = userId;
-                modal.querySelector('#roleUsername').textContent = username;
-            });
-
-            var resetPasswordModal = document.getElementById('resetPasswordModal');
-            resetPasswordModal.addEventListener('show.bs.modal', function(event) {
-                event.stopPropagation(); // Prevent row click
-                var button = event.relatedTarget;
-                var userId = button.getAttribute('data-user-id');
-                var username = button.getAttribute('data-username');
-                var modal = this;
-                modal.querySelector('#resetPasswordUserId').value = userId;
-                modal.querySelector('#passwordUsername').textContent = username;
-            });
 
             const createPassword1Toggle = document.getElementById('createPassword1Toggle');
             const createPassword1Input = document.getElementById('password');
@@ -847,14 +746,14 @@
                 this.classList.toggle('fa-eye-slash');
             });
 
-            const resetPasswordToggle = document.getElementById('resetPasswordToggle');
-            const resetPasswordInput = document.getElementById('new_password');
-            resetPasswordToggle.addEventListener('click', function() {
-                const type = resetPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                resetPasswordInput.setAttribute('type', type);
-                this.classList.toggle('fa-eye');
-                this.classList.toggle('fa-eye-slash');
-            });
+            // const resetPasswordToggle = document.getElementById('resetPasswordToggle');
+            // const resetPasswordInput = document.getElementById('new_password');
+            // resetPasswordToggle.addEventListener('click', function() {
+            //     const type = resetPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            //     resetPasswordInput.setAttribute('type', type);
+            //     this.classList.toggle('fa-eye');
+            //     this.classList.toggle('fa-eye-slash');
+            // });
         });
     </script>
 </body>
