@@ -204,11 +204,17 @@ class AdminDashboardController extends Controller
                 'message' => 'Callback updated successfully.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error("Validation error: " . json_encode($e->errors()));
-            return response()->json(['status' => 'error', 'message' => $e->errors()[array_key_first($e->errors())][0]], 400);
+            Log::error("Validation error updating callback: " . json_encode($e->errors()));
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed: ' . collect($e->errors())->flatten()->first(),
+            ], 422);
         } catch (\Exception $e) {
             Log::error("Error updating callback: {$e->getMessage()}");
-            return response()->json(['status' => 'error', 'message' => "Error: {$e->getMessage()}"], 500);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while updating the callback.',
+            ], 500);
         }
     }
     public function getProfile()

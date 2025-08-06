@@ -1279,123 +1279,130 @@
         });
 
         function toggleEditMode(row, isEditMode) {
-            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-child(8))'); // Exclude Actions and Assigned Manager
-            if (isEditMode) {
-                cells.forEach((cell, index) => {
-                    if (index === 5) { // Remarks column
-                        const displayText = cell.querySelector('.display-text');
-                        const select = cell.querySelector('.editable-input');
-                        const value = displayText.textContent.trim() === 'N/A' ? '' : displayText.textContent.trim();
-                        displayText.style.display = 'none';
-                        select.style.display = 'block';
-                        select.value = value;
-                        cell.setAttribute('data-original-value', value);
-                    } else {
-                        const value = cell.textContent.trim() === 'N/A' ? '' : cell.textContent.trim();
-                        cell.setAttribute('data-original-value', value);
-                        if (index === 2) { // Email
-                            cell.innerHTML = `<input type="email" class="form-control" value="${value}" />`;
-                        } else if (index === 4) { // Website
-                            cell.innerHTML = `<input type="url" class="form-control" value="${value}" />`;
-                        } else {
-                            cell.innerHTML = `<input type="text" class="form-control" value="${value}" />`;
-                        }
-                    }
-                });
-                row.querySelector('.action-buttons').innerHTML = `
-                    <button class="btn btn-success btn-action save-callback" title="Save Changes">
-                        <i class="bi bi-check-circle"></i>
-                    </button>
-                    <button class="btn btn-secondary btn-action cancel-callback" title="Cancel">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                `;
+    // Exclude only Actions and Assigned Manager (if admin)
+    const cells = row.querySelectorAll('td:not(:last-child){!! $user_role == 'admin' ? ':not(:nth-child(8))' : '' !!}');
+    if (isEditMode) {
+        cells.forEach((cell, index) => {
+            if (index === 5) { // Remarks column
+                const displayText = cell.querySelector('.display-text');
+                const select = cell.querySelector('.editable-input');
+                const value = displayText.textContent.trim() === 'N/A' ? '' : displayText.textContent.trim();
+                displayText.style.display = 'none';
+                select.style.display = 'block';
+                select.value = value;
+                cell.setAttribute('data-original-value', value);
             } else {
-                cells.forEach((cell, index) => {
-                    if (index === 5) { // Remarks column
-                        const displayText = cell.querySelector('.display-text');
-                        const select = cell.querySelector('.editable-input');
-                        const originalValue = cell.getAttribute('data-original-value') || '';
-                        displayText.textContent = originalValue || 'N/A';
-                        displayText.style.display = 'block';
-                        select.style.display = 'none';
-                    } else {
-                        const originalValue = cell.getAttribute('data-original-value') || 'N/A';
-                        cell.textContent = originalValue;
-                    }
-                });
-                const callbackId = row.getAttribute('data-callback-id');
-                row.querySelector('.action-buttons').innerHTML = `
-                    <button class="btn btn-info btn-action edit-callback" data-callback-id="${callbackId}" title="Edit Callback">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-danger btn-action delete-callback" data-callback-id="${callbackId}" title="Delete Callback">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                `;
+                const value = cell.textContent.trim() === 'N/A' ? '' : cell.textContent.trim();
+                cell.setAttribute('data-original-value', value);
+                if (index === 2) { // Email
+                    cell.innerHTML = `<input type="email" class="form-control" value="${value}" />`;
+                } else if (index === 4) { // Website
+                    cell.innerHTML = `<input type="url" class="form-control" value="${value}" />`;
+                } else {
+                    cell.innerHTML = `<input type="text" class="form-control" value="${value}" />`;
+                }
             }
-        }
+        });
+        row.querySelector('.action-buttons').innerHTML = `
+            <button class="btn btn-success btn-action save-callback" title="Save Changes">
+                <i class="bi bi-check-circle"></i>
+            </button>
+            <button class="btn btn-secondary btn-action cancel-callback" title="Cancel">
+                <i class="bi bi-x-circle"></i>
+            </button>
+        `;
+    } else {
+        cells.forEach((cell, index) => {
+            if (index === 5) { // Remarks column
+                const displayText = cell.querySelector('.display-text');
+                const select = cell.querySelector('.editable-input');
+                const originalValue = cell.getAttribute('data-original-value') || '';
+                displayText.textContent = originalValue || 'N/A';
+                displayText.style.display = 'block';
+                select.style.display = 'none';
+            } else {
+                const originalValue = cell.getAttribute('data-original-value') || 'N/A';
+                cell.textContent = originalValue;
+            }
+        });
+        const callbackId = row.getAttribute('data-callback-id');
+        row.querySelector('.action-buttons').innerHTML = `
+            <button class="btn btn-info btn-action edit-callback" data-callback-id="${callbackId}" title="Edit Callback">
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-danger btn-action delete-callback" data-callback-id="${callbackId}" title="Delete Callback">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+    }
+}
 
         function saveCallback(row, callbackId) {
-            const cells = row.querySelectorAll('td:not(:first-child):not(:last-child):not(:nth-child(9))');
-            const data = {
-                callback_id: callbackId,
-                customer_name: cells[0].querySelector('input').value.trim(),
-                phone_number: cells[1].querySelector('input').value.trim(),
-                email: cells[2].querySelector('input').value.trim() || null,
-                address: cells[3].querySelector('input').value.trim() || null,
-                website: cells[4].querySelector('input').value.trim() || null,
-                remarks: cells[5].querySelector('select').value || null,
-                notes: cells[6].querySelector('input').value.trim() || null
-            };
+    // Select all editable cells except Actions and Assigned Manager (if admin)
+    const cells = row.querySelectorAll('td:not(:last-child){!! $user_role == 'admin' ? ':not(:nth-child(8))' : '' !!}');
+    const data = {
+        callback_id: callbackId,
+        customer_name: cells[0].querySelector('input')?.value.trim() || '',
+        phone_number: cells[1].querySelector('input')?.value.trim() || '',
+        email: cells[2].querySelector('input')?.value.trim() || null,
+        address: cells[3].querySelector('input')?.value.trim() || null,
+        website: cells[4].querySelector('input')?.value.trim() || null,
+        remarks: cells[5].querySelector('select')?.value || null,
+        notes: cells[6].querySelector('input')?.value.trim() || null
+    };
 
-            fetch('{{ route("admin_dashboard.update") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.status === 'success') {
-                    cells.forEach((cell, index) => {
-                        if (index === 5) { // Remarks column
-                            const displayText = cell.querySelector('.display-text');
-                            const select = cell.querySelector('.editable-input');
-                            const value = select.value || 'N/A';
-                            displayText.textContent = value;
-                            displayText.style.display = 'block';
-                            select.style.display = 'none';
-                            cell.setAttribute('data-original-value', value === 'N/A' ? '' : value);
-                        } else {
-                            const input = cell.querySelector('input');
-                            const value = input.value.trim() || 'N/A';
-                            cell.textContent = value;
-                            cell.setAttribute('data-original-value', value === 'N/A' ? '' : value);
-                        }
-                    });
-                    row.querySelector('.action-buttons').innerHTML = `
-                        <button class="btn btn-info btn-action edit-callback" data-callback-id="${callbackId}" title="Edit Callback">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-danger btn-action delete-callback" data-callback-id="${callbackId}" title="Delete Callback">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    `;
-                    showToast(result.message, 'success');
+    // Validate required fields client-side
+    if (!data.customer_name || !data.phone_number) {
+        showToast('Customer Name and Phone Number are required.', 'danger');
+        return;
+    }
+
+    fetch('{{ route("admin_dashboard.update") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.status === 'success') {
+            cells.forEach((cell, index) => {
+                if (index === 5) { // Remarks column
+                    const displayText = cell.querySelector('.display-text');
+                    const select = cell.querySelector('.editable-input');
+                    const value = select.value || 'N/A';
+                    displayText.textContent = value;
+                    displayText.style.display = 'block';
+                    select.style.display = 'none';
+                    cell.setAttribute('data-original-value', value === 'N/A' ? '' : value);
                 } else {
-                    toggleEditMode(row, false);
-                    showToast('Error: ' + result.message, 'danger');
+                    const input = cell.querySelector('input');
+                    const value = input.value.trim() || 'N/A';
+                    cell.textContent = value;
+                    cell.setAttribute('data-original-value', value === 'N/A' ? '' : value);
                 }
-            })
-            .catch(() => {
-                toggleEditMode(row, false);
-                showToast('An error occurred while saving the callback.', 'danger');
             });
+            row.querySelector('.action-buttons').innerHTML = `
+                <button class="btn btn-info btn-action edit-callback" data-callback-id="${callbackId}" title="Edit Callback">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-action delete-callback" data-callback-id="${callbackId}" title="Delete Callback">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+            showToast(result.message, 'success');
+        } else {
+            toggleEditMode(row, false);
+            showToast('Error: ' + (result.message || 'Failed to update callback.'), 'danger');
         }
-
+    })
+    .catch(error => {
+        toggleEditMode(row, false);
+        showToast('An error occurred while saving the callback: ' + error.message, 'danger');
+    });
+}
         function showDeleteModal(callbackId, customerName) {
             const modal = new bootstrap.Modal(document.getElementById('deleteCallbackModal'));
             document.getElementById('deleteCallbackName').textContent = customerName;
