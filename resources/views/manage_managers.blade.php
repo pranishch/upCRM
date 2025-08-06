@@ -286,148 +286,148 @@
         }
         @media (max-width: 360px) {
             .navbar {
-                padding: 0.3rem 0.5rem;
+                padding: 0.2rem 0.4rem;
             }
             .navbar-brand {
-                font-size: 0.8rem;
+                font-size: 0.7rem;
             }
             .navbar-toggler {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.8rem;
+                padding: 0.15rem 0.3rem;
+                font-size: 0.7rem;
             }
             .dropdown-menu {
-                font-size: 0.8rem;
+                font-size: 0.7rem;
             }
             .text-light {
-                font-size: 0.75rem;
+                font-size: 0.65rem;
             }
             .btn-logout {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.75rem;
+                padding: 0.2rem 0.5rem;
+                font-size: 0.65rem;
             }
             .container {
-                margin-left: 5px;
-                padding: 0 0.5rem;
+                margin-left: 4px;
+                padding: 0 0.4rem;
             }
             .main-container {
-                margin: 0.5rem auto;
-                padding: 0.75rem;
+                margin: 0.4rem auto;
+                padding: 0.6rem;
                 max-width: 100%;
             }
             .d-flex.justify-content-between {
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 0.4rem;
                 align-items: stretch;
             }
             h4 {
-                font-size: 1rem;
-                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
             }
             .btn-primary {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
+                padding: 0.3rem 0.5rem;
+                font-size: 0.65rem;
                 width: 100%;
             }
             .bi-person-plus {
-                font-size: 0.7rem;
-                margin-right: 0.2rem;
+                font-size: 0.6rem;
+                margin-right: 0.15rem;
             }
             .table-responsive {
-                margin: 0 -0.75rem;
-                padding: 0 0.25rem;
+                margin: 0 -0.6rem;
+                padding: 0 0.2rem;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
             .table {
-                min-width: 280px;
-                font-size: 0.55rem;
-                line-height: 1.1;
+                min-width: 260px;
+                font-size: 0.5rem;
+                line-height: 1;
             }
             .table th, .table td {
-                padding: 0.15rem 0.1rem;
-                font-size: 0.55rem;
+                padding: 0.1rem 0.08rem;
+                font-size: 0.5rem;
                 vertical-align: middle;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 60px;
-            }
-            .table th {
-                font-size: 0.5rem;
-                font-weight: 600;
-                padding: 0.1rem 0.05rem;
-            }
-            .table th:first-child, .table td:first-child {
-                max-width: 40px;
-            }
-            .table th:nth-child(2), .table td:nth-child(2) {
-                max-width: 80px;
-            }
-            .table th:nth-child(3), .table td:nth-child(3) {
-                max-width: 70px;
-            }
-            .table th:last-child, .table td:last-child {
                 max-width: 50px;
             }
+            .table th {
+                font-size: 0.45rem;
+                font-weight: 600;
+                padding: 0.08rem 0.04rem;
+            }
+            .table th:first-child, .table td:first-child {
+                max-width: 35px;
+            }
+            .table th:nth-child(2), .table td:nth-child(2) {
+                max-width: 70px;
+            }
+            .table th:nth-child(3), .table td:nth-child(3) {
+                max-width: 60px;
+            }
+            .table th:last-child, .table td:last-child {
+                max-width: 45px;
+            }
             .action-buttons {
-                gap: 0.1rem;
+                gap: 0.08rem;
                 justify-content: flex-start;
                 flex-wrap: nowrap;
             }
             .action-buttons .btn-action {
-                padding: 0.1rem 0.15rem;
-                font-size: 0.5rem;
-                min-width: 18px;
-                height: 18px;
+                padding: 0.08rem 0.12rem;
+                font-size: 0.45rem;
+                min-width: 16px;
+                height: 16px;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 2px;
             }
             .action-buttons .btn-action i {
-                font-size: 0.5rem;
+                font-size: 0.45rem;
             }
             .modal-dialog {
-                margin: 0.2rem;
-                max-width: calc(100vw - 0.4rem);
+                margin: 0.15rem;
+                max-width: calc(100vw - 0.3rem);
             }
             .modal-content {
-                border-radius: 6px;
+                border-radius: 5px;
             }
             .modal-header {
-                padding: 0.75rem;
+                padding: 0.6rem;
             }
             .modal-title {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
             .modal-body {
-                padding: 0.75rem;
+                padding: 0.6rem;
             }
             .modal-footer {
-                padding: 0.5rem 0.75rem;
-                gap: 0.3rem;
+                padding: 0.4rem 0.6rem;
+                gap: 0.2rem;
             }
             .form-control, .form-select {
-                font-size: 0.75rem;
-                padding: 0.4rem;
+                font-size: 0.65rem;
+                padding: 0.3rem;
             }
             .form-label {
-                font-size: 0.8rem;
-                margin-bottom: 0.3rem;
+                font-size: 0.7rem;
+                margin-bottom: 0.2rem;
             }
             .password-toggle {
-                font-size: 0.8rem;
-                right: 8px;
+                font-size: 0.7rem;
+                right: 7px;
             }
             .modal-footer .btn {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
+                padding: 0.3rem 0.5rem;
+                font-size: 0.65rem;
                 flex: 1;
             }
             .alert {
-                font-size: 0.8rem;
-                padding: 0.5rem;
-                margin-bottom: 0.75rem;
+                font-size: 0.7rem;
+                padding: 0.4rem;
+                margin-bottom: 0.6rem;
             }
         }
     </style>
