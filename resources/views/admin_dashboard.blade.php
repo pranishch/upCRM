@@ -1278,10 +1278,9 @@
             }
         });
 
-    function toggleEditMode(row, isEditMode) {
+        function toggleEditMode(row, isEditMode) {
         // Exclude only Actions and Assigned Manager (if admin)
-        const cells = row.querySelectorAll('td:not(:last-child){!! $user_role == 'admin' ? ':not(:nth-child(8))' : '' !!}');
-        if (isEditMode) {
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-last-child(2)){!! $user_role == 'admin' ? ':not(:nth-child(8))' : '' !!}');        if (isEditMode) {
             cells.forEach((cell, index) => {
                 if (index === 5) { // Remarks column
                     const displayText = cell.querySelector('.display-text');
@@ -1339,8 +1338,7 @@
 
     function saveCallback(row, callbackId) {
         // Select all editable cells except Actions and Assigned Manager (if admin)
-        const cells = row.querySelectorAll('td:not(:last-child){!! $user_role == 'admin' ? ':not(:nth-child(8))' : '' !!}');
-        const data = {
+            const cells = row.querySelectorAll('td:not(:last-child):not(:nth-last-child(2)){!! $user_role == 'admin' ? ':not(:nth-child(8))' : '' !!}');        const data = {
             callback_id: callbackId,
             customer_name: cells[0].querySelector('input')?.value.trim() || '',
             phone_number: cells[1].querySelector('input')?.value.trim() || '',
