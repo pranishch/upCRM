@@ -213,6 +213,52 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
+    public function resetPassword(Request $request)
+    {
+        if ($request->input('action') === 'reset_password') {
+            if (!$this->isAdminUser(Auth::user())) {
+                return redirect()->route('users.index')
+                    ->with('error', 'Access denied. Admin privileges required to reset passwords.');
+            }
+
+            $user = User::findOrFail($request->user_id);
+
+            // Prevent self-password reset unless superuser
+            if ($user->id === Auth::id() && !Auth::user()->is_superuser) {
+                return redirect()->route('users.index')
+                    ->with('error', 'You cannot reset your own password.');
+            }
+
+            $validator = Validator::make($request->all(), [
+                'new_password' => 'required|confirmed|min:8',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('users.index')
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('error', 'Validation failed. Please check the password inputs.');
+            }
+
+            try {
+                $user->update([
+                    'password' => Hash::make($request->new_password),
+                ]);
+
+                \Log::info('UserController::resetPassword - Password reset for user: ' . $user->id);
+
+                return redirect()->route('users.index')
+                    ->with('success', "Password for user {$user->username} reset successfully!");
+
+            } catch (\Exception $e) {
+                \Log::error('UserController::resetPassword - Error resetting password: ' . $e->getMessage());
+                return redirect()->route('users.index')
+                    ->with('error', 'Failed to reset password: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('users.index')->with('error', 'Invalid action.');
+    }
 
 
     public function destroy($id)

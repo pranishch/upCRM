@@ -558,6 +558,15 @@
                                                 onclick="event.stopPropagation();">
                                             Edit
                                         </button>
+                                        <button class="btn btn-sm btn-action btn-outline-warning"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#resetPasswordModal" 
+                                                data-user-id="{{ $user->id }}"
+                                                data-username="{{ $user->username }}"
+                                                title="Reset Password"
+                                                onclick="event.stopPropagation();">
+                                            Reset Password
+                                        </button>
                                         <a href="{{ route('users.delete', $user->id) }}" 
                                         class="btn btn-sm btn-action btn-outline-danger" 
                                         title="Delete User"
@@ -669,6 +678,45 @@
         </div>
     </div>
 
+    <!-- Reset Password Modal -->
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password for <span id="resetUsername"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ route('users.reset-password') }}">
+                    @csrf
+                    <input type="hidden" name="action" value="reset_password">
+                    <input type="hidden" name="user_id" id="resetUserId">
+                    <div class="modal-body">
+                        <div class="mb-3 password-container">
+                            <label for="new_password" class="form-label">New Password</label>
+                            <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
+                            <i class="fas fa-eye password-toggle" id="resetPassword1Toggle"></i>
+                            @error('new_password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 password-container">
+                            <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
+                            <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control @error('new_password_confirmation') is-invalid @enderror" required>
+                            <i class="fas fa-eye password-toggle" id="resetPassword2Toggle"></i>
+                            @error('new_password_confirmation')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Reset Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -702,7 +750,17 @@
                 modal.querySelector('#edit_username').value = username;
                 modal.querySelector('#edit_email').value = email || '';
             });
-
+            
+            var resetPasswordModal = document.getElementById('resetPasswordModal');
+            resetPasswordModal.addEventListener('show.bs.modal', function(event) {
+                event.stopPropagation(); // Prevent row click
+                var button = event.relatedTarget;
+                var userId = button.getAttribute('data-user-id');
+                var username = button.getAttribute('data-username');
+                var modal = this;
+                modal.querySelector('#resetUserId').value = userId;
+                modal.querySelector('#resetUsername').textContent = username;
+            });
 
             const createPassword1Toggle = document.getElementById('createPassword1Toggle');
             const createPassword1Input = document.getElementById('password');
@@ -721,15 +779,24 @@
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
             });
+            const resetPassword1Toggle = document.getElementById('resetPassword1Toggle');
+            const resetPassword1Input = document.getElementById('new_password');
+            resetPassword1Toggle.addEventListener('click', function() {
+                const type = resetPassword1Input.getAttribute('type') === 'password' ? 'text' : 'password';
+                resetPassword1Input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
 
-            // const resetPasswordToggle = document.getElementById('resetPasswordToggle');
-            // const resetPasswordInput = document.getElementById('new_password');
-            // resetPasswordToggle.addEventListener('click', function() {
-            //     const type = resetPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            //     resetPasswordInput.setAttribute('type', type);
-            //     this.classList.toggle('fa-eye');
-            //     this.classList.toggle('fa-eye-slash');
-            // });
+            const resetPassword2Toggle = document.getElementById('resetPassword2Toggle');
+            const resetPassword2Input = document.getElementById('new_password_confirmation');
+            resetPassword2Toggle.addEventListener('click', function() {
+                const type = resetPassword2Input.getAttribute('type') === 'password' ? 'text' : 'password';
+                resetPassword2Input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+
         });
     </script>
 </body>

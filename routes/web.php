@@ -22,7 +22,7 @@
       Route::post('/users', [UserController::class, 'store'])->name('users.store');
       Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
       Route::post('/users/change-role', [UserController::class, 'changeRole'])->name('users.change_role');
-      Route::post('/users/reset-password', [UserController::class, 'resetPassword'])->name('users.reset_password');
+      Route::post('/users/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
       Route::get('/users/{id}/delete', [UserController::class, 'destroy'])->name('users.delete');
       Route::post('/users/callback/update', [UserController::class, 'updateCallback'])->name('users.update_callback');
 
