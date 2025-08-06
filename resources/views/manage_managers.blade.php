@@ -504,7 +504,7 @@
                         <tr>
                             <th style="width: 25%">Username</th>
                             <th style="width: 25%">Email</th>
-                            <th style="width: 25%">Status</th>
+                           
                             <th style="width: 25%">Actions</th>
                         </tr>
                     </thead>
@@ -514,13 +514,7 @@
                             <tr onclick="window.location='{{ route('manager_dashboard', $manager->id) }}';">
                                 <td>{{ $manager->username }}</td>
                                 <td>{{ $manager->email ?? 'No email' }}</td>
-                                <td>
-                                    @if ($manager->is_active)
-                                        <span class="badge bg-success">Active</span>
-                                    @else
-                                        <span class="badge bg-danger">Inactive</span>
-                                    @endif
-                                </td>
+                    
                                 <td>
                                     <div class="action-buttons">
                                         <button class="btn btn-sm btn-action btn-outline-primary" 
@@ -533,7 +527,7 @@
                                                 onclick="event.stopPropagation();">
                                             Edit
                                         </button>
-                                        <button class="btn btn-sm btn-action btn-secondary" 
+                                        <button class="btn btn-sm btn-action  btn-outline-warning" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#resetPasswordModal" 
                                                 data-user-id="{{ $manager->id }}"
@@ -697,8 +691,16 @@
                         <div class="mb-3 password-container">
                             <label for="new_password" class="form-label">New Password</label>
                             <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
-                            <i class="fas fa-eye password-toggle" id="resetPasswordToggle"></i>
+                            <i class="fas fa-eye password-toggle" id="resetPassword1Toggle"></i>
                             @error('new_password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 password-container">
+                            <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
+                            <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control @error('new_password_confirmation') is-invalid @enderror" required>
+                            <i class="fas fa-eye password-toggle" id="resetPassword2Toggle"></i>
+                            @error('new_password_confirmation')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -784,11 +786,20 @@
                 this.classList.toggle('fa-eye-slash');
             });
 
-            const resetPasswordToggle = document.getElementById('resetPasswordToggle');
-            const resetPasswordInput = document.getElementById('new_password');
-            resetPasswordToggle.addEventListener('click', function() {
-                const type = resetPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                resetPasswordInput.setAttribute('type', type);
+            const resetPassword1Toggle = document.getElementById('resetPassword1Toggle');
+            const resetPassword1Input = document.getElementById('new_password');
+            resetPassword1Toggle.addEventListener('click', function() {
+                const type = resetPassword1Input.getAttribute('type') === 'password' ? 'text' : 'password';
+                resetPassword1Input.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+
+            const resetPassword2Toggle = document.getElementById('resetPassword2Toggle');
+            const resetPassword2Input = document.getElementById('new_password_confirmation');
+            resetPassword2Toggle.addEventListener('click', function() {
+                const type = resetPassword2Input.getAttribute('type') === 'password' ? 'text' : 'password';
+                resetPassword2Input.setAttribute('type', type);
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
             });

@@ -214,7 +214,7 @@ class ManagerController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'new_password' => 'required|min:8|max:255',
+                'new_password' => 'required|confirmed|min:8|max:255',
             ]);
 
             if ($validator->fails()) {
