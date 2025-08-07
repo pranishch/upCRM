@@ -388,7 +388,7 @@
                 font-size: 0.75rem; /* Reduced from 0.8rem */
             }
         }
-        @media (max-width: 360px) {
+        @media (max-width: 700px) {
             .main-container {
                 width: 100vw;             /* Full viewport width */
                 margin-left: -0.52rem;           /* Remove left margin */

@@ -284,7 +284,7 @@
             background: var(--primary-color);
             border-radius: 4px;
         }
-        @media (max-width: 360px) {
+        @media (max-width: 700px) {
             .navbar {
                 padding: 0.2rem 0.4rem;
             }

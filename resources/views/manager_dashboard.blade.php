@@ -370,7 +370,7 @@
             }
         }
         /* SIMPLE & SWEET 360PX MOBILE STYLES */
-        @media (max-width: 360px) {
+        @media (max-width: 700px) {
             /* Header - Clean & Compact */
             .header {
                 padding: 0.8rem 0.6rem;

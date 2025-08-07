@@ -347,7 +347,7 @@
                 font-size: 0.75rem; /* Reduced from 0.8rem for readability */
             }
         }
-        @media (max-width: 360px) {
+        @media (max-width: 700px) {
             /* Header adjustments */
             .header {
                 padding: 0.3rem 0.5rem;
