@@ -28,7 +28,7 @@
             font-family:'Arial', sans-serif;
         }
         .callbacks-table-wrapper {
-            overflow-x: hidden;
+            overflow-x: auto;
             width: 100%;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -225,16 +225,16 @@
             white-space: nowrap;
             color: #000;
         }
-        table th:nth-child(1), table td:nth-child(1) { width: 5%; } /* S.N */
-        table th:nth-child(2), table td:nth-child(2) { width: 13%; } /* Customer Name */
-        table th:nth-child(3), table td:nth-child(3) { width: 12%; } /* Phone Number */
-        table th:nth-child(4), table td:nth-child(4) { width: 14%; } /* Email */
-        table th:nth-child(5), table td:nth-child(5) { width: 11%; } /* Address */
-        table th:nth-child(6), table td:nth-child(6) { width: 15%; } /* Website */
-        table th:nth-child(7), table td:nth-child(7) { width: 12%; } /* Remarks */
-        table th:nth-child(8), table td:nth-child(8) { width: 16%; } /* Notes */
-        table th:nth-child(9), table td:nth-child(9) { width: 9%; } /* Created By */
-        table th:nth-child(10), table td:nth-child(10) { width: 8%; } /* Actions */
+        table th:nth-child(1), table td:nth-child(1) { max-width: 50px; } /* S.N */
+        table th:nth-child(2), table td:nth-child(2) { max-width: 120px; } /* Customer Name */
+        table th:nth-child(3), table td:nth-child(3) { max-width: 100px; } /* Phone Number */
+        table th:nth-child(4), table td:nth-child(4) { max-width: 120px; } /* Email */
+        table th:nth-child(5), table td:nth-child(5) { max-width: 100px; } /* Address */
+        table th:nth-child(6), table td:nth-child(6) { max-width: 100px; } /* Website */
+        table th:nth-child(7), table td:nth-child(7) { max-width: 100px; } /* Remarks */
+        table th:nth-child(8), table td:nth-child(8) { max-width: 120px; } /* Notes */
+        table th:nth-child(9), table td:nth-child(9) { max-width: 80px; } /* Created By */
+        table th:nth-child(10), table td:nth-child(10) { max-width: 80px; } /* Actions */
         table tbody tr:nth-child(even) {
             background-color: whitesmoke;
         }
