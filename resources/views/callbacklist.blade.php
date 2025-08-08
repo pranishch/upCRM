@@ -768,7 +768,7 @@
                 const existingNewRow = document.querySelector('[data-new-row="true"]');
                 if (existingNewRow) return;
                 const newRow = createNewRowTemplate();
-                tableBody.appendChild(newRow);
+                tableBody.prepend(newRow);
                 setAddedAtTimestamp(newRow);
                 const firstInput = newRow.querySelector('input');
                 if (firstInput) firstInput.focus();
