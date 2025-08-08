@@ -26,10 +26,15 @@ class AuthController extends Controller
         $identifier = $request->input('email');
         $password = $request->input('password');
 
-        $user = User::where('email', $identifier)
-                    ->orWhere('username', $identifier)
-                    ->first();
-
+        // Check if identifier contains @ to determine if it's email or username
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            // It's an email - keep case-insensitive for emails (standard practice)
+            $user = User::whereRaw('BINARY email = ?', [$identifier])->first();
+        } else {
+            // It's a username - make it case-sensitive using BINARY
+            $user = User::whereRaw('BINARY username = ?', [$identifier])->first();
+        }
+        
         if ($user && Hash::check($password, $user->password)) {
             if ($user->is_active) {
                 Auth::login($user);
