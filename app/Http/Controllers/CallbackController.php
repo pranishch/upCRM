@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Callback;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -70,6 +71,16 @@ class CallbackController extends Controller
         if ($user_id) {
             $target_user = User::findOrFail($user_id);
             if (!$this->canAccessUserCallbacks($user, $target_user)) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'view_callbacks_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'target_user_id' => $user_id,
+                        'error' => 'Access denied to view callbacks',
+                    ]),
+                ]);
+                Log::error("User {$user->username} attempted to access callbacks for unauthorized user {$user_id}");
                 return redirect()->route('callbacklist')->with('error', 'Access denied. You can only view your own callbacks or those of authorized users.');
             }
             $callbacks = Callback::where('created_by', $target_user->id);
@@ -111,6 +122,16 @@ class CallbackController extends Controller
                     $callbacks = $callbacks->where('email', 'like', "%{$search_query}%");
                 }
             } catch (\Exception $e) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'search_callbacks_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'search_query' => $search_query,
+                        'search_field' => $search_field,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 Log::error("Search error: {$e->getMessage()}");
                 if ($request->ajax()) {
                     return response()->json(['status' => 'error', 'message' => 'Invalid search query'], 400);
@@ -147,10 +168,32 @@ class CallbackController extends Controller
                     'total_callbacks' => $callbacks->total()
                 ]);
             } catch (\Exception $e) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'render_ajax_callbacks_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 Log::error("AJAX rendering error: {$e->getMessage()}");
                 return response()->json(['status' => 'error', 'message' => 'Error rendering table content'], 500);
             }
         }
+
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'viewed_callbacks',
+            'details' => json_encode([
+                'username' => $user->username,
+                'user_role' => $user_role,
+                'target_user_id' => $target_user->id,
+                'total_callbacks' => $callbacks->total(),
+                'search_query' => $search_query,
+                'search_field' => $search_field,
+            ]),
+        ]);
+        Log::info("Callbacks viewed by {$user->username} for user {$target_user->id}");
 
         return view('callbacklist', $context);
     }
@@ -201,10 +244,30 @@ class CallbackController extends Controller
                 if ($target_user_id && $can_edit_all) {
                     $callback_owner = User::find($target_user_id);
                     if (!$callback_owner) {
+                        ActivityLog::create([
+                            'user_id' => $user->id,
+                            'action' => 'save_callback_failed',
+                            'details' => json_encode([
+                                'username' => $user->username,
+                                'target_user_id' => $target_user_id,
+                                'callback_id' => $callback_id,
+                                'error' => 'Target user does not exist',
+                            ]),
+                        ]);
                         Log::error("Target user ID {$target_user_id} does not exist");
                         throw new \Exception("Target user ID {$target_user_id} does not exist");
                     }
                     if (!$this->canAccessUserCallbacks($user, $callback_owner)) {
+                        ActivityLog::create([
+                            'user_id' => $user->id,
+                            'action' => 'save_callback_failed',
+                            'details' => json_encode([
+                                'username' => $user->username,
+                                'target_user_id' => $target_user_id,
+                                'callback_id' => $callback_id,
+                                'error' => 'Unauthorized to edit callbacks for this user',
+                            ]),
+                        ]);
                         Log::error("User {$user->username} attempted to edit callbacks for unauthorized user {$callback_owner->username}");
                         throw new \Illuminate\Auth\Access\AuthorizationException("You are not authorized to edit callbacks for this user");
                     }
@@ -214,6 +277,15 @@ class CallbackController extends Controller
 
                 // Check permission to add new callback
                 if (!$callback_id && !$this->canAddCallbacks($user, $callback_owner)) {
+                    ActivityLog::create([
+                        'user_id' => $user->id,
+                        'action' => 'save_callback_failed',
+                        'details' => json_encode([
+                            'username' => $user->username,
+                            'callback_owner_id' => $callback_owner->id,
+                            'error' => 'No permission to add callbacks',
+                        ]),
+                    ]);
                     Log::error("User {$user->username} attempted to add callback for {$callback_owner->username} without permission");
                     throw new \Illuminate\Auth\Access\AuthorizationException("You do not have permission to add callbacks");
                 }
@@ -231,6 +303,15 @@ class CallbackController extends Controller
                 ]);
 
                 if ($validator->fails()) {
+                    ActivityLog::create([
+                        'user_id' => $user->id,
+                        'action' => 'save_callback_failed',
+                        'details' => json_encode([
+                            'username' => $user->username,
+                            'callback_id' => $callback_id,
+                            'errors' => $validator->errors()->all(),
+                        ]),
+                    ]);
                     Log::error("Validation error: " . json_encode($validator->errors()->all()));
                     return response()->json(['status' => 'error', 'message' => $validator->errors()->first()], 400);
                 }
@@ -239,6 +320,9 @@ class CallbackController extends Controller
 
                 if ($callback_id) {
                     $callback = Callback::findOrFail($callback_id);
+                    $oldValues = $callback->only([
+                        'customer_name', 'phone_number', 'email', 'address', 'website', 'remarks', 'notes', 'added_at'
+                    ]);
                     if ($can_edit_all) {
                         // Admin: can edit all fields
                         $callback->update([
@@ -272,11 +356,29 @@ class CallbackController extends Controller
                                     'added_at' => $added_at
                                 ]);
                             } else {
+                                ActivityLog::create([
+                                    'user_id' => $user->id,
+                                    'action' => 'save_callback_failed',
+                                    'details' => json_encode([
+                                        'username' => $user->username,
+                                        'callback_id' => $callback_id,
+                                        'error' => 'Manager attempted to edit unassigned callback',
+                                    ]),
+                                ]);
                                 Log::error("Manager {$user->username} attempted to edit unassigned callback {$callback_id}");
                                 throw new \Illuminate\Auth\Access\AuthorizationException("You can only edit callbacks assigned to you or created by you");
                             }
                         } elseif ($user_role === 'agent') {
                             if ($callback->created_by != $user->id) {
+                                ActivityLog::create([
+                                    'user_id' => $user->id,
+                                    'action' => 'save_callback_failed',
+                                    'details' => json_encode([
+                                        'username' => $user->username,
+                                        'callback_id' => $callback_id,
+                                        'error' => 'Agent attempted to edit callback not owned by them',
+                                    ]),
+                                ]);
                                 Log::error("Agent {$user->username} attempted to edit callback {$callback_id} not owned by them");
                                 throw new \Illuminate\Auth\Access\AuthorizationException("You can only edit your own callbacks");
                             }
@@ -292,6 +394,16 @@ class CallbackController extends Controller
                             ]);
                         }
                     }
+                    ActivityLog::create([
+                        'user_id' => $user->id,
+                        'action' => 'updated_callback',
+                        'details' => json_encode([
+                            'username' => $user->username,
+                            'callback_id' => $callback_id,
+                            'old_values' => $oldValues,
+                            'new_values' => $callback_data,
+                        ]),
+                    ]);
                     Log::info("Callback {$callback_id} updated by {$user->username}");
                     $saved_count++;
                     $saved_callback_ids[] = $callback->id;
@@ -309,8 +421,27 @@ class CallbackController extends Controller
                         'remarks' => $callback_data['remarks'] ?: null,
                         'notes' => $callback_data['notes'] ?: null
                     ]);
+                    ActivityLog::create([
+                        'user_id' => $user->id,
+                        'action' => 'created_callback',
+                        'details' => json_encode([
+                            'username' => $user->username,
+                            'callback_id' => $callback->id,
+                            'callback_owner_id' => $callback_owner->id,
+                            'values' => $callback_data,
+                        ]),
+                    ]);
                     Log::info("New callback {$callback->id} created by {$user->username} for user {$callback_owner->username}");
                     if (!Callback::where('id', $callback->id)->exists()) {
+                        ActivityLog::create([
+                            'user_id' => $user->id,
+                            'action' => 'save_callback_failed',
+                            'details' => json_encode([
+                                'username' => $user->username,
+                                'callback_id' => $callback->id,
+                                'error' => 'Callback failed to save in database',
+                            ]),
+                        ]);
                         Log::error("Callback {$callback->id} was not saved in the database");
                         throw new QueryException("Callback {$callback->id} failed to save");
                     }
@@ -320,6 +451,15 @@ class CallbackController extends Controller
             }
 
             DB::commit();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'saved_callbacks',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'saved_count' => $saved_count,
+                    'callback_ids' => $saved_callback_ids,
+                ]),
+            ]);
             return response()->json([
                 'status' => 'success',
                 'message' => "Successfully saved {$saved_count} callback(s).",
@@ -329,17 +469,49 @@ class CallbackController extends Controller
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'save_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'errors' => $e->errors(),
+                ]),
+            ]);
             Log::error("Validation error: " . json_encode($e->errors()));
             return response()->json(['status' => 'error', 'message' => $e->errors()[array_key_first($e->errors())][0]], 400);
         } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'save_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             Log::error("Permission denied: {$e->getMessage()}");
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 403);
         } catch (QueryException $e) {
             DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'save_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             Log::error("Database error: {$e->getMessage()}");
             return response()->json(['status' => 'error', 'message' => "Database error: {$e->getMessage()}"], 500);
         } catch (\Exception $e) {
             DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'save_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             Log::error("Unexpected error: {$e->getMessage()}");
             return response()->json(['status' => 'error', 'message' => "Error: {$e->getMessage()}"], 500);
         }
@@ -350,6 +522,15 @@ class CallbackController extends Controller
         try {
             $user = Auth::user();
             if (!$this->isAdminUser($user)) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'delete_callback_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'callback_ids' => $request->input('callback_ids', []),
+                        'error' => 'Access denied. Admin privileges required.',
+                    ]),
+                ]);
                 Log::error("User {$user->username} attempted to delete callback without admin privileges");
                 return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
             }
@@ -360,6 +541,15 @@ class CallbackController extends Controller
             ]);
 
             if ($validator->fails()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'delete_callback_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'callback_ids' => $request->input('callback_ids', []),
+                        'errors' => $validator->errors()->all(),
+                    ]),
+                ]);
                 Log::error("Validation error: " . json_encode($validator->errors()->all()));
                 return response()->json(['status' => 'error', 'message' => $validator->errors()->first()], 400);
             }
@@ -367,6 +557,15 @@ class CallbackController extends Controller
             $callback_ids = $request->input('callback_ids');
             $deleted_count = Callback::whereIn('id', $callback_ids)->delete();
 
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'deleted_callbacks',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'deleted_count' => $deleted_count,
+                    'callback_ids' => $callback_ids,
+                ]),
+            ]);
             Log::info("Deleted {$deleted_count} callback(s) by {$user->username}");
             return response()->json([
                 'status' => 'success',
@@ -375,6 +574,15 @@ class CallbackController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'delete_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_ids' => $request->input('callback_ids', []),
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             Log::error("Error deleting callback: {$e->getMessage()}");
             return response()->json(['status' => 'error', 'message' => "Error: {$e->getMessage()}"], 500);
         }

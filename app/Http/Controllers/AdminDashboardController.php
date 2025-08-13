@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Callback;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
@@ -32,10 +34,34 @@ class AdminDashboardController extends Controller
 
     public function index(Request $request)
     {
+        // Log dashboard view
+        $user = Auth::user();
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'viewed_admin_dashboard',
+            'details' => json_encode([
+                'username' => $user->username,
+                'role' => $user->is_superuser ? 'admin' : ($user->userProfile ? $user->userProfile->role : 'user'),
+            ]),
+        ]);
+        Log::info("Admin dashboard viewed by {$user->username}");
+
         // Ensure all users have a UserProfile
-        User::whereDoesntHave('userProfile')->get()->each(function ($user) {
-            UserProfile::create(['user_id' => $user->id, 'role' => 'agent']);
-        });
+        DB::beginTransaction();
+        try {
+            User::whereDoesntHave('userProfile')->get()->each(function ($user) {
+                UserProfile::create(['user_id' => $user->id, 'role' => 'agent']);
+            });
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'profile_creation_failed',
+                'details' => json_encode(['error' => $e->getMessage()]),
+            ]);
+            Log::error("Failed to create user profiles: {$e->getMessage()}");
+        }
 
         // Fetch users excluding admins and superusers
         $users = User::whereHas('userProfile', function ($query) {
@@ -78,6 +104,17 @@ class AdminDashboardController extends Controller
                     $query->where('email', 'like', "%{$search_query}%");
                 }
             } catch (\Exception $e) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'search_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'error' => 'Invalid search query',
+                        'search_query' => $search_query,
+                        'search_field' => $search_field,
+                    ]),
+                ]);
+                Log::error("Search failed by {$user->username}: {$e->getMessage()}");
                 return $request->ajax()
                     ? response()->json(['status' => 'error', 'message' => 'Invalid search query'], 400)
                     : redirect()->route('admin_dashboard')->with('error', 'An error occurred while processing the search query.');
@@ -125,6 +162,8 @@ class AdminDashboardController extends Controller
 
     public function assignManager(Request $request)
     {
+        $user = Auth::user();
+        DB::beginTransaction();
         try {
             // Validate the request
             $request->validate([
@@ -139,10 +178,7 @@ class AdminDashboardController extends Controller
             if ($request->manager_id) {
                 $manager = User::findOrFail($request->manager_id);
                 if (!$manager->userProfile || $manager->userProfile->role !== 'manager') {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Selected user is not a manager.',
-                    ], 400);
+                    throw new \Exception('Selected user is not a manager.');
                 }
             }
 
@@ -150,20 +186,65 @@ class AdminDashboardController extends Controller
             $callback->manager_id = $request->manager_id ?: null;
             $callback->save();
 
+            // Log success
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'assigned_manager',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_id' => $request->callback_id,
+                    'manager_id' => $request->manager_id ?: null,
+                    'manager_username' => $request->manager_id ? User::find($request->manager_id)->username : null,
+                ]),
+            ]);
+            Log::info("Manager assigned to callback {$request->callback_id} by {$user->username}");
+
+            DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Manager assigned successfully.',
             ]);
-        } catch (\Exception $e) {
-            \Log::error('Error assigning manager: ' . $e->getMessage());
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'assign_manager_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_id' => $request->callback_id,
+                    'manager_id' => $request->manager_id ?: null,
+                    'errors' => $e->errors(),
+                ]),
+            ]);
+            Log::error("Validation error assigning manager: " . json_encode($e->errors()));
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while assigning the manager.',
-            ], 500);
+                'message' => 'Validation failed: ' . collect($e->errors())->flatten()->first(),
+            ], 422);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'assign_manager_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_id' => $request->callback_id,
+                    'manager_id' => $request->manager_id ?: null,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
+            Log::error("Error assigning manager: {$e->getMessage()}");
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage() === 'Selected user is not a manager.' ? $e->getMessage() : 'An error occurred while assigning the manager.',
+            ], 400);
         }
     }
+
     public function updateCallback(Request $request)
     {
+        $user = Auth::user();
+        DB::beginTransaction();
         try {
             // Validate the request
             $request->validate([
@@ -178,14 +259,17 @@ class AdminDashboardController extends Controller
             ]);
 
             // Check if user is admin
-            $user = Auth::user();
             if (!$this->isAdminUser($user)) {
-                Log::error("User {$user->username} attempted to update callback without admin privileges");
-                return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
+                throw new \Exception('Access denied. Admin privileges required.');
             }
 
             // Find the callback
             $callback = Callback::findOrFail($request->callback_id);
+
+            // Store old values for logging
+            $oldValues = $callback->only([
+                'customer_name', 'phone_number', 'email', 'address', 'website', 'remarks', 'notes'
+            ]);
 
             // Update the callback
             $callback->update([
@@ -198,18 +282,53 @@ class AdminDashboardController extends Controller
                 'notes' => $request->notes,
             ]);
 
+            // Log success
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'updated_callback',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_id' => $request->callback_id,
+                    'old_values' => $oldValues,
+                    'new_values' => $request->only([
+                        'customer_name', 'phone_number', 'email', 'address', 'website', 'remarks', 'notes'
+                    ]),
+                ]),
+            ]);
             Log::info("Callback {$request->callback_id} updated by {$user->username}");
+
+            DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Callback updated successfully.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'update_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_id' =>trend,
+                    'errors' => $e->errors(),
+                ]),
+            ]);
             Log::error("Validation error updating callback: " . json_encode($e->errors()));
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validation failed: ' . collect($e->errors())->flatten()->first(),
             ], 422);
         } catch (\Exception $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'update_callback_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'callback_id' => $request->callback_id,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             Log::error("Error updating callback: {$e->getMessage()}");
             return response()->json([
                 'status' => 'error',
@@ -217,13 +336,33 @@ class AdminDashboardController extends Controller
             ], 500);
         }
     }
+
     public function getProfile()
     {
+        $user = Auth::user();
         try {
-            $user = Auth::user();
             if (!$this->isAdminUser($user)) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'view_profile_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'error' => 'Access denied. Admin privileges required.',
+                    ]),
+                ]);
+                Log::error("User {$user->username} attempted to view profile without admin privileges");
                 return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
             }
+
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'viewed_profile',
+                'details' => json_encode([
+                    'username' => $user->username,
+                ]),
+            ]);
+            Log::info("Profile viewed by {$user->username}");
+
             return response()->json([
                 'status' => 'success',
                 'username' => $user->username,
@@ -232,6 +371,14 @@ class AdminDashboardController extends Controller
                 'last_name' => $user->last_name,
             ]);
         } catch (\Exception $e) {
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'view_profile_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             \Log::error('Error fetching profile: ' . $e->getMessage());
             return response()->json(['status' => 'error', 'message' => 'An error occurred while fetching the profile.'], 500);
         }
@@ -239,10 +386,11 @@ class AdminDashboardController extends Controller
 
     public function updateProfile(Request $request)
     {
+        $user = Auth::user();
+        DB::beginTransaction();
         try {
-            $user = Auth::user();
             if (!$this->isAdminUser($user)) {
-                return response()->json(['status' => 'error', 'message' => 'Access denied. Admin privileges required.'], 403);
+                throw new \Exception('Access denied. Admin privileges required.');
             }
 
             $request->validate([
@@ -253,8 +401,12 @@ class AdminDashboardController extends Controller
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ]);
 
+            // Store old values for logging
+            $oldValues = $user->only(['username', 'email', 'first_name', 'last_name']);
+            $passwordChanged = $request->filled('password') ? true : false;
+
             $user->username = $request->username;
-             $user->email = $request->email;
+            $user->email = $request->email;
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             if ($request->filled('password')) {
@@ -262,12 +414,43 @@ class AdminDashboardController extends Controller
             }
             $user->save();
 
+            // Log success
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'updated_profile',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'old_values' => $oldValues,
+                    'new_values' => $request->only(['username', 'email', 'first_name', 'last_name']),
+                    'password_changed' => $passwordChanged,
+                ]),
+            ]);
             \Log::info("Profile updated by {$user->username}");
+
+            DB::commit();
             return response()->json(['status' => 'success', 'message' => 'Profile updated successfully.']);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'update_profile_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'errors' => $e->errors(),
+                ]),
+            ]);
             \Log::error("Validation error updating profile: " . json_encode($e->errors()));
             return response()->json(['status' => 'error', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
+            DB::rollBack();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'update_profile_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             \Log::error("Error updating profile: {$e->getMessage()}");
             return response()->json(['status' => 'error', 'message' => 'An error occurred while updating the profile.'], 500);
         }

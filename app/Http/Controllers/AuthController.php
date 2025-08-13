@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Helpers\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -26,12 +27,9 @@ class AuthController extends Controller
         $identifier = $request->input('email');
         $password = $request->input('password');
 
-        // Check if identifier contains @ to determine if it's email or username
         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
-            // It's an email - keep case-insensitive for emails (standard practice)
             $user = User::whereRaw('BINARY email = ?', [$identifier])->first();
         } else {
-            // It's a username - make it case-sensitive using BINARY
             $user = User::whereRaw('BINARY username = ?', [$identifier])->first();
         }
         
@@ -39,30 +37,52 @@ class AuthController extends Controller
             if ($user->is_active) {
                 Auth::login($user);
                 $request->session()->regenerate();
+                
+                // Log successful login
+                ActivityLogger::log('User logged in', [
+                    'identifier' => $identifier,
+                    'ip_address' => $request->ip(),
+                ]);
 
                 $role = $user->userProfile ? $user->userProfile->role : ($user->is_superuser ? 'admin' : 'agent');
 
                 if ($role === 'admin' || $user->is_superuser) {
-                    return redirect()->route('admin_dashboard'); // Changed from admin.dashboard to admin_dashboard
+                    return redirect()->route('admin_dashboard');
                 } elseif ($role === 'manager') {
                     return redirect()->route('manager_dashboard', ['manager_id' => $user->id]);
                 } else {
                     return redirect()->route('callbacklist');
                 }
             } else {
+                // Log failed login attempt (inactive account)
+                ActivityLogger::log('Failed login attempt', [
+                    'identifier' => $identifier,
+                    'reason' => 'Inactive account',
+                    'ip_address' => $request->ip(),
+                ]);
                 return back()->withErrors(['error' => 'Your account is inactive. Please contact administrator.']);
             }
         }
 
+        // Log failed login attempt (invalid credentials)
+        ActivityLogger::log('Failed login attempt', [
+            'identifier' => $identifier,
+            'reason' => 'Invalid credentials',
+            'ip_address' => $request->ip(),
+        ]);
         return back()->withErrors(['error' => 'Invalid username/email or password.'])->withInput($request->only('email'));
     }
 
     public function logout(Request $request)
     {
+        // Log logout action
+        ActivityLogger::log('User logged out', [
+            'ip_address' => $request->ip(),
+        ]);
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login');
     }
 }
-?>

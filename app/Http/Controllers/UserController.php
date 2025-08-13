@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Callback;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 
@@ -36,6 +38,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        $user = Auth::user();
         $users = User::whereHas('userProfile', function (Builder $query) {
             $query->whereIn('role', ['agent', 'manager']);
         })->orWhereDoesntHave('userProfile')
@@ -49,6 +52,16 @@ class UserController extends Controller
             ->orderBy('added_at', 'desc')
             ->get();
 
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'viewed_users_list',
+            'details' => json_encode([
+                'username' => $user->username,
+                'total_users' => $total_users,
+            ]),
+        ]);
+        Log::info("Manage users viewed by {$user->username}");
+
         return response()->view('manage_users', compact('users', 'total_users', 'roles', 'callbacks'))
                 ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
                 ->header('Pragma', 'no-cache')
@@ -57,6 +70,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
         if ($request->input('action') === 'create') {
             // Log incoming request data for debugging
             \Log::info('UserController::store - Request data: ' . json_encode($request->all()));
@@ -71,6 +85,14 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'create_user_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'errors' => $validator->errors()->all(),
+                    ]),
+                ]);
                 \Log::error('UserController::store - Validation failed: ' . json_encode($validator->errors()->all()));
                 return redirect()->route('users.index')
                     ->withErrors($validator)
@@ -78,9 +100,11 @@ class UserController extends Controller
                     ->with('error', 'Validation failed. Please check the form inputs.');
             }
 
+            DB::beginTransaction();
+
             try {
                 // Create user
-                $user = User::create([
+                $newUser = User::create([
                     'username' => trim($request->username),
                     'email' => $request->email ? trim($request->email) : null,
                     'first_name' => $request->first_name ? trim($request->first_name) : null,
@@ -90,66 +114,140 @@ class UserController extends Controller
                     'is_superuser' => false,
                 ]);
 
-                \Log::info('UserController::store - User created: ' . $user->id);
+                \Log::info('UserController::store - User created: ' . $newUser->id);
 
                 // Create user profile
                 UserProfile::create([
-                    'user_id' => $user->id,
+                    'user_id' => $newUser->id,
                     'role' => $request->role,
                 ]);
 
-                \Log::info('UserController::store - UserProfile created for user: ' . $user->id);
+                \Log::info('UserController::store - UserProfile created for user: ' . $newUser->id);
 
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'created_user',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'new_user_id' => $newUser->id,
+                        'new_user_username' => $newUser->username,
+                        'role' => $request->role,
+                    ]),
+                ]);
+                Log::info("User {$newUser->username} created by {$user->username} with role {$request->role}");
+                DB::commit();
                 return redirect()->route('users.index')
-                    ->with('success', "User {$user->username} created successfully with role {$request->role}!");
+                    ->with('success', "User {$newUser->username} created successfully with role {$request->role}!");
 
             } catch (\Exception $e) {
+                DB::rollback();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'create_user_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 \Log::error('UserController::store - Error creating user: ' . $e->getMessage());
                 return redirect()->route('users.index')
                     ->with('error', 'Failed to create user: ' . $e->getMessage());
             }
         }
 
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'create_user_failed',
+            'details' => json_encode([
+                'username' => $user->username,
+                'error' => 'Invalid action: ' . $request->input('action'),
+            ]),
+        ]);
         \Log::error('UserController::store - Invalid action: ' . $request->input('action'));
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
 
     public function update(Request $request)
     {
+        $user = Auth::user();
         if ($request->input('action') === 'edit') {
-            $user = User::findOrFail($request->user_id);
+            $editUser = User::findOrFail($request->user_id);
 
             // Prevent self-editing unless superuser
-            if ($user->id === Auth::id() && !Auth::user()->is_superuser) {
+            if ($editUser->id === Auth::id() && !Auth::user()->is_superuser) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'update_user_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'edit_user_id' => $editUser->id,
+                        'error' => 'Cannot edit own details',
+                    ]),
+                ]);
+                Log::warning("User {$user->username} attempted to edit own user details");
                 return redirect()->route('users.index')
                     ->with('error', 'You cannot edit your own details.');
             }
 
             $validator = Validator::make($request->all(), [
-                'username' => 'required|string|unique:users,username,' . $user->id . '|min:3|max:255',
-                'email' => 'nullable|email|unique:users,email,' . $user->id . '|max:255',
+                'username' => 'required|string|unique:users,username,' . $editUser->id . '|min:3|max:255',
+                'email' => 'nullable|email|unique:users,email,' . $editUser->id . '|max:255',
                 'first_name' => 'nullable|string|max:255',
                 'last_name' => 'nullable|string|max:255',
             ]);
 
             if ($validator->fails()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'update_user_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'edit_user_id' => $editUser->id,
+                        'errors' => $validator->errors()->all(),
+                    ]),
+                ]);
                 return redirect()->route('users.index')
                     ->withErrors($validator)
                     ->withInput();
             }
-
+            
+            DB::beginTransaction();
             try {
-                $user->update([
+                $oldValues = $editUser->only(['username', 'email', 'first_name', 'last_name']);
+
+                $editUser->update([
                     'username' => trim($request->username),
                     'email' => $request->email ? trim($request->email) : null,
                     'first_name' => $request->first_name ? trim($request->first_name) : null,
                     'last_name' => $request->last_name ? trim($request->last_name) : null,
                 ]);
 
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'updated_user',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'edit_user_id' => $editUser->id,
+                        'old_values' => $oldValues,
+                        'new_values' => $request->only(['username', 'email', 'first_name', 'last_name']),
+                    ]),
+                ]);
+                Log::info("User {$editUser->username} updated by {$user->username}");
+                DB::commit();
                 return redirect()->route('users.index')
-                    ->with('success', "User {$user->username} updated successfully!");
+                    ->with('success', "User {$editUser->username} updated successfully!");
 
             } catch (\Exception $e) {
+                DB::rollback();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'update_user_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'edit_user_id' => $request->user_id,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 \Log::error('Error updating user: ' . $e->getMessage());
                 
                 return redirect()->route('users.index')
@@ -157,16 +255,35 @@ class UserController extends Controller
             }
         }
 
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'update_user_failed',
+            'details' => json_encode([
+                'username' => $user->username,
+                'error' => 'Invalid action: ' . $request->input('action'),
+            ]),
+        ]);
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
 
     public function changeRole(Request $request)
     {
+        $user = Auth::user();
         if ($request->input('action') === 'change_role') {
-            $user = User::findOrFail($request->user_id);
+            $changeUser = User::findOrFail($request->user_id);
 
             // Prevent self role change unless superuser
-            if ($user->id === Auth::id() && !Auth::user()->is_superuser) {
+            if ($changeUser->id === Auth::id() && !Auth::user()->is_superuser) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'change_user_role_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'change_user_id' => $changeUser->id,
+                        'error' => 'Cannot change own role',
+                    ]),
+                ]);
+                Log::warning("User {$user->username} attempted to change own user role");
                 return redirect()->route('users.index')
                     ->with('error', 'You cannot change your own role.');
             }
@@ -176,34 +293,65 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'change_user_role_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'change_user_id' => $changeUser->id,
+                        'errors' => $validator->errors()->all(),
+                    ]),
+                ]);
                 return redirect()->route('users.index')
                     ->withErrors($validator)
                     ->withInput();
             }
 
+            DB::beginTransaction();
             try {
-                DB::beginTransaction();
 
                 $new_role = $request->new_role;
+                $old_role = $changeUser->userProfile ? $changeUser->userProfile->role : 'none';
                 
                 // Update or create profile
-                $profile = $user->userProfile;
+                $profile = $changeUser->userProfile;
                 if ($profile) {
                     $profile->update(['role' => $new_role]);
                 } else {
                     UserProfile::create([
-                        'user_id' => $user->id,
+                        'user_id' => $changeUser->id,
                         'role' => $new_role
                     ]);
                 }
 
+                
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'changed_user_role',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'change_user_id' => $changeUser->id,
+                        'change_user_username' => $changeUser->username,
+                        'old_role' => $old_role,
+                        'new_role' => $new_role,
+                    ]),
+                ]);
+                Log::info("User {$changeUser->username} role changed to {$new_role} by {$user->username}");               
                 DB::commit();
-
                 return redirect()->route('users.index')
-                    ->with('success', "User {$user->username} role changed to {$new_role}.");
+                    ->with('success', "User {$changeUser->username} role changed to {$new_role}.");
 
             } catch (\Exception $e) {
                 DB::rollBack();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'change_user_role_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'change_user_id' => $request->user_id,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 \Log::error('Error changing user role: ' . $e->getMessage());
                 
                 return redirect()->route('users.index')
@@ -211,20 +359,48 @@ class UserController extends Controller
             }
         }
 
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'change_user_role_failed',
+            'details' => json_encode([
+                'username' => $user->username,
+                'error' => 'Invalid action: ' . $request->input('action'),
+            ]),
+        ]);
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
     public function resetPassword(Request $request)
     {
+        $user = Auth::user();
         if ($request->input('action') === 'reset_password') {
             if (!$this->isAdminUser(Auth::user())) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'reset_user_password_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'error' => 'Access denied. Admin privileges required.',
+                    ]),
+                ]);
+                Log::error("User {$user->username} attempted to reset user password without admin privileges");
                 return redirect()->route('users.index')
                     ->with('error', 'Access denied. Admin privileges required to reset passwords.');
             }
 
-            $user = User::findOrFail($request->user_id);
+            $resetUser = User::findOrFail($request->user_id);
 
             // Prevent self-password reset unless superuser
-            if ($user->id === Auth::id() && !Auth::user()->is_superuser) {
+            if ($resetUser->id === Auth::id() && !Auth::user()->is_superuser) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'reset_user_password_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'reset_user_id' => $resetUser->id,
+                        'error' => 'Cannot reset own password',
+                    ]),
+                ]);
+                Log::warning("User {$user->username} attempted to reset own user password");
                 return redirect()->route('users.index')
                     ->with('error', 'You cannot reset your own password.');
             }
@@ -234,56 +410,125 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'reset_user_password_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'reset_user_id' => $resetUser->id,
+                        'errors' => $validator->errors()->all(),
+                    ]),
+                ]);
                 return redirect()->route('users.index')
                     ->withErrors($validator)
                     ->withInput()
                     ->with('error', 'Validation failed. Please check the password inputs.');
             }
-
+            DB::beginTransaction();
             try {
-                $user->update([
+                $resetUser->update([
                     'password' => Hash::make($request->new_password),
                 ]);
 
-                \Log::info('UserController::resetPassword - Password reset for user: ' . $user->id);
-
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'reset_user_password',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'reset_user_id' => $resetUser->id,
+                        'reset_user_username' => $resetUser->username,
+                    ]),
+                ]);
+                \Log::info('UserController::resetPassword - Password reset for user: ' . $resetUser->id);
+                DB::commit();
                 return redirect()->route('users.index')
-                    ->with('success', "Password for user {$user->username} reset successfully!");
+                    ->with('success', "Password for user {$resetUser->username} reset successfully!");
 
             } catch (\Exception $e) {
+                DB::rollback();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'reset_user_password_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'reset_user_id' => $request->user_id,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 \Log::error('UserController::resetPassword - Error resetting password: ' . $e->getMessage());
                 return redirect()->route('users.index')
                     ->with('error', 'Failed to reset password: ' . $e->getMessage());
             }
         }
 
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'reset_user_password_failed',
+            'details' => json_encode([
+                'username' => $user->username,
+                'error' => 'Invalid action: ' . $request->input('action'),
+            ]),
+        ]);
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
 
 
     public function destroy($id)
     {
+        $user = Auth::user();
+        DB::beginTransaction();
         try {
-            $user = User::findOrFail($id);
-            $username = $user->username;
+            $deleteUser = User::findOrFail($id);
+            $username = $deleteUser->username;
             
             // Prevent self-deletion
-            if ($user->id === Auth::id()) {
+            if ($deleteUser->id === Auth::id()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'delete_user_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'delete_user_id' => $deleteUser->id,
+                        'error' => 'Cannot delete own account',
+                    ]),
+                ]);
+                Log::warning("User {$user->username} attempted to delete own user account");
                 return redirect()->route('users.index')
                     ->with('error', 'You cannot delete your own account.');
             }
 
             // Delete user profile first (if exists)
-            if ($user->userProfile) {
-                $user->userProfile->delete();
+            if ($deleteUser->userProfile) {
+                $deleteUser->userProfile->delete();
             }
 
-            $user->delete();
+            $deleteUser->delete();
 
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'deleted_user',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'deleted_user_id' => $id,
+                    'deleted_user_username' => $username,
+                ]),
+            ]);
+            Log::info("User {$username} deleted by {$user->username}");
+            DB::commit();
             return redirect()->route('users.index')
                 ->with('success', "User {$username} deleted successfully!");
 
         } catch (\Exception $e) {
+            DB::rollback();
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'delete_user_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'delete_user_id' => $id,
+                    'error' => $e->getMessage(),
+                ]),
+            ]);
             \Log::error('Error deleting user: ' . $e->getMessage());
             
             return redirect()->route('users.index')
@@ -293,8 +538,19 @@ class UserController extends Controller
 
     public function updateCallback(Request $request)
     {
+        $user = Auth::user();
         if ($request->input('action') === 'edit_callback') {
             if (!$this->isAdminUser(Auth::user())) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'update_user_callback_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'callback_id' => $request->callback_id,
+                        'error' => 'Access denied. Admin privileges required.',
+                    ]),
+                ]);
+                Log::error("User {$user->username} attempted to update user callback without admin privileges");
                 return redirect()->route('users.index')
                     ->with('error', 'Access denied. Admin privileges required to edit callbacks.');
             }
@@ -313,12 +569,25 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'update_user_callback_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'callback_id' => $callback->id,
+                        'errors' => $validator->errors()->all(),
+                    ]),
+                ]);
                 return redirect()->route('users.index')
                     ->withErrors($validator)
                     ->withInput();
             }
-
+            DB::beginTransaction();
             try {
+                $oldValues = $callback->only([
+                    'customer_name', 'phone_number', 'email', 'address', 'website', 'remarks', 'notes', 'added_at'
+                ]);
+
                 $callback->update([
                     'customer_name' => $request->customer_name,
                     'phone_number' => $request->phone_number,
@@ -330,10 +599,34 @@ class UserController extends Controller
                     'added_at' => $request->added_at ? Carbon::parse($request->added_at) : Carbon::now(),
                 ]);
 
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'updated_user_callback',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'callback_id' => $callback->id,
+                        'old_values' => $oldValues,
+                        'new_values' => $request->only([
+                            'customer_name', 'phone_number', 'email', 'address', 'website', 'remarks', 'notes', 'added_at'
+                        ]),
+                    ]),
+                ]);
+                Log::info("User callback {$callback->id} updated by {$user->username}");
+                DB::commit();
                 return redirect()->route('users.index')
                     ->with('success', "Callback {$callback->id} updated successfully!");
 
             } catch (\Exception $e) {
+                DB::rollback();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'update_user_callback_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'callback_id' => $request->callback_id,
+                        'error' => $e->getMessage(),
+                    ]),
+                ]);
                 \Log::error('Error updating callback: ' . $e->getMessage());
                 
                 return redirect()->route('users.index')
@@ -341,6 +634,14 @@ class UserController extends Controller
             }
         }
 
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'update_user_callback_failed',
+            'details' => json_encode([
+                'username' => $user->username,
+                'error' => 'Invalid action: ' . $request->input('action'),
+            ]),
+        ]);
         return redirect()->route('users.index')->with('error', 'Invalid action.');
     }
 }

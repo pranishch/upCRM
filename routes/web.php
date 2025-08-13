@@ -42,7 +42,7 @@
       Route::post('/profile', [AdminDashboardController::class, 'updateProfile'])->name('profile.update');
       Route::get('/manager/{manager_id}', [ManagerDashboardController::class, 'show'])->name('manager_dashboard'); 
      });
-
+  Route::get('/activity-logs', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity_logs.index');
   Route::get('/callbacks/{user_id?}', [CallbackController::class, 'index'])->name('callbacklist');
   Route::post('/callbacks/save', [CallbackController::class, 'save'])->name('callbacks.save');
   Route::post('/callbacks/delete', [CallbackController::class, 'delete'])->name('callbacks.delete');

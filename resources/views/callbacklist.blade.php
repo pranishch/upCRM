@@ -996,12 +996,6 @@
                     .catch(() => showToast('An error occurred while deleting.', 'danger'));
                 }
             });
-
-            @if ($user_role === 'agent')
-                document.addEventListener('copy', e => e.preventDefault());
-                document.addEventListener('cut', e => e.preventDefault());
-                document.addEventListener('paste', e => e.preventDefault());
-            @endif
         });
     </script>
 </body>

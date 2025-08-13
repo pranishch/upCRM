@@ -893,6 +893,10 @@
                             <li><a class="dropdown-item" href="{{ route('manage_managers') }}">
                                 <i class="bi bi-person-gear me-2"></i>Manage Managers
                             </a></li>
+                            <li>
+                            <a class="dropdown-item" href="{{ route('activity_logs.index') }}" class="btn btn-primary">
+                                <i class="bi bi-activity"></i> Activity Logs</a>
+                            </li>
                         </ul>
                     </div>
                    <div class="profile-link me-3 d-flex align-items-center">

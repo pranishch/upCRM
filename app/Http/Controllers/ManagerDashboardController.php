@@ -5,23 +5,47 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\Callback;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ManagerDashboardController extends Controller
 {
     public function show(Request $request, $manager_id)
     {
+        $user = Auth::user();
         $manager = User::findOrFail($manager_id);
 
         // Check if user can access the manager's dashboard
-        if (!$this->canAccessManagerDashboard(Auth::user(), $manager)) {
+        if (!$this->canAccessManagerDashboard($user, $manager)) {
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'view_manager_dashboard_failed',
+                'details' => json_encode([
+                    'username' => $user->username,
+                    'manager_id' => $manager_id,
+                    'error' => 'Access denied to manager dashboard',
+                ]),
+            ]);
+            Log::error("User {$user->username} attempted to access unauthorized manager dashboard {$manager_id}");
             return redirect()->route('callbacks.index')->with('error', 'Access denied. You can only view your own dashboard.');
         }
 
         if ($request->isMethod('post')) {
             if (!(Auth::user()->role === 'admin' || Auth::user()->is_superuser)) {
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'manager_dashboard_action_failed',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'manager_id' => $manager_id,
+                        'action' => $request->input('action'),
+                        'error' => 'Access denied. Admin privileges required.',
+                    ]),
+                ]);
+                Log::error("User {$user->username} attempted manager dashboard action without admin privileges");
                 return redirect()->route('manager_dashboard', $manager_id)->with('error', 'Access denied. Admin privileges required.');
             }
 
@@ -30,11 +54,33 @@ class ManagerDashboardController extends Controller
                 $agent_id = $request->input('agent_id');
                 $agent = User::findOrFail($agent_id);
                 if ($agent->userProfile && $agent->userProfile->role != 'agent') {
+                    ActivityLog::create([
+                        'user_id' => $user->id,
+                        'action' => 'assign_agent_failed',
+                        'details' => json_encode([
+                            'username' => $user->username,
+                            'manager_id' => $manager_id,
+                            'agent_id' => $agent_id,
+                            'error' => 'Only agents can be assigned',
+                        ]),
+                    ]);
+                    Log::error("Attempted to assign non-agent {$agent_id} to manager {$manager_id}");
                     return redirect()->route('manager_dashboard', $manager_id)->with('error', 'Only agents can be assigned to managers.');
                 }
                 $profile = $agent->userProfile ?? UserProfile::create(['user_id' => $agent->id]);
                 $profile->manager_id = $manager->id;
                 $profile->save();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'assigned_agent',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'manager_id' => $manager_id,
+                        'agent_id' => $agent_id,
+                        'agent_username' => $agent->username,
+                    ]),
+                ]);
+                Log::info("Agent {$agent->username} assigned to manager {$manager->username} by {$user->username}");
                 return redirect()->route('manager_dashboard', $manager_id)->with('success', "Agent {$agent->username} assigned to {$manager->username}.");
             } elseif ($action == 'unassign_agent') {
                 $agent_id = $request->input('agent_id');
@@ -42,6 +88,17 @@ class ManagerDashboardController extends Controller
                 $profile = $agent->userProfile ?? UserProfile::create(['user_id' => $agent->id]);
                 $profile->manager_id = null;
                 $profile->save();
+                ActivityLog::create([
+                    'user_id' => $user->id,
+                    'action' => 'unassigned_agent',
+                    'details' => json_encode([
+                        'username' => $user->username,
+                        'manager_id' => $manager_id,
+                        'agent_id' => $agent_id,
+                        'agent_username' => $agent->username,
+                    ]),
+                ]);
+                Log::info("Agent {$agent->username} unassigned from manager {$manager->username} by {$user->username}");
                 return redirect()->route('manager_dashboard', $manager_id)->with('success', "Agent {$agent->username} unassigned from {$manager->username}.");
             }
         }
@@ -109,6 +166,20 @@ class ManagerDashboardController extends Controller
                 'pagination_html' => view('manager_dashboard_pagination', $context)->render(),
             ]);
         }
+
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'viewed_manager_dashboard',
+            'details' => json_encode([
+                'username' => $user->username,
+                'manager_id' => $manager_id,
+                'total_agents' => $agents->count(),
+                'total_callbacks' => $page_obj->total(),
+                'search_query' => $search_query,
+                'search_field' => $search_field,
+            ]),
+        ]);
+        Log::info("Manager dashboard viewed by {$user->username} for manager {$manager_id}");
 
         return view('manager_dashboard', $context);
     }
