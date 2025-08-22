@@ -42,7 +42,7 @@ class ManagerController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'viewed_managers_list',
+            'action' => 'viewed managers list',
             'details' => json_encode([
                 'username' => $user->username,
                 'total_managers' => $managers->count(),
@@ -75,7 +75,7 @@ class ManagerController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'create_manager_failed',
+                    'action' => 'create manager failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'errors' => $validator->errors()->all(),
@@ -113,7 +113,7 @@ class ManagerController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'created_manager',
+                    'action' => 'created manager',
                     'details' => json_encode([
                         'username' => $user->username,
                         'new_manager_id' => $newUser->id,
@@ -130,7 +130,7 @@ class ManagerController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'create_manager_failed',
+                    'action' => 'create manager failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'error' => $e->getMessage(),
@@ -144,7 +144,7 @@ class ManagerController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'create_manager_failed',
+            'action' => 'create manager failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -164,7 +164,7 @@ class ManagerController extends Controller
             if ($editUser->id === Auth::id() && !Auth::user()->is_superuser) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_manager_failed',
+                    'action' => 'update manager failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $editUser->id,
@@ -186,7 +186,7 @@ class ManagerController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_manager_failed',
+                    'action' => 'update manager failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $editUser->id,
@@ -210,7 +210,7 @@ class ManagerController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'updated_manager',
+                    'action' => 'updated manager',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $editUser->id,
@@ -227,7 +227,7 @@ class ManagerController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_manager_failed',
+                    'action' => 'update manager failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $request->user_id,
@@ -243,7 +243,7 @@ class ManagerController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'update_manager_failed',
+            'action' => 'update manager failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -262,7 +262,7 @@ class ManagerController extends Controller
             if ($changeUser->id === Auth::id() && !Auth::user()->is_superuser) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'change_manager_role_failed',
+                    'action' => 'change manager role failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $changeUser->id,
@@ -281,7 +281,7 @@ class ManagerController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'change_manager_role_failed',
+                    'action' => 'change manager role failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $changeUser->id,
@@ -313,7 +313,7 @@ class ManagerController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'changed_manager_role',
+                    'action' => 'changed manager role',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $changeUser->id,
@@ -331,7 +331,7 @@ class ManagerController extends Controller
                 DB::rollBack();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'change_manager_role_failed',
+                    'action' => 'change manager role failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $request->user_id,
@@ -347,7 +347,7 @@ class ManagerController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'change_manager_role_failed',
+            'action' => 'change manager role failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -366,7 +366,7 @@ class ManagerController extends Controller
             if ($resetUser->id === Auth::id() && !Auth::user()->is_superuser) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_manager_password_failed',
+                    'action' => 'reset manager password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $resetUser->id,
@@ -385,7 +385,7 @@ class ManagerController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_manager_password_failed',
+                    'action' => 'reset manager password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $resetUser->id,
@@ -404,7 +404,7 @@ class ManagerController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_manager_password',
+                    'action' => 'reset manager password',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $resetUser->id,
@@ -420,7 +420,7 @@ class ManagerController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_manager_password_failed',
+                    'action' => 'reset manager password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $request->user_id,
@@ -436,7 +436,7 @@ class ManagerController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'reset_manager_password_failed',
+            'action' => 'reset manager password failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -457,7 +457,7 @@ class ManagerController extends Controller
             if ($deleteUser->id === Auth::id()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'delete_manager_failed',
+                    'action' => 'delete manager failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $deleteUser->id,
@@ -478,7 +478,7 @@ class ManagerController extends Controller
 
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'deleted_manager',
+                'action' => 'deleted manager',
                 'details' => json_encode([
                     'username' => $user->username,
                     'deleted_manager_id' => $id,
@@ -494,7 +494,7 @@ class ManagerController extends Controller
             DB::rollback();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'delete_manager_failed',
+                'action' => 'delete manager failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'manager_id' => $id,
@@ -515,7 +515,7 @@ class ManagerController extends Controller
             if (!$this->isAdminUser(Auth::user())) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_manager_callback_failed',
+                    'action' => 'update manager callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $request->callback_id,
@@ -543,7 +543,7 @@ class ManagerController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_manager_callback_failed',
+                    'action' => 'update manager callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $callback->id,
@@ -574,7 +574,7 @@ class ManagerController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'updated_manager_callback',
+                    'action' => 'updated manager callback',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $callback->id,
@@ -593,7 +593,7 @@ class ManagerController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_manager_callback_failed',
+                    'action' => 'update manager callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $request->callback_id,
@@ -609,7 +609,7 @@ class ManagerController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'update_manager_callback_failed',
+            'action' => 'update manager callback failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),

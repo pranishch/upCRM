@@ -167,7 +167,6 @@
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
-
         @media (max-width: 700px) {
             .login-container {
                 flex-direction: column;

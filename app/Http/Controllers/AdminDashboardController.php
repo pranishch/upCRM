@@ -38,7 +38,7 @@ class AdminDashboardController extends Controller
         $user = Auth::user();
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'viewed_admin_dashboard',
+            'action' => 'viewed admin dashboard',
             'details' => json_encode([
                 'username' => $user->username,
                 'role' => $user->is_superuser ? 'admin' : ($user->userProfile ? $user->userProfile->role : 'user'),
@@ -57,7 +57,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => Auth::id(),
-                'action' => 'profile_creation_failed',
+                'action' => 'profile creation failed',
                 'details' => json_encode(['error' => $e->getMessage()]),
             ]);
             Log::error("Failed to create user profiles: {$e->getMessage()}");
@@ -106,7 +106,7 @@ class AdminDashboardController extends Controller
             } catch (\Exception $e) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'search_failed',
+                    'action' => 'search failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'error' => 'Invalid search query',
@@ -189,7 +189,7 @@ class AdminDashboardController extends Controller
             // Log success
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'assigned_manager',
+                'action' => 'assigned manager',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_id' => $request->callback_id,
@@ -208,7 +208,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'assign_manager_failed',
+                'action' => 'assign manager failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_id' => $request->callback_id,
@@ -225,7 +225,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'assign_manager_failed',
+                'action' => 'assign manager failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_id' => $request->callback_id,
@@ -285,7 +285,7 @@ class AdminDashboardController extends Controller
             // Log success
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'updated_callback',
+                'action' => 'updated callback',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_id' => $request->callback_id,
@@ -306,7 +306,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'update_callback_failed',
+                'action' => 'update callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_id' =>trend,
@@ -322,7 +322,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'update_callback_failed',
+                'action' => 'update callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_id' => $request->callback_id,
@@ -344,7 +344,7 @@ class AdminDashboardController extends Controller
             if (!$this->isAdminUser($user)) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'view_profile_failed',
+                    'action' => 'view profile failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'error' => 'Access denied. Admin privileges required.',
@@ -356,7 +356,7 @@ class AdminDashboardController extends Controller
 
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'viewed_profile',
+                'action' => 'viewed profile',
                 'details' => json_encode([
                     'username' => $user->username,
                 ]),
@@ -373,7 +373,7 @@ class AdminDashboardController extends Controller
         } catch (\Exception $e) {
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'view_profile_failed',
+                'action' => 'view profile failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'error' => $e->getMessage(),
@@ -417,7 +417,7 @@ class AdminDashboardController extends Controller
             // Log success
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'updated_profile',
+                'action' => 'updated profile',
                 'details' => json_encode([
                     'username' => $user->username,
                     'old_values' => $oldValues,
@@ -433,7 +433,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'update_profile_failed',
+                'action' => 'update profile failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'errors' => $e->errors(),
@@ -445,7 +445,7 @@ class AdminDashboardController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'update_profile_failed',
+                'action' => 'update profile failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'error' => $e->getMessage(),

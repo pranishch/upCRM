@@ -22,7 +22,7 @@ class ManagerDashboardController extends Controller
         if (!$this->canAccessManagerDashboard($user, $manager)) {
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'view_manager_dashboard_failed',
+                'action' => 'view manager dashboard failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'manager_id' => $manager_id,
@@ -37,7 +37,7 @@ class ManagerDashboardController extends Controller
             if (!(Auth::user()->role === 'admin' || Auth::user()->is_superuser)) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'manager_dashboard_action_failed',
+                    'action' => 'manager dashboard action failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $manager_id,
@@ -56,7 +56,7 @@ class ManagerDashboardController extends Controller
                 if ($agent->userProfile && $agent->userProfile->role != 'agent') {
                     ActivityLog::create([
                         'user_id' => $user->id,
-                        'action' => 'assign_agent_failed',
+                        'action' => 'assign agent failed',
                         'details' => json_encode([
                             'username' => $user->username,
                             'manager_id' => $manager_id,
@@ -72,7 +72,7 @@ class ManagerDashboardController extends Controller
                 $profile->save();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'assigned_agent',
+                    'action' => 'assigned agent',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $manager_id,
@@ -82,7 +82,7 @@ class ManagerDashboardController extends Controller
                 ]);
                 Log::info("Agent {$agent->username} assigned to manager {$manager->username} by {$user->username}");
                 return redirect()->route('manager_dashboard', $manager_id)->with('success', "Agent {$agent->username} assigned to {$manager->username}.");
-            } elseif ($action == 'unassign_agent') {
+            } elseif ($action == 'unassign agent') {
                 $agent_id = $request->input('agent_id');
                 $agent = User::findOrFail($agent_id);
                 $profile = $agent->userProfile ?? UserProfile::create(['user_id' => $agent->id]);
@@ -90,7 +90,7 @@ class ManagerDashboardController extends Controller
                 $profile->save();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'unassigned_agent',
+                    'action' => 'unassigned agent',
                     'details' => json_encode([
                         'username' => $user->username,
                         'manager_id' => $manager_id,
@@ -169,7 +169,7 @@ class ManagerDashboardController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'viewed_manager_dashboard',
+            'action' => 'viewed manager dashboard',
             'details' => json_encode([
                 'username' => $user->username,
                 'manager_id' => $manager_id,

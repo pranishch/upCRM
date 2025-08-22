@@ -54,7 +54,7 @@ class UserController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'viewed_users_list',
+            'action' => 'viewed users list',
             'details' => json_encode([
                 'username' => $user->username,
                 'total_users' => $total_users,
@@ -87,7 +87,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'create_user_failed',
+                    'action' => 'create user failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'errors' => $validator->errors()->all(),
@@ -126,7 +126,7 @@ class UserController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'created_user',
+                    'action' => 'created user',
                     'details' => json_encode([
                         'username' => $user->username,
                         'new_user_id' => $newUser->id,
@@ -143,7 +143,7 @@ class UserController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'create_user_failed',
+                    'action' => 'create user failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'error' => $e->getMessage(),
@@ -157,7 +157,7 @@ class UserController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'create_user_failed',
+            'action' => 'create user failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -177,7 +177,7 @@ class UserController extends Controller
             if ($editUser->id === Auth::id() && !Auth::user()->is_superuser) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_user_failed',
+                    'action' => 'update user failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'edit_user_id' => $editUser->id,
@@ -199,7 +199,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_user_failed',
+                    'action' => 'update user failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'edit_user_id' => $editUser->id,
@@ -224,7 +224,7 @@ class UserController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'updated_user',
+                    'action' => 'updated user',
                     'details' => json_encode([
                         'username' => $user->username,
                         'edit_user_id' => $editUser->id,
@@ -241,7 +241,7 @@ class UserController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_user_failed',
+                    'action' => 'update user failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'edit_user_id' => $request->user_id,
@@ -257,7 +257,7 @@ class UserController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'update_user_failed',
+            'action' => 'update user failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -276,7 +276,7 @@ class UserController extends Controller
             if ($changeUser->id === Auth::id() && !Auth::user()->is_superuser) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'change_user_role_failed',
+                    'action' => 'change user role failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'change_user_id' => $changeUser->id,
@@ -295,7 +295,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'change_user_role_failed',
+                    'action' => 'change user role failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'change_user_id' => $changeUser->id,
@@ -327,7 +327,7 @@ class UserController extends Controller
                 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'changed_user_role',
+                    'action' => 'changed user role',
                     'details' => json_encode([
                         'username' => $user->username,
                         'change_user_id' => $changeUser->id,
@@ -345,7 +345,7 @@ class UserController extends Controller
                 DB::rollBack();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'change_user_role_failed',
+                    'action' => 'change user role failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'change_user_id' => $request->user_id,
@@ -361,7 +361,7 @@ class UserController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'change_user_role_failed',
+            'action' => 'change user role failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -376,7 +376,7 @@ class UserController extends Controller
             if (!$this->isAdminUser(Auth::user())) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_user_password_failed',
+                    'action' => 'reset user password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'error' => 'Access denied. Admin privileges required.',
@@ -393,7 +393,7 @@ class UserController extends Controller
             if ($resetUser->id === Auth::id() && !Auth::user()->is_superuser) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_user_password_failed',
+                    'action' => 'reset user password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'reset_user_id' => $resetUser->id,
@@ -412,7 +412,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_user_password_failed',
+                    'action' => 'reset user password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'reset_user_id' => $resetUser->id,
@@ -432,7 +432,7 @@ class UserController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_user_password',
+                    'action' => 'reset user password',
                     'details' => json_encode([
                         'username' => $user->username,
                         'reset_user_id' => $resetUser->id,
@@ -448,7 +448,7 @@ class UserController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'reset_user_password_failed',
+                    'action' => 'reset user password failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'reset_user_id' => $request->user_id,
@@ -463,7 +463,7 @@ class UserController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'reset_user_password_failed',
+            'action' => 'reset user password failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),
@@ -485,7 +485,7 @@ class UserController extends Controller
             if ($deleteUser->id === Auth::id()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'delete_user_failed',
+                    'action' => 'delete user failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'delete_user_id' => $deleteUser->id,
@@ -506,7 +506,7 @@ class UserController extends Controller
 
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'deleted_user',
+                'action' => 'deleted user',
                 'details' => json_encode([
                     'username' => $user->username,
                     'deleted_user_id' => $id,
@@ -522,7 +522,7 @@ class UserController extends Controller
             DB::rollback();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'delete_user_failed',
+                'action' => 'delete user failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'delete_user_id' => $id,
@@ -543,7 +543,7 @@ class UserController extends Controller
             if (!$this->isAdminUser(Auth::user())) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_user_callback_failed',
+                    'action' => 'update user callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $request->callback_id,
@@ -571,7 +571,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_user_callback_failed',
+                    'action' => 'update user callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $callback->id,
@@ -601,7 +601,7 @@ class UserController extends Controller
 
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'updated_user_callback',
+                    'action' => 'updated user callback',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $callback->id,
@@ -620,7 +620,7 @@ class UserController extends Controller
                 DB::rollback();
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'update_user_callback_failed',
+                    'action' => 'update user callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_id' => $request->callback_id,
@@ -636,7 +636,7 @@ class UserController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'update_user_callback_failed',
+            'action' => 'update user callback failed',
             'details' => json_encode([
                 'username' => $user->username,
                 'error' => 'Invalid action: ' . $request->input('action'),

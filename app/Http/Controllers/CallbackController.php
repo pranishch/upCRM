@@ -73,7 +73,7 @@ class CallbackController extends Controller
             if (!$this->canAccessUserCallbacks($user, $target_user)) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'view_callbacks_failed',
+                    'action' => 'view callbacks failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'target_user_id' => $user_id,
@@ -124,7 +124,7 @@ class CallbackController extends Controller
             } catch (\Exception $e) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'search_callbacks_failed',
+                    'action' => 'search callbacks failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'search_query' => $search_query,
@@ -170,7 +170,7 @@ class CallbackController extends Controller
             } catch (\Exception $e) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'render_ajax_callbacks_failed',
+                    'action' => 'render ajax callbacks failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'error' => $e->getMessage(),
@@ -183,7 +183,7 @@ class CallbackController extends Controller
 
         ActivityLog::create([
             'user_id' => $user->id,
-            'action' => 'viewed_callbacks',
+            'action' => 'viewed callbacks',
             'details' => json_encode([
                 'username' => $user->username,
                 'user_role' => $user_role,
@@ -246,7 +246,7 @@ class CallbackController extends Controller
                     if (!$callback_owner) {
                         ActivityLog::create([
                             'user_id' => $user->id,
-                            'action' => 'save_callback_failed',
+                            'action' => 'save callback failed',
                             'details' => json_encode([
                                 'username' => $user->username,
                                 'target_user_id' => $target_user_id,
@@ -260,7 +260,7 @@ class CallbackController extends Controller
                     if (!$this->canAccessUserCallbacks($user, $callback_owner)) {
                         ActivityLog::create([
                             'user_id' => $user->id,
-                            'action' => 'save_callback_failed',
+                            'action' => 'save callback failed',
                             'details' => json_encode([
                                 'username' => $user->username,
                                 'target_user_id' => $target_user_id,
@@ -279,7 +279,7 @@ class CallbackController extends Controller
                 if (!$callback_id && !$this->canAddCallbacks($user, $callback_owner)) {
                     ActivityLog::create([
                         'user_id' => $user->id,
-                        'action' => 'save_callback_failed',
+                        'action' => 'save callback failed',
                         'details' => json_encode([
                             'username' => $user->username,
                             'callback_owner_id' => $callback_owner->id,
@@ -305,7 +305,7 @@ class CallbackController extends Controller
                 if ($validator->fails()) {
                     ActivityLog::create([
                         'user_id' => $user->id,
-                        'action' => 'save_callback_failed',
+                        'action' => 'save callback failed',
                         'details' => json_encode([
                             'username' => $user->username,
                             'callback_id' => $callback_id,
@@ -358,7 +358,7 @@ class CallbackController extends Controller
                             } else {
                                 ActivityLog::create([
                                     'user_id' => $user->id,
-                                    'action' => 'save_callback_failed',
+                                    'action' => 'save callback failed',
                                     'details' => json_encode([
                                         'username' => $user->username,
                                         'callback_id' => $callback_id,
@@ -372,7 +372,7 @@ class CallbackController extends Controller
                             if ($callback->created_by != $user->id) {
                                 ActivityLog::create([
                                     'user_id' => $user->id,
-                                    'action' => 'save_callback_failed',
+                                    'action' => 'save callback failed',
                                     'details' => json_encode([
                                         'username' => $user->username,
                                         'callback_id' => $callback_id,
@@ -396,7 +396,7 @@ class CallbackController extends Controller
                     }
                     ActivityLog::create([
                         'user_id' => $user->id,
-                        'action' => 'updated_callback',
+                        'action' => 'updated callback',
                         'details' => json_encode([
                             'username' => $user->username,
                             'callback_id' => $callback_id,
@@ -423,7 +423,7 @@ class CallbackController extends Controller
                     ]);
                     ActivityLog::create([
                         'user_id' => $user->id,
-                        'action' => 'created_callback',
+                        'action' => 'created callback',
                         'details' => json_encode([
                             'username' => $user->username,
                             'callback_id' => $callback->id,
@@ -435,7 +435,7 @@ class CallbackController extends Controller
                     if (!Callback::where('id', $callback->id)->exists()) {
                         ActivityLog::create([
                             'user_id' => $user->id,
-                            'action' => 'save_callback_failed',
+                            'action' => 'save callback failed',
                             'details' => json_encode([
                                 'username' => $user->username,
                                 'callback_id' => $callback->id,
@@ -453,7 +453,7 @@ class CallbackController extends Controller
             DB::commit();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'saved_callbacks',
+                'action' => 'saved callbacks',
                 'details' => json_encode([
                     'username' => $user->username,
                     'saved_count' => $saved_count,
@@ -471,7 +471,7 @@ class CallbackController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'save_callback_failed',
+                'action' => 'save callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'errors' => $e->errors(),
@@ -482,7 +482,7 @@ class CallbackController extends Controller
         } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'save_callback_failed',
+                'action' => 'save callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'error' => $e->getMessage(),
@@ -494,7 +494,7 @@ class CallbackController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'save_callback_failed',
+                'action' => 'save callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'error' => $e->getMessage(),
@@ -506,7 +506,7 @@ class CallbackController extends Controller
             DB::rollBack();
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'save_callback_failed',
+                'action' => 'save callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'error' => $e->getMessage(),
@@ -524,7 +524,7 @@ class CallbackController extends Controller
             if (!$this->isAdminUser($user)) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'delete_callback_failed',
+                    'action' => 'delete callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_ids' => $request->input('callback_ids', []),
@@ -543,7 +543,7 @@ class CallbackController extends Controller
             if ($validator->fails()) {
                 ActivityLog::create([
                     'user_id' => $user->id,
-                    'action' => 'delete_callback_failed',
+                    'action' => 'delete callback failed',
                     'details' => json_encode([
                         'username' => $user->username,
                         'callback_ids' => $request->input('callback_ids', []),
@@ -559,7 +559,7 @@ class CallbackController extends Controller
 
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'deleted_callbacks',
+                'action' => 'deleted callbacks',
                 'details' => json_encode([
                     'username' => $user->username,
                     'deleted_count' => $deleted_count,
@@ -576,7 +576,7 @@ class CallbackController extends Controller
         } catch (\Exception $e) {
             ActivityLog::create([
                 'user_id' => $user->id,
-                'action' => 'delete_callback_failed',
+                'action' => 'delete callback failed',
                 'details' => json_encode([
                     'username' => $user->username,
                     'callback_ids' => $request->input('callback_ids', []),
