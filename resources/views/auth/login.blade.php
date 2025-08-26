@@ -178,7 +178,7 @@
                 padding: 8px;
                 width: 100%;
                 min-height: 25vh;
-                margin-bottom: 169px;
+                /* margin-bottom: 169px; */
             }
 
             .login-right {
@@ -197,7 +197,7 @@
 
             .login-form {
                 max-width: 280px;
-                margin-top: -331px;
+                /* margin-top: -331px; */
             }
 
             .login-form h2 {
