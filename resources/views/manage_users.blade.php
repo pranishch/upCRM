@@ -616,16 +616,24 @@
                         </div>
                         <div class="mb-3 password-container">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required>
-                            <i class="fas fa-eye password-toggle" id="createPassword1Toggle"></i>
+                            <div class="input-group">
+                                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required>
+                                <span class="input-group-text bg-white border-start-0">  
+                                    <i class="fas fa-eye toggle-password" id="createPassword1Toggle" ></i>
+                                </span>
+                            </div>
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3 password-container">
                             <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" required>
-                            <i class="fas fa-eye password-toggle" id="createPassword2Toggle"></i>
+                            <div class="input-group">
+                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" required>
+                                <span class="input-group-text bg-white border-start-0">
+                                    <i class="fas fa-eye toggle-password" id="createPassword2Toggle"></i>
+                                </span>
+                            </div>
                             @error('password_confirmation')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -693,16 +701,24 @@
                     <div class="modal-body">
                         <div class="mb-3 password-container">
                             <label for="new_password" class="form-label">New Password</label>
-                            <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
-                            <i class="fas fa-eye password-toggle" id="resetPassword1Toggle"></i>
+                            <div class="input-group">  
+                                <input type="password" name="new_password" id="new_password" class="form-control @error('new_password') is-invalid @enderror" required>
+                                <span class="input-group-text bg-white border-start-0">
+                                    <i class="fas fa-eye toggle-password" id="resetPassword1Toggle"></i>
+                                </span>
+                            </div>  
                             @error('new_password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3 password-container">
                             <label for="new_password_confirmation" class="form-label">Confirm New Password</label>
-                            <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control @error('new_password_confirmation') is-invalid @enderror" required>
-                            <i class="fas fa-eye password-toggle" id="resetPassword2Toggle"></i>
+                            <div class="input-group">
+                                <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="form-control @error('new_password_confirmation') is-invalid @enderror" required>
+                                <span class="input-group-text bg-white border-start-0">
+                                    <i class="fas fa-eye toggle-password" id="resetPassword2Toggle"></i>
+                                </span>    
+                            </div>
                             @error('new_password_confirmation')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

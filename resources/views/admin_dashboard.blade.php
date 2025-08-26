@@ -1003,13 +1003,28 @@
                             <tbody id="callbackTableBody">
                                 @forelse ($all_callbacks as $index => $callback)
                                     <tr data-callback-id="{{ $callback->id }}" data-row-id="{{ $callback->id }}">
-                                        <td>{{ $callback->customer_name ?? 'N/A' }}</td>
-                                        <td>{{ $callback->phone_number ?? 'N/A' }}</td>
-                                        <td>{{ $callback->email ?? 'N/A' }}</td>
-                                        <td>{{ $callback->address ?? 'N/A' }}</td>
-                                        <td>{{ $callback->website ?? 'N/A' }}</td>
-                                        <td>
-                                            <span class="display-text remarks-input">{{ $callback->remarks ?? 'N/A' }}</span>
+                                        <td title="{{ $callback->customer_name ?? 'N/A' }}">
+                                            {{ $callback->customer_name ?? 'N/A' }}
+                                        </td>
+
+                                        <td title="{{ $callback->phone_number ?? 'N/A' }}">
+                                            {{ $callback->phone_number ?? 'N/A' }}
+                                        </td>
+
+                                        <td title="{{ $callback->email ?? 'N/A' }}">
+                                            {{ $callback->email ?? 'N/A', }}
+                                        </td>
+
+                                        <td title="{{ $callback->address ?? 'N/A' }}">
+                                            {{ $callback->address ?? 'N/A', }}
+                                        </td>
+
+                                        <td> @if ($callback->website && $callback->website !== 'N/A') <a href="{{ $callback->website }}" target="_blank" rel="noopener noreferrer" title="{{ $callback->website }}"> {{ $callback->website }}</a> @else N/A @endif </td>
+
+                                        <td title="{{ $callback->remarks ?? 'N/A' }}">
+                                            <span class="display-text remarks-input">
+                                                {{ $callback->remarks ?? 'N/A' }}
+                                            </span>
                                             <select class="editable-input remarks-input form-control" style="display: none;" name="remarks">
                                                 <option value="" {{ !$callback->remarks ? 'selected' : '' }}>Select</option>
                                                 <option value="Callback" {{ $callback->remarks == 'Callback' ? 'selected' : '' }}>Callback</option>
@@ -1018,7 +1033,11 @@
                                                 <option value="Sale" {{ $callback->remarks == 'Sale' ? 'selected' : '' }}>Sale</option>
                                             </select>
                                         </td>
-                                        <td>{{ $callback->notes ?? 'N/A' }}</td>
+
+                                        <td title="{{ $callback->notes ?? 'N/A' }}">
+                                            {{ $callback->notes ?? 'N/A' }}
+                                        </td>
+
                                         @if ($user_role == 'admin')
                                             <td>
                                                 <!-- Debug output to inspect role -->
@@ -1157,18 +1176,24 @@
                         </div>
                         <div class="mb-3 position-relative">
                             <label for="password" class="form-label">New Password (leave blank to keep current)</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                            <button type="button" class="toggle-password position-absolute end-0 top-50 translate-middle-y me-2" data-target="password">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password" name="password">
+                                <span class="input-group-text bg-white border-start-0">
+                                    <i class="fas fa-eye toggle-password" data-target="password"></i>
+                                </span>
+                            </div>
                         </div>
+
                         <div class="mb-3 position-relative">
                             <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
-                            <button type="button" class="toggle-password position-absolute end-0 top-50 translate-middle-y me-2" data-target="password_confirmation">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                                <span class="input-group-text bg-white border-start-0">
+                                    <i class="fas fa-eye toggle-password" data-target="password_confirmation"></i>
+                                </span>
+                            </div>
                         </div>
+
                         <div id="errorMessages" class="text-danger" style="display: none;"></div>
                     </form>
                 </div>
@@ -1583,19 +1608,18 @@
         });
 
         // Password Visibility Toggle
-        document.querySelectorAll('.toggle-password').forEach(button => {
-            button.addEventListener('click', function() {
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
                 const input = document.getElementById(targetId);
-                const icon = this.querySelector('i');
                 if (input.type === 'password') {
                     input.type = 'text';
-                    icon.classList.remove('bi-eye');
-                    icon.classList.add('bi-eye-slash');
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
                 } else {
                     input.type = 'password';
-                    icon.classList.remove('bi-eye-slash');
-                    icon.classList.add('bi-eye');
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
                 }
             });
         });

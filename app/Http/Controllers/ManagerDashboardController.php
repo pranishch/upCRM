@@ -49,6 +49,22 @@ class ManagerDashboardController extends Controller
                 return redirect()->route('manager_dashboard', $manager_id)->with('error', 'Access denied. Admin privileges required.');
             }
 
+            // Validate input fields for callback-related actions
+            $request->validate([
+                'customer_name' => 'sometimes|required|string|regex:/^[A-Za-z\s]+$/|max:100',
+                'phone_number' => 'sometimes|required|string|regex:/^[\+\-\(\),./#0-9\s]+$/|max:20',
+                'email' => 'nullable|email|max:100',
+                'address' => 'nullable|string|max:255',
+                'website' => 'nullable|url|regex:/^https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/|max:255',
+                'remarks' => 'nullable|in:Callback,Pre-sale,Sample rejected,Sale',
+                'notes' => 'nullable|string|max:255',
+            ], [
+                'customer_name.regex' => 'Customer name can only contain alphabetical characters and spaces.',
+                'phone_number.regex' => 'Phone number can only contain numbers, +, -, (), comma, period, /, #, and spaces.',
+                'email.email' => 'Enter a valid email address (e.g., example@domain.com).',
+                'website.regex' => 'Enter a valid URL (e.g., http://example.com).',
+            ]);
+
             $action = $request->input('action');
             if ($action == 'assign_agent') {
                 $agent_id = $request->input('agent_id');

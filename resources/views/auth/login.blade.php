@@ -257,15 +257,7 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="password-container">
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            class="@error('password') error-field @enderror"
-                            placeholder="********"
-                            required
-                            autocomplete="current-password"
-                        >
+                        <input type="password" id="password" name="password" class="@error('password') error-field @enderror" placeholder="********" required autocomplete="current-password">
                         <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
                     </div>
                     @error('password')
