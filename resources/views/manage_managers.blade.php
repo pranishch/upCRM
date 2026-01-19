@@ -733,11 +733,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            window.history.pushState({ page: 'manage_managers' }, null, window.location.href);
-
-            window.addEventListener('popstate', function(event) {
-                if (!event.state || event.state.page !== 'manage_managers') {
-                    window.location.reload();
+            // Reload page when coming back via browser back/forward buttons (from bfcache)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    window.location.reload(true);
                 }
             });
 

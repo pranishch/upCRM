@@ -737,15 +737,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Push current state to history to track navigation
-            window.history.pushState({ page: 'manage_users' }, null, window.location.href);
-
-            // Listen for popstate event to detect back/forward navigation
-            window.addEventListener('popstate', function(event) {
-                // Check if navigating back (event.state is null or doesn't match current state)
-                if (!event.state || event.state.page !== 'manage_users') {
-                    // Reload the page to ensure fresh data
-                    window.location.reload();
+            // Reload page when coming back via browser back/forward buttons (from bfcache)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    window.location.reload(true);
                 }
             });
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

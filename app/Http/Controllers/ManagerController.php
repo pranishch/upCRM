@@ -64,8 +64,20 @@ class ManagerController extends Controller
             \Log::info('ManagerController::store - Request data: ' . json_encode($request->all()));
 
             $validator = Validator::make($request->all(), [
-                'username' => 'required|string|unique:users,username|min:3|max:255',
-                'email' => 'nullable|email|unique:users,email|max:255',
+                'username' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:255',
+                    'unique:users,username',
+                    'regex:/^[a-z0-9][a-z0-9._-]*[a-z0-9]$/',
+                ],
+                'email' => [
+                    'nullable',
+                    'email:rfc',
+                    'max:255',
+                    'unique:users,email',
+                ],
                 'first_name' => 'nullable|string|max:255',
                 'last_name' => 'nullable|string|max:255',
                 'password' => 'required|confirmed|min:8',
@@ -177,8 +189,20 @@ class ManagerController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'username' => 'required|string|unique:users,username,' . $editUser->id . '|min:3|max:255',
-                'email' => 'nullable|email|unique:users,email,' . $editUser->id . '|max:255',
+                'username' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:255',
+                    'unique:users,username,' . $editUser->id,
+                    'regex:/^[a-z0-9][a-z0-9._-]*[a-z0-9]$/',
+                ],
+                'email' => [
+                    'nullable',
+                    'email:rfc',
+                    'max:255',
+                    'unique:users,email,' . $editUser->id,
+                ],
                 'first_name' => 'nullable|string|max:255',
                 'last_name' => 'nullable|string|max:255',
             ]);

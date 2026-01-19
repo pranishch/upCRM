@@ -1,0 +1,9 @@
+#Add the field of first name and last name in the editable field of managers and users
+
+#In admin dashboad 
+->add S.N column and while searching in the live search it mustn't shift the data to another column
+
+#website validation and keep in a tag
+
+To be send in server side
+->ManagerDashboardController.php
